@@ -1,0 +1,75 @@
+.wrapper {
+  position: relative;
+}
+.bg {
+  position: absolute;
+  top: -70px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 238px;
+  height: 274px;
+  background-color: transparent;
+  z-index: 1;
+  background: radial-gradient(circle, #64dcd5 0%, rgba(233, 241, 249, 0) 70%);
+}
+.content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 3;
+  height: 100%;
+  width: 100%;
+}
+.left {
+}
+.btn {
+  border-radius: 50%;
+  background: #e9f2f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  box-shadow: -8px -8px 20px 0px #fff9, -6px -6px 6px 0px #fff9,
+    8px 8px 20px #0001, 5px 5px 6px 0px #0001;
+}
+.btn .icon {
+  width: 20px;
+  height: 20px;
+  color: #6c6e8d;
+  color: #4a525d;
+}
+.menu_btn {
+  width: 36px;
+  height: 36px;
+  color: #4a525d;
+}
+
+.logo {
+}
+.title {
+  color: #262550;
+  font-family: "Montserrat";
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -1px;
+  opacity: 1;
+  text-shadow: 0 0 1px #262550;
+}
+
+.right {
+}
+
+@media (orientation: landscape) {
+  .wrapper {
+    height: 50px;
+  }
+}
+
+@media (orientation: portrait) {
+  .wrapper {
+    height: 60px;
+  }
+}

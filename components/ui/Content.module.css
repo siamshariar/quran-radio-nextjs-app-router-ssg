@@ -1,0 +1,43 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 52px auto 70px auto;
+}
+.chapter {
+  margin-bottom: 0;
+  text-align: center;
+}
+.chapter h2 {
+  font-family: "Montserrat";
+  font-size: 15px;
+  font-weight: 600;
+  color: #424168;
+}
+.reciter {
+  font-family: "Montserrat";
+  font-size: 11px;
+  font-weight: 400;
+  margin-bottom: 62px;
+  margin-top: 6px;
+  color: #8f93aa;
+}
+.reciter span {
+}
+
+.image {
+  width: 204px;
+  height: 204px;
+  border: 12px solid #e9f1f9;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: -8px -8px 22px 0px #fff9, -6px -6px 6px 0px #fff9,
+    8px 8px 20px #0001, 5px 5px 13px 2px #c2d0e7;
+}
+.image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
