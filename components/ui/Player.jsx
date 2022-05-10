@@ -15,6 +15,7 @@ import {
   pause as pauseIcon,
   playSkipForward as playNextIcon,
   playSkipBack as playPreviousIcon,
+  ellipsisVertical as vertIcon,
 } from "ionicons/icons";
 
 const Player = ({
@@ -85,6 +86,25 @@ const Player = ({
     setPlaying(true);
   };
 
+  const controllerRef = useRef(null);
+  const [buttonsOpen, setButtonsOpen] = useState(false);
+
+  const handleButtonModal = (e, open) => {
+    e.stopPropagation();
+    setButtonsOpen(open);
+  };
+
+  const setPlaybackSpeed = (speed) => {
+    audio.current.playbackRate = speed;
+  };
+
+  useEffect(() => {
+    document.body.addEventListener("click", (e) => {
+      if (e.target == controllerRef.current) return;
+      setButtonsOpen(false);
+    });
+  }, []);
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.timer}>
@@ -103,6 +123,31 @@ const Player = ({
         />
 
         <div className={styles.end}>{formatDur(dur)}</div>
+
+        <div className={styles.controller} ref={controllerRef}>
+          <div
+            className={styles.ctrl_btn}
+            onClick={(e) => handleButtonModal(e, true)}
+          >
+            <IonIcon icon={vertIcon} className={styles.ctrl_icon} />
+          </div>
+
+          <div
+            className={`${styles.modal} ${buttonsOpen ? styles.open : ""}`}
+            onClick={(e) => handleButtonModal(e, false)}
+          >
+            <div className={styles.playback}>
+              <button onClick={() => setPlaybackSpeed(0.25)}>0.25</button>
+              <button onClick={() => setPlaybackSpeed(0.5)}>0.5</button>
+              <button onClick={() => setPlaybackSpeed(0.75)}>0.75</button>
+              <button onClick={() => setPlaybackSpeed(1)}>Normal</button>
+              <button onClick={() => setPlaybackSpeed(1.25)}>1.25</button>
+              <button onClick={() => setPlaybackSpeed(1.5)}>1.5</button>
+              <button onClick={() => setPlaybackSpeed(1.75)}>1.75</button>
+              <button onClick={() => setPlaybackSpeed(2)}>2</button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <audio
