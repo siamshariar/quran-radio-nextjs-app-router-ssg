@@ -4,9 +4,11 @@
 }
 .card:first-child {
   margin-top: 44px;
+  margin-top: 15px;
 }
 .card:last-child {
   margin-bottom: 34px;
+  margin-bottom: 15px;
 }
 .inner {
   display: flex;

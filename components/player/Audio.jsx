@@ -1,6 +1,6 @@
-import styles from "./Player.module.css";
+import styles from "./Audio.module.css";
 import { useState, useEffect, useRef } from "react";
-import Visualizer from "../utils/Visualizer";
+import Visualizer from "./Visualizer";
 
 import {
   IonToolbar,
@@ -18,16 +18,25 @@ import {
   ellipsisVertical as vertIcon,
 } from "ionicons/icons";
 
+// import { Link } from "react-router-dom";
+// import { chevronUp } from "ionicons/icons";
+
+import { PlayerStore } from "../../store";
+import { setPlaybackRate } from "../../store";
+
 const Player = ({
   playing,
   setPlaying,
   chapterIndex,
   setChapterIndex,
   src,
+  isMini,
 }) => {
   const audio = useRef(null);
   const [dur, setDur] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
+
+  const playbackRate = PlayerStore.useState((s) => s.playbackRate);
 
   const formatDur = (s) => {
     return (s - (s %= 60)) / 60 + (s < 10 ? ":0" : ":") + ~~s;
@@ -36,10 +45,11 @@ const Player = ({
   useEffect(() => {
     if (playing) {
       audio.current.play();
+      audio.current.playbackRate = playbackRate;
     } else {
       audio.current.pause();
     }
-  }, [src, playing]);
+  }, [src, playing, playbackRate]);
 
   const play = () => {
     setPlaying(true);
@@ -94,8 +104,9 @@ const Player = ({
     setButtonsOpen(open);
   };
 
-  const setPlaybackSpeed = (speed) => {
-    audio.current.playbackRate = speed;
+  const setPlaybackSpeed = (rate) => {
+    // audio.current.playbackRate = rate;
+    setPlaybackRate(rate);
   };
 
   useEffect(() => {
@@ -106,7 +117,7 @@ const Player = ({
   }, []);
 
   return (
-    <div className={styles.wrapper}>
+    <div className={`${styles.wrapper} ${isMini ? styles.mini : ""}`}>
       <div className={styles.timer}>
         <div className={styles.start}>{formatDur(currentTime)}</div>
 
@@ -137,14 +148,54 @@ const Player = ({
             onClick={(e) => handleButtonModal(e, false)}
           >
             <div className={styles.playback}>
-              <button onClick={() => setPlaybackSpeed(0.25)}>0.25</button>
-              <button onClick={() => setPlaybackSpeed(0.5)}>0.5</button>
-              <button onClick={() => setPlaybackSpeed(0.75)}>0.75</button>
-              <button onClick={() => setPlaybackSpeed(1)}>Normal</button>
-              <button onClick={() => setPlaybackSpeed(1.25)}>1.25</button>
-              <button onClick={() => setPlaybackSpeed(1.5)}>1.5</button>
-              <button onClick={() => setPlaybackSpeed(1.75)}>1.75</button>
-              <button onClick={() => setPlaybackSpeed(2)}>2</button>
+              <button
+                className={playbackRate === 0.25 ? styles.active : ""}
+                onClick={() => setPlaybackSpeed(0.25)}
+              >
+                0.25
+              </button>
+              <button
+                className={playbackRate === 0.5 ? styles.active : ""}
+                onClick={() => setPlaybackSpeed(0.5)}
+              >
+                0.5
+              </button>
+              <button
+                className={playbackRate === 0.75 ? styles.active : ""}
+                onClick={() => setPlaybackSpeed(0.75)}
+              >
+                0.75
+              </button>
+              <button
+                className={playbackRate === 1 ? styles.active : ""}
+                onClick={() => setPlaybackSpeed(1)}
+              >
+                Normal
+              </button>
+              <button
+                className={playbackRate === 1.25 ? styles.active : ""}
+                onClick={() => setPlaybackSpeed(1.25)}
+              >
+                1.25
+              </button>
+              <button
+                className={playbackRate === 1.5 ? styles.active : ""}
+                onClick={() => setPlaybackSpeed(1.5)}
+              >
+                1.5
+              </button>
+              <button
+                className={playbackRate === 1.75 ? styles.active : ""}
+                onClick={() => setPlaybackSpeed(1.75)}
+              >
+                1.75
+              </button>
+              <button
+                className={playbackRate === 2 ? styles.active : ""}
+                onClick={() => setPlaybackSpeed(2)}
+              >
+                2
+              </button>
             </div>
           </div>
         </div>

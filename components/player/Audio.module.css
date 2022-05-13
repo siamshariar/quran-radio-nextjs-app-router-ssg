@@ -118,15 +118,16 @@
   visibility: hidden;
   opacity: 0;
   position: absolute;
-  bottom: 5px;
-  right: 5px;
+  bottom: 6px;
+  right: 4px;
   background-color: #fff;
+  width: 180px;
+  height: 264px;
+  box-shadow: 0 0 10px #eee;
+  border-radius: 3px;
   /* width: 0;
   height: 0;
   transition: all 250ms ease-in-out; */
-  width: 200px;
-  height: 280px;
-  box-shadow: 0 0 10px #eee;
 }
 .modal.open {
   visibility: visible;
@@ -142,10 +143,68 @@
 }
 .playback button {
   border: none;
-  padding: 5px 14px;
+  padding: 5px 20px;
   margin: 0;
   width: 100%;
   text-align: left;
   cursor: pointer;
-  color: #070707;
+  color: #444;
+  font-size: 14px;
+}
+.playback button.active {
+  background-color: #ddd;
+}
+
+.mini {
+}
+.mini .timer .start,
+.mini .timer .end {
+  font-size: 11px;
+  width: 44px;
+  display: flex;
+}
+.mini .timer .progress {
+  width: 138px;
+  border-radius: 20px;
+  margin: 0 16px;
+}
+.mini .timer .progress::-webkit-slider-runnable-track {
+  height: 11px;
+}
+.mini .timer .progress::-webkit-slider-thumb {
+  height: 13px;
+  width: 13px;
+  margin-top: -1px;
+}
+.mini .controls {
+  margin-top: 28px;
+  width: 160px;
+}
+
+.mini .btn {
+}
+.mini .btn.small {
+  min-width: 28px;
+  min-height: 28px;
+}
+.mini .btn.large {
+  min-height: 48px;
+  min-width: 48px;
+}
+.mini .icon {
+  width: 12px;
+  height: 12px;
+}
+.mini .btn.large .icon {
+  width: 20px;
+  height: 20px;
+}
+.mini .ctrl_btn {
+  width: 14px;
+  height: 20px;
+  cursor: pointer;
+}
+.mini .ctrl_icon {
+  width: 12px;
+  height: 12px;
 }

@@ -1,0 +1,48 @@
+.wrapper {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  /* transition: height 250ms ease-in-out; */
+  height: 100%;
+  z-index: 11;
+}
+.wrapper.mini {
+  height: 160px;
+  box-shadow: 0 -2px 10px #ddd;
+  padding: 14px 0;
+  background-color: var(--ion-background-color);
+}
+.container {
+}
+.header {
+  padding: 0 12px;
+}
+.content {
+}
+.audio {
+}
+.close {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #445b78;
+  cursor: pointer;
+  opacity: 0.8;
+}
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
+.mini .header {
+  display: none;
+}
+.mini .content {
+  display: none;
+}

@@ -1,17 +1,20 @@
 import styles from "./Content.module.css";
+import { Link } from "react-router-dom";
 
 const Content = ({ setChapterModalOpen, setReciterModalOpen, info }) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.chapter}>
-        <h2 onClick={() => setChapterModalOpen(true)}>
-          {info.chapter.name} ({info.chapter.meaning})
+        <h2>
+          <Link to="/chapters">
+            {info.chapter.name} {info.chapter.meaning}
+          </Link>
         </h2>
       </div>
 
       <div className={styles.reciter}>
-        <span onClick={() => setReciterModalOpen(true)}>
-          {info.reciter.name}
+        <span>
+          <Link to="/reciters">{info.reciter.name}</Link>
         </span>
       </div>
 

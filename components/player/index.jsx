@@ -1,15 +1,15 @@
-import styles from "./Main.module.css";
-import { chapters } from "../../data/chapters";
-import { reciters } from "../../data/reciters";
-import { recitations } from "../../data/recitations";
-
+import styles from "./index.module.css";
+// import { chapters } from "../../data/chapters";
+// import { reciters } from "../../data/reciters";
+// import { recitations } from "../../data/recitations";
 import { useEffect, useState } from "react";
 
-import Header from "../ui/Header";
-import Content from "../ui/Content";
-import Player from "../ui/Player";
-import ChapterCard from "../cards/Chapter";
-import ReciterCard from "../cards/Reciter";
+import Header from "./Header";
+import Content from "./Content";
+import Audio from "./Audio";
+// import ChapterCard from "../cards/Chapter";
+// import ReciterCard from "../cards/Reciter";
+import { Redirect, Route, useLocation } from "react-router-dom";
 
 import {
   IonPage,
@@ -29,15 +29,30 @@ import {
 
 import { close } from "ionicons/icons";
 
-const Main = () => {
+import { PlayerStore } from "../../store";
+import { setPlaying, setChapterIndex } from "../../store";
+
+const Player = () => {
+  const location = useLocation();
+  const [path, setPath] = useState("/");
+  useEffect(() => {
+    setPath(location.pathname);
+  }, [location]);
+
+  const chapters = PlayerStore.useState((s) => s.chapters);
+  const reciters = PlayerStore.useState((s) => s.reciters);
+  const recitations = PlayerStore.useState((s) => s.recitations);
+  const reciterId = PlayerStore.useState((s) => s.reciterId);
+  const chapterIndex = PlayerStore.useState((s) => s.chapterIndex);
+  const playing = PlayerStore.useState((s) => s.playing);
+
   const [chapterModalOpen, setChapterModalOpen] = useState(false);
   const [reciterModalOpen, setReciterModalOpen] = useState(false);
 
-  // audio player
-  const [chapterIndex, setChapterIndex] = useState(0);
-  const [reciterId, setReciterId] = useState(7);
+  // const [chapterIndex, setChapterIndex] = useState(0);
+  // const [reciterId, setReciterId] = useState(7);
   const [src, setSrc] = useState(`${recitations[reciterId][chapterIndex]}`);
-  const [playing, setPlaying] = useState(false);
+  // const [playing, setPlaying] = useState(false);
   // const [ended, setEnded] = useState(false);
   // const [init, setInit] = useState(false);
 
@@ -45,8 +60,20 @@ const Main = () => {
     setSrc(`${recitations[reciterId][chapterIndex]}`);
   }, [reciterId, chapterIndex]);
 
+  const [isMiniPlayer, setIsMiniPlayer] = useState(false);
+
+  useEffect(() => {
+    if (path == "/") {
+      setIsMiniPlayer(false);
+    } else {
+      setIsMiniPlayer(true);
+    }
+  }, [path]);
+
   return (
-    <IonPage>
+    <div
+      className={`${styles.wrapper}${isMiniPlayer ? " " + styles.mini : ""}`}
+    >
       <IonContent
         className={`${styles.container} ion-padding`}
         fullscreen
@@ -71,18 +98,19 @@ const Main = () => {
             }}
           />
         </div>
-        <div className={styles.player}>
-          <Player
+        <div className={styles.audio}>
+          <Audio
             playing={playing}
             setPlaying={setPlaying}
             chapterIndex={chapterIndex}
             setChapterIndex={setChapterIndex}
             src={src}
+            isMini={isMiniPlayer}
           />
         </div>
       </IonContent>
 
-      <IonModal
+      {/* <IonModal
         isOpen={chapterModalOpen}
         swipeToClose={true}
         onDidDismiss={() => setChapterModalOpen(false)}
@@ -110,9 +138,9 @@ const Main = () => {
               />
             ))}
         </IonContent>
-      </IonModal>
+      </IonModal> */}
 
-      <IonModal
+      {/* <IonModal
         isOpen={reciterModalOpen}
         swipeToClose={true}
         onDidDismiss={() => setReciterModalOpen(false)}
@@ -137,9 +165,9 @@ const Main = () => {
               />
             ))}
         </IonContent>
-      </IonModal>
-    </IonPage>
+      </IonModal> */}
+    </div>
   );
 };
 
-export default Main;
+export default Player;
