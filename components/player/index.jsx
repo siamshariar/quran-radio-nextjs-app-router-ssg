@@ -84,8 +84,8 @@ const Player = () => {
         </div>
         <div className={styles.content}>
           <Content
-            setChapterModalOpen={setChapterModalOpen}
-            setReciterModalOpen={setReciterModalOpen}
+            // setChapterModalOpen={setChapterModalOpen}
+            // setReciterModalOpen={setReciterModalOpen}
             info={{
               chapter: {
                 name: chapters[chapterIndex].name,

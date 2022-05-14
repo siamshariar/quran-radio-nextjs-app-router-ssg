@@ -1,13 +1,13 @@
 import styles from "./Content.module.css";
 import { Link } from "react-router-dom";
 
-const Content = ({ setChapterModalOpen, setReciterModalOpen, info }) => {
+const Content = ({ info }) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.chapter}>
         <h2>
           <Link to="/chapters">
-            {info.chapter.name} {info.chapter.meaning}
+            {info.chapter.name} ({info.chapter.meaning})
           </Link>
         </h2>
       </div>
