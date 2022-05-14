@@ -1,6 +1,6 @@
 import styles from "./Audio.module.css";
 import { useState, useEffect, useRef } from "react";
-import Visualizer from "./Visualizer";
+import Visualizer from "./VisualizerWave";
 
 import {
   IonToolbar,
@@ -17,9 +17,6 @@ import {
   playSkipBack as playPreviousIcon,
   ellipsisVertical as vertIcon,
 } from "ionicons/icons";
-
-// import { Link } from "react-router-dom";
-// import { chevronUp } from "ionicons/icons";
 
 import { PlayerStore } from "../../store";
 import { setPlaybackRate } from "../../store";
@@ -78,8 +75,14 @@ const Player = ({
     setPlaying(true);
   };
 
-  const handleProgress = (e) => {
-    let compute = (e.target.value * dur) / 100;
+  // const handleProgress = (e) => {
+  //   let compute = (e.target.value * dur) / 100;
+  //   setCurrentTime(compute);
+  //   audio.current.currentTime = compute;
+  // };
+
+  const handleProgress = (progress) => {
+    let compute = (progress * dur) / 100;
     setCurrentTime(compute);
     audio.current.currentTime = compute;
   };
@@ -121,16 +124,10 @@ const Player = ({
       <div className={styles.timer}>
         <div className={styles.start}>{formatDur(currentTime)}</div>
 
-        {/* <Visualizer playing={playing} setPlaying={setPlaying} /> */}
-
-        <input
-          className={styles.progress}
-          type="range"
-          min="0"
-          max="100"
-          value={dur ? (currentTime * 100) / dur : 0}
-          onChange={(e) => handleProgress(e)}
-          name="progresBar"
+        <Visualizer
+          dur={dur ? (currentTime * 100) / dur : 0}
+          updateDur={handleProgress}
+          isMini={isMini}
         />
 
         <div className={styles.end}>{formatDur(dur)}</div>

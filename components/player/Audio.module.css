@@ -24,41 +24,6 @@
 .timer .end {
   justify-content: flex-start;
 }
-.timer .progress {
-  -webkit-appearance: none;
-  outline: none;
-  border: none;
-  padding: 0;
-  background: none;
-  width: 160px;
-  height: 0;
-  position: relative;
-  border-radius: 20px;
-  margin: 0 22px;
-}
-.timer .progress::-webkit-slider-runnable-track {
-  width: 100%;
-  height: 12px;
-  cursor: pointer;
-  box-shadow: inset 0.2rem 0.2rem 0.5rem #c8d0e7,
-    inset -0.2rem -0.2rem 0.5rem #fff;
-  border-radius: 16px;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.timer .progress::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  border-radius: 100%;
-  background-color: var(--main-color);
-  height: 16px;
-  width: 16px;
-  margin-top: -2px;
-}
-/* .timer .progress:hover {
-  opacity: 1;
-} */
 .audio {
   visibility: hidden;
 }
@@ -163,19 +128,7 @@
   width: 44px;
   display: flex;
 }
-.mini .timer .progress {
-  width: 138px;
-  border-radius: 20px;
-  margin: 0 16px;
-}
-.mini .timer .progress::-webkit-slider-runnable-track {
-  height: 11px;
-}
-.mini .timer .progress::-webkit-slider-thumb {
-  height: 13px;
-  width: 13px;
-  margin-top: -1px;
-}
+
 .mini .controls {
   margin-top: 28px;
   width: 160px;
