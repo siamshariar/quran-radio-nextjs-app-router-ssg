@@ -50,7 +50,7 @@ const ChapterList = () => {
   }, [reciterId, chapterIndex]);
 
   return (
-    <IonPage style={{ paddingBottom: "160px" }}>
+    <IonPage style={{ paddingBottom: "132px" }}>
       <IonHeader className={styles.header}>
         <IonButton
           className={styles.back} //

@@ -2,7 +2,7 @@ import styles from "./Visualizer.module.css";
 import { useEffect } from "react";
 import { coordinates } from "./v_coordinates";
 
-const Visualizer = ({ dur, updateDur, isMini }) => {
+const Visualizer = ({ dur, updateDur }) => {
   const drawCanvas = (canvas, color) => {
     let ctx = canvas.getContext("2d");
     ctx.strokeStyle = color;
@@ -30,7 +30,7 @@ const Visualizer = ({ dur, updateDur, isMini }) => {
   };
 
   return (
-    <div className={`${styles.wave} ${isMini ? styles.mini : ""}`}>
+    <div className={styles.wave}>
       <div className={styles.wrapper}>
         <div className={styles.inner}>
           <canvas id="canvas_inner" className={styles.canvas}></canvas>

@@ -1,14 +1,7 @@
 import styles from "./Audio.module.css";
 import { useState, useEffect, useRef } from "react";
 import Visualizer from "./VisualizerWave";
-
-import {
-  IonToolbar,
-  IonTitle,
-  IonButtons,
-  IonButton,
-  IonIcon,
-} from "@ionic/react";
+import { IonIcon } from "@ionic/react";
 
 import {
   play as playIcon,
@@ -27,7 +20,6 @@ const Player = ({
   chapterIndex,
   setChapterIndex,
   src,
-  isMini,
 }) => {
   const audio = useRef(null);
   const [dur, setDur] = useState(0);
@@ -120,14 +112,13 @@ const Player = ({
   }, []);
 
   return (
-    <div className={`${styles.wrapper} ${isMini ? styles.mini : ""}`}>
+    <div className={styles.wrapper}>
       <div className={styles.timer}>
         <div className={styles.start}>{formatDur(currentTime)}</div>
 
         <Visualizer
           dur={dur ? (currentTime * 100) / dur : 0}
           updateDur={handleProgress}
-          isMini={isMini}
         />
 
         <div className={styles.end}>{formatDur(dur)}</div>

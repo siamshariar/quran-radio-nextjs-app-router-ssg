@@ -4,6 +4,8 @@ import { reciters } from "../data/reciters";
 import { recitations } from "../data/recitations";
 
 export const PlayerStore = new Store({
+  open: true,
+  mini: false,
   chapters,
   reciters,
   recitations,
@@ -23,6 +25,18 @@ export const PlayerStore = new Store({
   //   enableNotifications: true,
   // },
 });
+
+export const setPlayerOpen = (open) => {
+  PlayerStore.update((s) => {
+    s.open = open;
+  });
+};
+
+export const setPlayerMini = (isMini) => {
+  PlayerStore.update((s) => {
+    s.mini = isMini;
+  });
+};
 
 export const setPlaying = (isPlaying) => {
   PlayerStore.update((s) => {
