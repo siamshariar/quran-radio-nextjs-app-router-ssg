@@ -1,50 +1,60 @@
-import styles from "./Reciters.module.css";
-// import { chapters } from "../../data/chapters";
-// import { reciters } from "../../data/reciters";
-// import { recitations } from "../../data/recitations";
-import { useEffect, useState } from "react";
-import ReciterCard from "../cards/Reciter";
-
 import {
   IonPage,
   IonHeader,
-  IonFooter,
-  IonTitle,
-  IonToolbar,
-  IonButtons,
   IonButton,
   IonIcon,
   IonContent,
-  IonModal,
-  IonMenu,
+  IonRouterLink,
+  IonLabel,
   IonList,
-  IonItem,
 } from "@ionic/react";
 
-import { close, chevronBack } from "ionicons/icons";
+import classNames from "classnames";
+import { menu } from "ionicons/icons";
 
-import { PlayerStore } from "../../store";
-import { setReciterId } from "../../store";
+import {
+  homeOutline,
+  exploreOutline,
+  subscriptionOutline,
+  libraryOutline,
+} from "../../icons";
+
+import styles from "./Home.module.css";
+
+const pages = [
+  {
+    title: "Home",
+    icon: homeOutline,
+    url: "/",
+  },
+  {
+    title: "Chapters",
+    icon: exploreOutline,
+    url: "/chapters",
+  },
+  {
+    title: "Subscriptions",
+    icon: subscriptionOutline,
+    url: "/chapters",
+  },
+  {
+    title: "Library",
+    icon: libraryOutline,
+    url: "/chapters",
+  },
+  {
+    title: "Reciters",
+    icon: exploreOutline,
+    url: "/reciters",
+  },
+  {
+    title: "Subscriptions",
+    icon: subscriptionOutline,
+    url: "/reciters",
+  },
+];
 
 const Home = () => {
-  const reciters = PlayerStore.useState((s) => s.reciters);
-  const recitations = PlayerStore.useState((s) => s.recitations);
-  const chapterIndex = PlayerStore.useState((s) => s.chapterIndex);
-  const reciterId = PlayerStore.useState((s) => s.reciterId);
-  const playing = PlayerStore.useState((s) => s.playing);
-
-  // audio player
-  // const [chapterIndex, setChapterIndex] = useState(0);
-  // const [reciterId, setReciterId] = useState(7);
-  const [src, setSrc] = useState(`${recitations[reciterId][chapterIndex]}`);
-  // const [playing, setPlaying] = useState(false);
-  // const [ended, setEnded] = useState(false);
-  // const [init, setInit] = useState(false);
-
-  useEffect(() => {
-    setSrc(`${recitations[reciterId][chapterIndex]}`);
-  }, [reciterId, chapterIndex]);
-
   return (
     <IonPage style={{ paddingBottom: "132px" }}>
       <IonHeader className={styles.header}>
@@ -53,20 +63,34 @@ const Home = () => {
           fill="clear"
           routerLink="/"
         >
-          <IonIcon icon={chevronBack} className={styles.icon} />
+          <IonIcon icon={menu} slot="start" className={styles.icon} />
         </IonButton>
-        <span>Reciters List</span>
+        <span>Quran Radio</span>
       </IonHeader>
-      <IonContent>
-        {reciters &&
-          Object.entries(reciters).map(([key, reciter]) => (
-            <ReciterCard
-              key={key}
-              reciter={reciter}
-              reciterId={reciterId}
-              setReciterId={setReciterId}
-            />
-          ))}
+      <IonContent className="ion-padding">
+        <div className={styles.content}>
+          <IonList className={styles.list}>
+            {pages.map((p, i) => (
+              <div className={styles.item} key={i}>
+                <IonRouterLink //
+                  routerLink={p.url}
+                  className={styles.item_link}
+                >
+                  <div className={styles.item_inner}>
+                    <div className={styles.item_ctn}>
+                      <IonIcon
+                        icon={p.icon}
+                        slot="start"
+                        className={styles.icon}
+                      />
+                      <IonLabel className={styles.label}>{p.title}</IonLabel>
+                    </div>
+                  </div>
+                </IonRouterLink>
+              </div>
+            ))}
+          </IonList>
+        </div>
       </IonContent>
     </IonPage>
   );

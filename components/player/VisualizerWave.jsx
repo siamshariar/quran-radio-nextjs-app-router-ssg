@@ -1,6 +1,6 @@
-import styles from "./Visualizer.module.css";
 import { useEffect } from "react";
 import { coordinates } from "./v_coordinates";
+import styles from "./Visualizer.module.css";
 
 const Visualizer = ({ dur, updateDur }) => {
   const drawCanvas = (canvas, color) => {

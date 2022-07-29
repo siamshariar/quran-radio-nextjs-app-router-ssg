@@ -1,13 +1,8 @@
-import classNames from "classnames";
 import { useEffect, useState, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import { IonContent } from "@ionic/react";
-import {
-  PlayerStore,
-  setPlaying,
-  setChapterIndex,
-  setPlayerOpen,
-  setPlayerMini,
-} from "../../store";
+import classNames from "classnames";
+import { PlayerStore, setPlayerOpen, setPlayerMini } from "../../store";
 import Header from "./Header";
 import Content from "./Content";
 import Audio from "./Audio";
@@ -16,35 +11,6 @@ import AudioMiniMenu from "./AudioMiniMenu";
 import styles from "./index.module.css";
 
 const Player = () => {
-  const chapters = PlayerStore.useState((s) => s.chapters);
-  const reciters = PlayerStore.useState((s) => s.reciters);
-  const recitations = PlayerStore.useState((s) => s.recitations);
-  const reciterId = PlayerStore.useState((s) => s.reciterId);
-  const chapterIndex = PlayerStore.useState((s) => s.chapterIndex);
-  const playing = PlayerStore.useState((s) => s.playing);
-  const isPlayerOpen = PlayerStore.useState((s) => s.open);
-  const isPlayerMini = PlayerStore.useState((s) => s.mini);
-
-  const [src, setSrc] = useState(`${recitations[reciterId][chapterIndex]}`);
-
-  useEffect(() => {
-    setSrc(`${recitations[reciterId][chapterIndex]}`);
-  }, [reciterId, chapterIndex]);
-
-  const panelRef = useRef(null);
-  const headerRef = useRef(null);
-  const containerRef = useRef(null);
-  const backdropRef = useRef(null);
-  const miniMenuRef = useRef(null);
-
-  const handleOpen = (isOpen) => {
-    setPlayerOpen(isOpen);
-  };
-
-  const handleMini = (isMini) => {
-    setPlayerMini(isMini);
-  };
-
   const [windowHeight, setWindowHeight] = useState(0);
   const [panelHeight, setPanelHeight] = useState(0);
   const [mostTranslate, setMostTranslate] = useState(1);
@@ -53,16 +19,35 @@ const Player = () => {
   const [currentY, setCurrentY] = useState(0);
   const [tempCurrentY, setTempCurrentY] = useState(0);
 
-  useEffect(() => {
-    // window.addEventListener("load", () => {
+  const location = useLocation();
+  const [path, setPath] = useState("/");
 
-    // });
+  useEffect(() => {
+    setPath(location.pathname);
+  }, [location]);
+
+  useEffect(() => {
     setWindowHeight(window.innerHeight);
     // setPanelHeight(panelRef.current.offsetHeight);
     // setMostTranslate(panelRef.current.offsetHeight - 72);
     setPanelHeight(window.innerHeight);
     setMostTranslate(window.innerHeight - 72);
+    setTranslate(path === "/" ? 0 : window.innerHeight - 72);
+  }, [path]);
+
+  useEffect(() => {
+    // window.addEventListener("load", () => {
+    // });
   }, []);
+
+  const isPlayerOpen = PlayerStore.useState((s) => s.open);
+  const isPlayerMini = PlayerStore.useState((s) => s.mini);
+
+  const panelRef = useRef(null);
+  const headerRef = useRef(null);
+  const containerRef = useRef(null);
+  const backdropRef = useRef(null);
+  const miniMenuRef = useRef(null);
 
   const handleTouchStart = (event) => {
     // if (isPlayerMini) {
@@ -153,10 +138,14 @@ const Player = () => {
     if (translate < mostTranslate - 90) {
       miniMenuRef.current.style.visibility = "hidden";
       miniMenuRef.current.style.opacity = 0;
-      setPlayerMini(false);
     } else {
       miniMenuRef.current.style.visibility = "visible";
       miniMenuRef.current.style.opacity = 1 - (mostTranslate - translate) / 90;
+    }
+
+    if (translate < mostTranslate) {
+      setPlayerMini(false);
+    } else {
       setPlayerMini(true);
     }
   }, [translate, panelHeight, windowHeight]);
@@ -201,27 +190,10 @@ const Player = () => {
                 <Header />
               </div>
               <div className={styles.content}>
-                <Content
-                  info={{
-                    chapter: {
-                      name: chapters[chapterIndex].name,
-                      meaning: chapters[chapterIndex].meaning,
-                    },
-                    reciter: {
-                      name: reciters[reciterId].reciter_name,
-                      image: reciters[reciterId].reciter_image,
-                    },
-                  }}
-                />
+                <Content />
               </div>
               <div className={styles.audio}>
-                <Audio
-                  playing={playing}
-                  setPlaying={setPlaying}
-                  chapterIndex={chapterIndex}
-                  setChapterIndex={setChapterIndex}
-                  src={src}
-                />
+                <Audio />
               </div>
             </IonContent>
           </div>

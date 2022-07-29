@@ -1,8 +1,6 @@
-import styles from "./Audio.module.css";
 import { useState, useEffect, useRef } from "react";
-import Visualizer from "./VisualizerWave";
 import { IonIcon } from "@ionic/react";
-
+import classNames from "classnames";
 import {
   play as playIcon,
   pause as pauseIcon,
@@ -10,40 +8,68 @@ import {
   playSkipBack as playPreviousIcon,
   ellipsisVertical as vertIcon,
 } from "ionicons/icons";
-
-import { PlayerStore } from "../../store";
-import { setPlaybackRate } from "../../store";
-
-const Player = ({
-  playing,
+import {
+  PlayerStore,
+  setChapter,
+  setSrc,
   setPlaying,
-  chapterIndex,
-  setChapterIndex,
-  src,
-}) => {
+  setPlaybackRate,
+} from "../../store";
+import Visualizer from "./VisualizerWave";
+import Loader from "../utils/Loader";
+import styles from "./Audio.module.css";
+
+const Player = () => {
   const audio = useRef(null);
   const [dur, setDur] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
 
+  const src = PlayerStore.useState((s) => s.src);
+  const playing = PlayerStore.useState((s) => s.playing);
   const playbackRate = PlayerStore.useState((s) => s.playbackRate);
+  const chapterIndex = PlayerStore.useState((s) => s.chapterIndex);
+  const reciterId = PlayerStore.useState((s) => s.reciterId);
+
+  // to prevent the play request was interrupted by a call to pause error
+  const [loading, setLoading] = useState(false);
+
+  const playAudio = () => {
+    if (loading) return;
+    setLoading(true);
+    const playPromise = audio.current.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        setLoading(false);
+        setPlaying(true);
+      });
+    }
+  };
+
+  const pauseAudio = () => {
+    if (loading) return;
+    audio.current.pause();
+  };
 
   const formatDur = (s) => {
     return (s - (s %= 60)) / 60 + (s < 10 ? ":0" : ":") + ~~s;
   };
 
   useEffect(() => {
+    setSrc(reciterId, chapterIndex);
+  }, [reciterId, chapterIndex]);
+
+  useEffect(() => {
     if (playing) {
-      audio.current.play();
+      playAudio();
       audio.current.playbackRate = playbackRate;
     } else {
-      audio.current.pause();
+      pauseAudio();
     }
-  }, [src, playing, playbackRate]);
+    // console.log(chapterIndex, playing, src);
+  }, [playing, src, playbackRate]);
 
   const play = () => {
     setPlaying(true);
-    // setEnded(false);
-    // setInit(true);
   };
 
   const pause = () => {
@@ -51,27 +77,22 @@ const Player = ({
   };
 
   const playPrevious = () => {
+    if (loading) return;
     const index = chapterIndex - 1;
-    if (index < 0) {
-      // pause();
-      return;
-    }
-    setChapterIndex(index);
+    if (index < 0) return;
+    setChapter(index);
+    setSrc(reciterId, index);
     setPlaying(true);
   };
 
   const playNext = () => {
+    if (loading) return;
     const index = chapterIndex + 1;
     if (index >= 114) return;
-    setChapterIndex(index);
+    setChapter(index);
+    setSrc(reciterId, index);
     setPlaying(true);
   };
-
-  // const handleProgress = (e) => {
-  //   let compute = (e.target.value * dur) / 100;
-  //   setCurrentTime(compute);
-  //   audio.current.currentTime = compute;
-  // };
 
   const handleProgress = (progress) => {
     let compute = (progress * dur) / 100;
@@ -83,12 +104,17 @@ const Player = ({
     const index = chapterIndex + 1;
     if (index >= 114) {
       setPlaying(false);
-      // setEnded(true);
-      setChapterIndex(0);
+      setChapter(0);
+      setSrc(reciterId, 0);
       return;
     }
-    setChapterIndex(index);
+    setChapter(index);
+    setSrc(reciterId, index);
     setPlaying(true);
+  };
+
+  const setPlaybackSpeed = (rate) => {
+    setPlaybackRate(rate);
   };
 
   const controllerRef = useRef(null);
@@ -99,16 +125,15 @@ const Player = ({
     setButtonsOpen(open);
   };
 
-  const setPlaybackSpeed = (rate) => {
-    // audio.current.playbackRate = rate;
-    setPlaybackRate(rate);
-  };
-
   useEffect(() => {
-    document.body.addEventListener("click", (e) => {
-      if (e.target == controllerRef.current) return;
+    const handleOpen = (e) => {
+      if (e.target === controllerRef.current) return;
       setButtonsOpen(false);
-    });
+    };
+    document.body.addEventListener("click", handleOpen);
+    return () => {
+      document.body.removeEventListener("click", handleOpen);
+    };
   }, []);
 
   return (
@@ -128,11 +153,15 @@ const Player = ({
             className={styles.ctrl_btn}
             onClick={(e) => handleButtonModal(e, true)}
           >
-            <IonIcon icon={vertIcon} className={styles.ctrl_icon} />
+            <IonIcon
+              icon={vertIcon}
+              slot="start"
+              className={styles.ctrl_icon}
+            />
           </div>
 
           <div
-            className={`${styles.modal} ${buttonsOpen ? styles.open : ""}`}
+            className={classNames(styles.modal, buttonsOpen ? styles.open : "")}
             onClick={(e) => handleButtonModal(e, false)}
           >
             <div className={styles.playback}>
@@ -202,24 +231,40 @@ const Player = ({
       </audio>
 
       <div className={styles.controls}>
-        <div className={`${styles.btn} ${styles.small}`} onClick={playPrevious}>
-          <IonIcon icon={playPreviousIcon} className={styles.icon} />
+        <div
+          className={classNames(styles.btn, styles.small)}
+          onClick={playPrevious}
+        >
+          <IonIcon
+            icon={playPreviousIcon}
+            slot="start"
+            className={styles.icon}
+          />
         </div>
 
         {playing && (
-          <div className={`${styles.btn} ${styles.large}`} onClick={pause}>
-            <IonIcon icon={pauseIcon} className={styles.icon} />
+          <div className={classNames(styles.btn, styles.large)} onClick={pause}>
+            {loading && <Loader />}
+            {!loading && (
+              <IonIcon icon={pauseIcon} slot="start" className={styles.icon} />
+            )}
           </div>
         )}
 
         {!playing && (
-          <div className={`${styles.btn} ${styles.large}`} onClick={play}>
-            <IonIcon icon={playIcon} className={styles.icon} />
+          <div className={classNames(styles.btn, styles.large)} onClick={play}>
+            {loading && <Loader />}
+            {!loading && (
+              <IonIcon icon={playIcon} slot="start" className={styles.icon} />
+            )}
           </div>
         )}
 
-        <div className={`${styles.btn} ${styles.small}`} onClick={playNext}>
-          <IonIcon icon={playNextIcon} className={styles.icon} />
+        <div
+          className={classNames(styles.btn, styles.small)}
+          onClick={playNext}
+        >
+          <IonIcon icon={playNextIcon} slot="start" className={styles.icon} />
         </div>
       </div>
     </div>

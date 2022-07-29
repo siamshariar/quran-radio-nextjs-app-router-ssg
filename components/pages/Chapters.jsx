@@ -1,53 +1,17 @@
-import styles from "./Chapters.module.css";
-
-// import { chapters } from "../../data/chapters";
-// import { reciters } from "../../data/reciters";
-// import { recitations } from "../../data/recitations";
-import { useEffect, useState } from "react";
-import ChapterCard from "../cards/Chapter";
-
-import { PlayerStore } from "../../store";
-import { setPlaying, setChapterIndex } from "../../store";
-
 import {
   IonPage,
   IonHeader,
-  IonFooter,
-  IonTitle,
-  IonToolbar,
-  IonButtons,
   IonButton,
   IonIcon,
   IonContent,
-  IonModal,
-  IonMenu,
-  IonList,
-  IonItem,
 } from "@ionic/react";
-
-import { close, chevronBack } from "ionicons/icons";
+import { chevronBack } from "ionicons/icons";
+import { PlayerStore } from "../../store";
+import ChapterCard from "../cards/Chapter";
+import styles from "./Chapters.module.css";
 
 const ChapterList = () => {
-  // const [chapterModalOpen, setChapterModalOpen] = useState(false);
-  // const [reciterModalOpen, setReciterModalOpen] = useState(false);
-
   const chapters = PlayerStore.useState((s) => s.chapters);
-  const recitations = PlayerStore.useState((s) => s.recitations);
-  const chapterIndex = PlayerStore.useState((s) => s.chapterIndex);
-  const reciterId = PlayerStore.useState((s) => s.reciterId);
-  const playing = PlayerStore.useState((s) => s.playing);
-
-  // audio player
-  // const [chapterIndex, setChapterIndex] = useState(0);
-  // const [reciterId, setReciterId] = useState(7);
-  const [src, setSrc] = useState(`${recitations[reciterId][chapterIndex]}`);
-  // const [playing, setPlaying] = useState(false);
-  // const [ended, setEnded] = useState(false);
-  // const [init, setInit] = useState(false);
-
-  useEffect(() => {
-    setSrc(`${recitations[reciterId][chapterIndex]}`);
-  }, [reciterId, chapterIndex]);
 
   return (
     <IonPage style={{ paddingBottom: "132px" }}>
@@ -57,7 +21,7 @@ const ChapterList = () => {
           fill="clear"
           routerLink="/"
         >
-          <IonIcon icon={chevronBack} className={styles.icon} />
+          <IonIcon icon={chevronBack} slot="start" className={styles.icon} />
         </IonButton>
         <span>Chapters List</span>
       </IonHeader>
@@ -65,14 +29,7 @@ const ChapterList = () => {
         {chapters &&
           chapters.length &&
           chapters.map((chapter) => (
-            <ChapterCard
-              key={chapter.chapterNo}
-              chapter={chapter}
-              playing={playing}
-              setPlaying={setPlaying}
-              chapterIndex={chapterIndex}
-              setChapterIndex={setChapterIndex}
-            />
+            <ChapterCard key={chapter.chapterNo} chapter={chapter} />
           ))}
       </IonContent>
     </IonPage>

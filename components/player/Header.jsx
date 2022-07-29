@@ -1,5 +1,3 @@
-import styles from "./Header.module.css";
-
 import {
   IonToolbar,
   IonTitle,
@@ -8,8 +6,8 @@ import {
   IonIcon,
   IonMenuButton,
 } from "@ionic/react";
-
 import { menu, settings } from "ionicons/icons";
+import styles from "./Header.module.css";
 
 const Header = () => {
   return (
@@ -24,7 +22,7 @@ const Header = () => {
         </div>
 
         <div className={styles.logo}>
-          <div className={styles.title}>f. radio</div>
+          <div className={styles.title}>QR</div>
         </div>
 
         <div className={styles.right}>

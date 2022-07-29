@@ -1,8 +1,8 @@
-# Furqan Radio
+# Quran Radio
 
 ![Screenshot](./screenshot.png)
 
-This is the client-end repo of the furqan-radio app powered by [Deeni Info Tech](http://deeniinfotech.com/)
+This is the client-end repo of the quran-radio app powered by [Deeni Info Tech](http://deeniinfotech.com/)
 
 ## Features
 
@@ -26,7 +26,7 @@ It requires [Node.js](https://nodejs.org/) to run.
 Install the dependencies and devDependencies and start the server.
 
 ```sh
-cd furqan-radio
+cd quran-radio
 npm i
 npm run dev
 ```

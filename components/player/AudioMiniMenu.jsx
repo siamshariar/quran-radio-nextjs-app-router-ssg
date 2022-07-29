@@ -1,7 +1,7 @@
-import classNames from "classnames";
-import styles from "./AudioMiniMenu.module.css";
-import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import classNames from "classnames";
+
 import {
   IonContent,
   IonIcon,
@@ -21,6 +21,8 @@ import {
   libraryOutline,
 } from "../../icons";
 
+import styles from "./AudioMiniMenu.module.css";
+
 const pages = [
   {
     title: "Home",
@@ -29,22 +31,22 @@ const pages = [
     url: "/",
   },
   {
-    title: "Explore",
+    title: "Chapters",
     icon: explore,
     iconOutline: exploreOutline,
-    url: "/explore",
+    url: "/chapters",
   },
   {
-    title: "Subscriptions",
+    title: "Reciters",
     icon: subscription,
     iconOutline: subscriptionOutline,
-    url: "/subscriptions",
+    url: "/reciters",
   },
   {
-    title: "Library",
+    title: "Settings",
     icon: library,
     iconOutline: libraryOutline,
-    url: "/library",
+    url: "/settings",
   },
 ];
 

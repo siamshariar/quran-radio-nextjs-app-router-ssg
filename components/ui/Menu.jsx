@@ -16,7 +16,13 @@ import {
 
 const Menu = () => {
   return (
-    <IonMenu side="start" contentId="main" type="overlay" swipeGesture>
+    <IonMenu
+      className={styles.wrapper}
+      side="start"
+      contentId="main"
+      type="overlay"
+      swipeGesture
+    >
       <IonHeader className="ion-padding">
         <IonToolbar>
           <IonTitle>Menu</IonTitle>

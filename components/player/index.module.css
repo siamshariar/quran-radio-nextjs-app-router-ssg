@@ -86,6 +86,16 @@
   /* transition: unset; */
   z-index: 9999;
 }
+.panel_container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: var(--ion-background-color);
+  transform: translateY(-100%);
+}
 .audio_mini {
   position: absolute;
   top: 0;

@@ -1,6 +1,6 @@
 {
-  "appId": "com.naztech.app",
-  "appName": "furqan-radio",
+  "appId": "com.quran.radio",
+  "appName": "quran-radio",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "out",

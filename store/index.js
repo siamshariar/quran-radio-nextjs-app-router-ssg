@@ -9,21 +9,15 @@ export const PlayerStore = new Store({
   chapters,
   reciters,
   recitations,
-  chapterIndex: 0,
-  reciterId: 7,
+  src: null,
   playing: false,
   playbackRate: 1,
-  // safeAreaTop: 0,
-  // safeAreaBottom: 0,
-  // menuOpen: false,
-  // notificationsOpen: false,
-  // currentPage: null,
-  // homeItems,
-  // lists,
-  // notifications,
-  // settings: {
-  //   enableNotifications: true,
-  // },
+  chapterIndex: 0,
+  chapterName: chapters[0].name,
+  chapterMeaning: chapters[0].meaning,
+  reciterId: 7,
+  reciterName: reciters[7].reciter_name,
+  reciterImage: reciters[7].reciter_image,
 });
 
 export const setPlayerOpen = (open) => {
@@ -44,15 +38,25 @@ export const setPlaying = (isPlaying) => {
   });
 };
 
-export const setChapterIndex = (index) => {
+export const setChapter = (index) => {
   PlayerStore.update((s) => {
     s.chapterIndex = index;
+    s.chapterName = chapters[index].name;
+    s.chapterMeaning = chapters[index].meaning;
   });
 };
 
-export const setReciterId = (id) => {
+export const setSrc = (reciterId, chapterIndex) => {
+  PlayerStore.update((s) => {
+    s.src = recitations[reciterId][chapterIndex];
+  });
+};
+
+export const setReciter = (id) => {
   PlayerStore.update((s) => {
     s.reciterId = id;
+    s.reciterName = reciters[id].reciter_name;
+    s.reciterImage = reciters[id].reciter_image;
   });
 };
 

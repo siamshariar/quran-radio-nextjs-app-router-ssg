@@ -1,17 +1,20 @@
+import classNames from "classnames";
+import { PlayerStore, setReciter } from "../../store";
 import styles from "./Reciter.module.css";
 
-const Reciter = ({ reciter, reciterId, setReciterId }) => {
+const Reciter = ({ reciter }) => {
+  const reciterId = PlayerStore.useState((s) => s.reciterId);
+
   const handleReciterChange = () => {
-    setReciterId(reciter.id);
+    setReciter(reciter.id);
   };
 
   return (
     <div
-      className={
-        reciterId === reciter.id
-          ? `${styles.card} ${styles.active}`
-          : styles.card
-      }
+      className={classNames(
+        styles.card,
+        reciterId === reciter.id ? styles.active : ""
+      )}
     >
       <div className={styles.inner} onClick={() => handleReciterChange()}>
         <div className={styles.left}>
