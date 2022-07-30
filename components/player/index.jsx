@@ -19,6 +19,15 @@ const Player = () => {
   const [currentY, setCurrentY] = useState(0);
   const [tempCurrentY, setTempCurrentY] = useState(0);
 
+  const isPlayerOpen = PlayerStore.useState((s) => s.open);
+  const isPlayerMini = PlayerStore.useState((s) => s.mini);
+
+  const panelRef = useRef(null);
+  const headerRef = useRef(null);
+  const containerRef = useRef(null);
+  const backdropRef = useRef(null);
+  const miniMenuRef = useRef(null);
+
   const location = useLocation();
   const [path, setPath] = useState("/");
 
@@ -32,22 +41,27 @@ const Player = () => {
     // setMostTranslate(panelRef.current.offsetHeight - 72);
     setPanelHeight(window.innerHeight);
     setMostTranslate(window.innerHeight - 72);
-    setTranslate(path === "/" ? 0 : window.innerHeight - 72);
+    setTranslate(
+      isPlayerMini
+        ? window.innerHeight - 72
+        : path === "/"
+        ? 0
+        : window.innerHeight - 72
+    );
   }, [path]);
 
   useEffect(() => {
-    // window.addEventListener("load", () => {
-    // });
-  }, []);
-
-  const isPlayerOpen = PlayerStore.useState((s) => s.open);
-  const isPlayerMini = PlayerStore.useState((s) => s.mini);
-
-  const panelRef = useRef(null);
-  const headerRef = useRef(null);
-  const containerRef = useRef(null);
-  const backdropRef = useRef(null);
-  const miniMenuRef = useRef(null);
+    const handleResize = () => {
+      setWindowHeight(window.innerHeight);
+      setPanelHeight(window.innerHeight);
+      setMostTranslate(window.innerHeight - 72);
+      setTranslate(isPlayerMini ? window.innerHeight - 72 : 0);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [isPlayerMini]);
 
   const handleTouchStart = (event) => {
     // if (isPlayerMini) {
