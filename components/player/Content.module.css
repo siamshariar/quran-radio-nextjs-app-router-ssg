@@ -3,17 +3,42 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin: 52px auto 70px auto;
+  margin: 0 auto 70px auto;
+  position: relative;
+}
+.bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 100px;
+  background-image: url(/img/bg/kaaba.jpg);
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  border-radius: 0 0 50% 50%;
+  transform: scale(1.5);
+  z-index: -1;
+  overflow: hidden;
+}
+.bg::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(94, 206, 221, 0.6);
 }
 .chapter {
-  margin-bottom: 0;
+  padding-top: 47px;
   text-align: center;
 }
 .chapter h2 {
   font-family: "Montserrat";
   font-size: 15px;
   font-weight: 600;
-  color: #424168;
+  color: #000;
 }
 .reciter {
   font-family: "Montserrat";
@@ -21,23 +46,45 @@
   font-weight: 400;
   margin-bottom: 62px;
   margin-top: 6px;
-  color: #8f93aa;
+  color: #000;
 }
 .reciter span {
 }
 
 .image {
-  width: 204px;
-  height: 204px;
-  border: 12px solid #e9f1f9;
-  border-radius: 50%;
-  overflow: hidden;
-  box-shadow: -8px -8px 22px 0px #fff9, -6px -6px 6px 0px #fff9,
-    8px 8px 20px #0001, 5px 5px 13px 2px #c2d0e7;
+  width: 200px;
+  height: 200px;
+  position: relative;
+  margin-bottom: -20px;
 }
 .image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center center;
+  border-radius: 50%;
+  position: relative;
+  z-index: 9;
+}
+
+.puls1 {
+}
+.puls2 {
+}
+
+@keyframes pulse-black {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.8);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 30px rgba(0, 0, 0, 0);
+  }
+
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
 }

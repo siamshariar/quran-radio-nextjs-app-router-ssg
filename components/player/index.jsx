@@ -8,6 +8,7 @@ import Content from "./Content";
 import Audio from "./Audio";
 import AudioMini from "./AudioMini";
 import AudioMiniMenu from "./AudioMiniMenu";
+import Timer from "./Timer";
 import styles from "./index.module.css";
 
 const Player = () => {
@@ -195,21 +196,18 @@ const Player = () => {
         ></div>
         <div className={styles.panel_content}>
           <div className={styles.wrapper}>
-            <IonContent
-              className={classNames(styles.container, "ion-padding")}
-              fullscreen
-              overscroll={false}
-            >
-              <div className={styles.header}>
-                <Header />
-              </div>
-              <div className={styles.content}>
-                <Content />
-              </div>
-              <div className={styles.audio}>
-                <Audio />
-              </div>
-            </IonContent>
+            <div className={styles.header}>
+              <Header />
+            </div>
+            <div className={styles.content}>
+              <Content />
+            </div>
+            <div className={styles.timer}>
+              <Timer />
+            </div>
+            <div className={styles.audio}>
+              <Audio />
+            </div>
           </div>
         </div>
       </div>

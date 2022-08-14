@@ -15,7 +15,7 @@ import {
   setPlaying,
   setPlaybackRate,
 } from "../../store";
-import Visualizer from "./VisualizerWave";
+import Visualizer from "./VisualizerRange";
 import Loader from "../utils/Loader";
 import styles from "./Audio.module.css";
 

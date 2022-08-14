@@ -1,0 +1,12 @@
+.wrapper {
+  width: 100%;
+  padding: 30px 15px;
+}
+.content {
+  display: flex;
+  justify-content: space-between;
+}
+.icon {
+  font-size: 22px;
+  cursor: pointer;
+}

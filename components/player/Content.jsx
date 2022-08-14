@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
 import { PlayerStore } from "../../store";
+import Pulse from "./PulseSecondary";
 import styles from "./Content.module.css";
 
 const Content = () => {
@@ -10,23 +10,20 @@ const Content = () => {
 
   return (
     <div className={styles.wrapper}>
+      <div className={styles.bg}></div>
       <div className={styles.chapter}>
         <h2>
-          <Link to="/chapters">
-            {chapterName} ({chapterMeaning})
-          </Link>
+          {chapterName} ({chapterMeaning})
         </h2>
       </div>
 
       <div className={styles.reciter}>
-        <span>
-          <Link to="/reciters">{reciterName}</Link>
-        </span>
+        <span>{reciterName}</span>
       </div>
 
       <div className={styles.image}>
-        {/* <img src={`/img/reciters/${reciterImage}`} alt="reciter" /> */}
-        <img src={`/img/bg.png`} alt="reciter" />
+        <img src={`/img/reciters/${reciterImage}`} alt="reciter" />
+        <Pulse />
       </div>
     </div>
   );
