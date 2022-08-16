@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { IonContent } from "@ionic/react";
 import classNames from "classnames";
 import { PlayerStore, setPlayerOpen, setPlayerMini } from "../../store";
 import Header from "./Header";
@@ -184,6 +183,7 @@ const Player = () => {
         >
           <AudioMini />
         </div>
+
         <div className={styles.mini_menu} ref={miniMenuRef}>
           <AudioMiniMenu />
         </div>
@@ -194,6 +194,7 @@ const Player = () => {
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         ></div>
+
         <div className={styles.panel_content}>
           <div className={styles.wrapper}>
             <div className={styles.header}>
@@ -207,6 +208,9 @@ const Player = () => {
             </div>
             <div className={styles.audio}>
               <Audio />
+            </div>
+            <div className={styles.menu}>
+              <AudioMiniMenu />
             </div>
           </div>
         </div>

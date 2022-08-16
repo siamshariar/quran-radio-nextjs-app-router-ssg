@@ -1,7 +1,11 @@
 import { IonContent, IonIcon } from "@ionic/react";
 import classNames from "classnames";
-import { PlayerStore, setPlaying } from "../../store";
-import { play as playIcon, pause as pauseIcon } from "ionicons/icons";
+import { PlayerStore, setPlaying, setPlayerMini } from "../../store";
+import {
+  play as playIcon,
+  pause as pauseIcon,
+  chevronUpOutline as upIcon,
+} from "ionicons/icons";
 import styles from "./AudioMini.module.css";
 
 const AudioMini = () => {
@@ -18,7 +22,13 @@ const AudioMini = () => {
   };
 
   return (
-    <IonContent className={classNames(styles.content, "ion-padding")}>
+    <div className={styles.content}>
+      <IonIcon
+        icon={upIcon}
+        slot="start"
+        className={styles.up_icon}
+        // onClick={() => setPlayerMini(false)}
+      />
       <div className={styles.wrapper}>
         <div className={styles.left}>
           <img src={`/img/reciters/${reciterImage}`} alt="" />
@@ -38,7 +48,7 @@ const AudioMini = () => {
           )}
         </div>
       </div>
-    </IonContent>
+    </div>
   );
 };
 

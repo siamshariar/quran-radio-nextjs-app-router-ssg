@@ -7,6 +7,7 @@ const Content = () => {
   const chapterMeaning = PlayerStore.useState((s) => s.chapterMeaning);
   const reciterName = PlayerStore.useState((s) => s.reciterName);
   const reciterImage = PlayerStore.useState((s) => s.reciterImage);
+  const playing = PlayerStore.useState((s) => s.playing);
 
   return (
     <div className={styles.wrapper}>
@@ -23,7 +24,7 @@ const Content = () => {
 
       <div className={styles.image}>
         <img src={`/img/reciters/${reciterImage}`} alt="reciter" />
-        <Pulse />
+        {playing && <Pulse />}
       </div>
     </div>
   );

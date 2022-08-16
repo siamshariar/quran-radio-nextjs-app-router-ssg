@@ -15,10 +15,9 @@ const Header = () => {
       <div className={styles.bg}></div>
       <div className={styles.content}>
         <div className={styles.left}>
-          <div className={styles.btn}>
-            {/* <IonIcon className={styles.icon} slot="start" icon={menu} /> */}
+          {/* <div className={styles.btn}>
             <IonMenuButton className={styles.menu_btn} icon={menu} />
-          </div>
+          </div> */}
         </div>
 
         <div className={styles.logo}>
@@ -26,9 +25,9 @@ const Header = () => {
         </div>
 
         <div className={styles.right}>
-          <div className={styles.btn}>
+          {/* <div className={styles.btn}>
             <IonIcon className={styles.icon} slot="start" icon={settings} />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

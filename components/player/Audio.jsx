@@ -7,6 +7,8 @@ import {
   playSkipForward as playNextIcon,
   playSkipBack as playPreviousIcon,
   ellipsisVertical as vertIcon,
+  shuffleOutline as shuffleIcon,
+  repeatOutline as repeatIcon,
 } from "ionicons/icons";
 import {
   PlayerStore,
@@ -233,6 +235,13 @@ const Player = () => {
       <div className={styles.controls}>
         <div
           className={classNames(styles.btn, styles.small)}
+          // onClick={playPrevious}
+        >
+          <IonIcon icon={shuffleIcon} slot="start" className={styles.icon} />
+        </div>
+
+        <div
+          className={classNames(styles.btn, styles.small)}
           onClick={playPrevious}
         >
           <IonIcon
@@ -265,6 +274,13 @@ const Player = () => {
           onClick={playNext}
         >
           <IonIcon icon={playNextIcon} slot="start" className={styles.icon} />
+        </div>
+
+        <div
+          className={classNames(styles.btn, styles.small)}
+          // onClick={playNext}
+        >
+          <IonIcon icon={repeatIcon} slot="start" className={styles.icon} />
         </div>
       </div>
     </div>

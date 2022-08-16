@@ -33,7 +33,9 @@ const ModalSetTimer = ({ open, handler }) => {
     var radians = Math.atan2(mouse.x - center.x, mouse.y - center.y);
     var currentMouseDegree = radians * (180 / Math.PI) * -1;
     currentDegree = currentMouseDegree - startDragDegree + lastDegree;
-    pw.style.transform = "rotate(" + currentDegree + "deg)";
+    // currentDegree;
+    console.log(currentMouseDegree);
+    pw.style.transform = "rotate(" + currentMouseDegree + "deg)";
 
     // $(pw).css({
     //   "-moz-transform": "rotate(" + currentDegree + "deg)",
@@ -44,8 +46,8 @@ const ModalSetTimer = ({ open, handler }) => {
   }
 
   useEffect(() => {
-    hourRef.current.addEventListener("touchstart", (e) => {
-      e.preventDefault();
+    document.body.addEventListener("touchstart", (e) => {
+      // e.preventDefault();
       var mouseInitial = { x: e.pageX, y: e.pageY };
       var center = findCenter(hourRef.current);
       var radians = Math.atan2(
@@ -57,35 +59,57 @@ const ModalSetTimer = ({ open, handler }) => {
 
     document.body.addEventListener("touchmove", (e2) => {
       rotateOnMouse(e2, hourRef.current);
-      console.log("moving");
+      // console.log("moving");
     });
 
     document.body.addEventListener("touchend", closeDragElement);
   }, []);
 
   return (
-    <>
-      <div
-        className={classNames(styles.modal, open ? styles.open : "")}
-        ref={modalRef}
-      >
-        <div className={styles.backdrop} onClick={() => handler(false)}></div>
-        <div className={styles.content}>
-          <div className={styles.top}>
-            <div className={styles.title}>Timer</div>
-          </div>
-          <div className={styles.timer}>
-            <div className={styles.hour} ref={hourRef}>
-              <div className={styles.h_bullet}></div>
-            </div>
-
-            <div className={styles.minute}>
-              <div className={styles.m_bullet}></div>
-            </div>
+    <div
+      className={classNames(styles.modal, open ? styles.open : "")}
+      ref={modalRef}
+    >
+      <div className={styles.backdrop} onClick={() => handler(false)}></div>
+      <div className={styles.content}>
+        <div className={styles.top}>
+          <div className={styles.title}>Timer</div>
+          <div className={styles.subtitle}>Stop After</div>
+          <div className={styles.list}>
+            <button>hour and a half</button>
+            <button>one hour</button>
+            <button>half hour</button>
           </div>
         </div>
+        <div className={styles.timer}>
+          <div className={styles.hour} ref={hourRef}>
+            <div className={styles.h_bullet}></div>
+            <div className={styles.hour12}></div>
+            <div className={styles.hour1}></div>
+            <div className={styles.hour2}></div>
+            <div className={styles.hour3}></div>
+            <div className={styles.hour4}></div>
+            <div className={styles.hour5}></div>
+          </div>
+
+          <div className={styles.minute}>
+            <div className={styles.m_bullet}></div>
+            <div className={styles.h_bullet}></div>
+            <div className={styles.hour12}></div>
+            <div className={styles.hour1}></div>
+            <div className={styles.hour2}></div>
+            <div className={styles.hour3}></div>
+            <div className={styles.hour4}></div>
+            <div className={styles.hour5}></div>
+          </div>
+        </div>
+
+        <div className={styles.bottom}>
+          <button>Cancel</button>
+          <button>Start</button>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 
