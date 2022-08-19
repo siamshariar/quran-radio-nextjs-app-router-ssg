@@ -25,6 +25,9 @@ const Reciters = () => {
         </IonButton>
         <span>Reciters List</span>
       </IonHeader>
+      <div className={styles.search}>
+        <input type="text" name="search" placeholder="Search reciter" />
+      </div>
       <IonContent>
         {reciters &&
           Object.entries(reciters).map(([key, reciter]) => (
