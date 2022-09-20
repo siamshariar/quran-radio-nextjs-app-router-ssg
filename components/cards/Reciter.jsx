@@ -1,6 +1,11 @@
 import { IonRouterLink } from "@ionic/react";
 import classNames from "classnames";
-import { PlayerStore, setReciter, setPlayerMini } from "../../store";
+import {
+  PlayerStore,
+  setReciter,
+  setPlayerMini,
+  setChapter,
+} from "../../store";
 import styles from "./Reciter.module.css";
 
 const Reciter = ({ reciter }) => {
@@ -8,7 +13,10 @@ const Reciter = ({ reciter }) => {
 
   const handleReciterChange = () => {
     setPlayerMini(false);
+    if (reciterId === reciter.reciter_id) return;
+    const randomChapterIndex = Math.floor(Math.random() * 114);
     setReciter(reciter.reciter_id);
+    setChapter(randomChapterIndex);
   };
 
   return (

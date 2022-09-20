@@ -14,6 +14,7 @@ import Audio from "./Audio";
 import AudioMini from "./AudioMini";
 import AudioMiniMenu from "./AudioMiniMenu";
 import Timer from "./Timer";
+import AudioTag from "./AudioTag";
 import styles from "./index.module.css";
 
 const Player = () => {
@@ -48,10 +49,10 @@ const Player = () => {
     setPanelHeight(window.innerHeight);
     setMostTranslate(window.innerHeight - 72);
     setTranslate(
-      isPlayerMini
+      path === "/"
+        ? 2 * window.innerHeight
+        : isPlayerMini
         ? window.innerHeight - 72
-        : path === "/"
-        ? 0
         : window.innerHeight - 72
     );
   }, [path]);
@@ -187,9 +188,9 @@ const Player = () => {
       <div className={classNames(styles.dialog, dialogOpen ? styles.open : "")}>
         <div className={styles.dialog_content}>
           <div className={styles.dialog_text}>Start listening</div>
-          <button className={styles.dialog_btn} onClick={() => handleDialog()}>
-            Start
-          </button>
+          <div className={styles.dialog_btn}>
+            <button onClick={() => handleDialog()}>Start</button>
+          </div>
         </div>
       </div>
 
@@ -236,6 +237,8 @@ const Player = () => {
           </div>
         </div>
       </div>
+
+      <AudioTag />
     </>
   );
 };

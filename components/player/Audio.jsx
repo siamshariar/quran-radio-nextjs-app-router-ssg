@@ -16,67 +16,29 @@ import {
   setSrc,
   setPlaying,
   setPlaybackRate,
-  setReciter,
+  setCurrentTime,
+  setIsProgress,
 } from "../../store";
 import Visualizer from "./VisualizerRange";
 import Loader from "../utils/Loader";
 import styles from "./Audio.module.css";
 
 const Player = () => {
-  const audio = useRef(null);
-  const [dur, setDur] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
+  // const [dur, setDur] = useState(0);
+  // const [currentTime, setCurrentTime] = useState(0);
 
-  const src = PlayerStore.useState((s) => s.src);
+  // const src = PlayerStore.useState((s) => s.src);
   const playing = PlayerStore.useState((s) => s.playing);
   const playbackRate = PlayerStore.useState((s) => s.playbackRate);
   const chapterIndex = PlayerStore.useState((s) => s.chapterIndex);
   const reciterId = PlayerStore.useState((s) => s.reciterId);
-
-  // to prevent the play request was interrupted by a call to pause error
-  const [loading, setLoading] = useState(false);
-
-  const playAudio = () => {
-    if (loading) return;
-    setLoading(true);
-    const playPromise = audio.current.play();
-    if (playPromise !== undefined) {
-      playPromise.then(() => {
-        setLoading(false);
-        setPlaying(true);
-      });
-    }
-  };
-
-  const pauseAudio = () => {
-    if (loading) return;
-    audio.current.pause();
-  };
+  const loading = PlayerStore.useState((s) => s.loading);
+  const currentTime = PlayerStore.useState((s) => s.currentTime);
+  const dur = PlayerStore.useState((s) => s.dur);
 
   const formatDur = (s) => {
     return (s - (s %= 60)) / 60 + (s < 10 ? ":0" : ":") + ~~s;
   };
-
-  useEffect(() => {
-    const randomChapterIndex = Math.floor(Math.random() * 114);
-    const randomReciterId = Math.floor(Math.random() * 8);
-    setReciter(randomReciterId);
-    setChapter(randomChapterIndex);
-  }, []);
-
-  useEffect(() => {
-    setSrc(reciterId, chapterIndex);
-  }, [reciterId, chapterIndex]);
-
-  useEffect(() => {
-    if (playing) {
-      playAudio();
-      audio.current.playbackRate = playbackRate;
-    } else {
-      pauseAudio();
-    }
-    // console.log(chapterIndex, playing, src);
-  }, [playing, src, playbackRate]);
 
   const play = () => {
     setPlaying(true);
@@ -105,22 +67,13 @@ const Player = () => {
   };
 
   const handleProgress = (progress) => {
+    setIsProgress(false);
     let compute = (progress * dur) / 100;
     setCurrentTime(compute);
-    audio.current.currentTime = compute;
-  };
-
-  const handleEnd = () => {
-    const index = chapterIndex + 1;
-    if (index >= 114) {
-      setPlaying(false);
-      setChapter(0);
-      setSrc(reciterId, 0);
-      return;
-    }
-    setChapter(index);
-    setSrc(reciterId, index);
-    setPlaying(true);
+    setTimeout(() => {
+      setIsProgress(true);
+    }, 1);
+    // audio.current.currentTime = compute;
   };
 
   const setPlaybackSpeed = (rate) => {
@@ -227,18 +180,6 @@ const Player = () => {
           </div>
         </div>
       </div>
-
-      <audio
-        ref={audio}
-        className={styles.audio}
-        controls={false}
-        src={src}
-        onEnded={handleEnd}
-        onTimeUpdate={(e) => setCurrentTime(e.target.currentTime)}
-        onCanPlay={(e) => setDur(e.target.duration)}
-      >
-        {/* <source src={src} type="audio/mpeg" /> */}
-      </audio>
 
       <div className={styles.controls}>
         <div

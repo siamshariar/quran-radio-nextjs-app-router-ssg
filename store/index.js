@@ -19,6 +19,10 @@ export const PlayerStore = new Store({
   reciterSlug: "mishary-rashid-alafasy",
   reciterName: reciters[7].reciter_name,
   reciterImage: reciters[7].reciter_image,
+  loading: false,
+  currentTime: 0,
+  dur: 0,
+  isProgress: false,
 });
 
 export const setPlayerOpen = (open) => {
@@ -68,5 +72,29 @@ export const setReciter = (id) => {
 export const setPlaybackRate = (rate) => {
   PlayerStore.update((s) => {
     s.playbackRate = rate;
+  });
+};
+
+export const setLoading = (isLoading) => {
+  PlayerStore.update((s) => {
+    s.loading = isLoading;
+  });
+};
+
+export const setCurrentTime = (currentTime) => {
+  PlayerStore.update((s) => {
+    s.currentTime = currentTime;
+  });
+};
+
+export const setDur = (dur) => {
+  PlayerStore.update((s) => {
+    s.dur = dur;
+  });
+};
+
+export const setIsProgress = (isProgress) => {
+  PlayerStore.update((s) => {
+    s.isProgress = isProgress;
   });
 };
