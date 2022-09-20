@@ -27,7 +27,8 @@ const App = () => {
         <Player />
         <IonRouterOutlet id="main" style={{ zIndex: "9" }}>
           <Route path="/" exact render={() => <Home />} />
-          <Route path="/chapters" exact render={() => <Chapters />} />
+          {/* <Route path="/reciters/:slug" exact render={() => <Chapters />} /> */}
+          <Route path="/reciters/:slug" exact component={Chapters} />
           <Route path="/reciters" exact render={() => <Reciters />} />
         </IonRouterOutlet>
       </IonReactRouter>

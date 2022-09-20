@@ -10,6 +10,8 @@ import {
   IonList,
 } from "@ionic/react";
 
+import { PlayerStore } from "../../store";
+
 import {
   home,
   homeOutline,
@@ -31,10 +33,11 @@ const pages = [
     url: "/",
   },
   {
+    type: "chapter",
     title: "Chapters",
     icon: explore,
     iconOutline: exploreOutline,
-    url: "/chapters",
+    url: "/reciters",
   },
   {
     title: "Reciters",
@@ -58,13 +61,17 @@ const AudioMiniMenu = () => {
     setPath(location.pathname);
   }, [location]);
 
+  const reciterSlug = PlayerStore.useState((s) => s.reciterSlug);
+
   return (
     // <IonContent className={classNames(styles.content, "ion-padding")}>
     <div className={classNames(styles.content, styles.wrapper)}>
       <IonList className={styles.list}>
         {pages.map((p, i) => (
           <IonRouterLink //
-            routerLink={p.url}
+            routerLink={
+              p.type && p.type === "chapter" ? `${p.url}/${reciterSlug}` : p.url
+            }
             key={i}
             className={styles.item}
           >

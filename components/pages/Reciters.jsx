@@ -30,8 +30,8 @@ const Reciters = () => {
       </div>
       <IonContent>
         {reciters &&
-          Object.entries(reciters).map(([key, reciter]) => (
-            <ReciterCard key={key} reciter={reciter} />
+          reciters.map((reciter, index) => (
+            <ReciterCard key={index} reciter={reciter} />
           ))}
       </IonContent>
     </IonPage>

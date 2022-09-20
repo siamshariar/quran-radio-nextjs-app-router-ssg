@@ -19,6 +19,8 @@ import {
   libraryOutline,
 } from "../../icons";
 
+import Player from "../player";
+
 import styles from "./Home.module.css";
 
 const pages = [
@@ -57,41 +59,7 @@ const pages = [
 const Home = () => {
   return (
     <IonPage style={{ paddingBottom: "132px" }}>
-      <IonHeader className={styles.header}>
-        <IonButton
-          className={styles.back} //
-          fill="clear"
-          routerLink="/"
-        >
-          <IonIcon icon={menu} slot="start" className={styles.icon} />
-        </IonButton>
-        <span>Quran Radio</span>
-      </IonHeader>
-      <IonContent className="ion-padding">
-        <div className={styles.content}>
-          <IonList className={styles.list}>
-            {pages.map((p, i) => (
-              <div className={styles.item} key={i}>
-                <IonRouterLink //
-                  routerLink={p.url}
-                  className={styles.item_link}
-                >
-                  <div className={styles.item_inner}>
-                    <div className={styles.item_ctn}>
-                      <IonIcon
-                        icon={p.icon}
-                        slot="start"
-                        className={styles.icon}
-                      />
-                      <IonLabel className={styles.label}>{p.title}</IonLabel>
-                    </div>
-                  </div>
-                </IonRouterLink>
-              </div>
-            ))}
-          </IonList>
-        </div>
-      </IonContent>
+      <Player />
     </IonPage>
   );
 };

@@ -16,6 +16,7 @@ export const PlayerStore = new Store({
   chapterName: chapters[0].name,
   chapterMeaning: chapters[0].meaning,
   reciterId: 7,
+  reciterSlug: "mishary-rashid-alafasy",
   reciterName: reciters[7].reciter_name,
   reciterImage: reciters[7].reciter_image,
 });
@@ -53,10 +54,14 @@ export const setSrc = (reciterId, chapterIndex) => {
 };
 
 export const setReciter = (id) => {
+  const filtered = reciters.filter((reciter) => reciter.reciter_id === id);
+  const reciter = filtered[0];
+
   PlayerStore.update((s) => {
     s.reciterId = id;
-    s.reciterName = reciters[id].reciter_name;
-    s.reciterImage = reciters[id].reciter_image;
+    s.reciterSlug = reciter.reciter_slug;
+    s.reciterName = reciter.reciter_name;
+    s.reciterImage = reciter.reciter_image;
   });
 };
 

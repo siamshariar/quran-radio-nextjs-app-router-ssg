@@ -9,6 +9,7 @@
   line-height: 1.4;
   font-family: "Montserrat";
   font-weight: 500;
+  background-color: #fff;
 }
 .back {
 }
@@ -16,4 +17,33 @@
   color: #444;
   font-size: 16px;
   margin-top: -2px;
+}
+
+.reciter {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 15px;
+}
+.reciter_name {
+  font-weight: 500;
+  color: #444;
+  font-size: 16px;
+  line-height: 20px;
+  font-family: "Montserrat";
+}
+.image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-top: 20px;
+}
+.image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
 }

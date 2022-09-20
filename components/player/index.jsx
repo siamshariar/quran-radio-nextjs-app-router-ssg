@@ -1,7 +1,13 @@
 import { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import classNames from "classnames";
-import { PlayerStore, setPlayerOpen, setPlayerMini } from "../../store";
+import {
+  PlayerStore,
+  setPlayerOpen,
+  setPlayerMini,
+  setPlaying,
+} from "../../store";
+
 import Header from "./Header";
 import Content from "./Content";
 import Audio from "./Audio";
@@ -170,8 +176,23 @@ const Player = () => {
       : (backdropRef.current.style.display = "block");
   }, [isPlayerMini]);
 
+  const [dialogOpen, setDialogOpen] = useState(true);
+  const handleDialog = () => {
+    setDialogOpen(false);
+    setPlaying(true);
+  };
+
   return (
     <>
+      <div className={classNames(styles.dialog, dialogOpen ? styles.open : "")}>
+        <div className={styles.dialog_content}>
+          <div className={styles.dialog_text}>Start listening</div>
+          <button className={styles.dialog_btn} onClick={() => handleDialog()}>
+            Start
+          </button>
+        </div>
+      </div>
+
       <div className={styles.backdrop} ref={backdropRef}></div>
 
       <div className={styles.panel_container} ref={containerRef}>

@@ -16,6 +16,7 @@ import {
   setSrc,
   setPlaying,
   setPlaybackRate,
+  setReciter,
 } from "../../store";
 import Visualizer from "./VisualizerRange";
 import Loader from "../utils/Loader";
@@ -55,6 +56,13 @@ const Player = () => {
   const formatDur = (s) => {
     return (s - (s %= 60)) / 60 + (s < 10 ? ":0" : ":") + ~~s;
   };
+
+  useEffect(() => {
+    const randomChapterIndex = Math.floor(Math.random() * 114);
+    const randomReciterId = Math.floor(Math.random() * 8);
+    setReciter(randomReciterId);
+    setChapter(randomChapterIndex);
+  }, []);
 
   useEffect(() => {
     setSrc(reciterId, chapterIndex);
