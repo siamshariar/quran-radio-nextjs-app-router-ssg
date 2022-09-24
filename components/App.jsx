@@ -11,6 +11,7 @@ import Reciters from "./pages/Reciters";
 import More from "./pages/More";
 import Settings from "./pages/Settings";
 import Favorites from "./pages/Favorites";
+import Recent from "./pages/Recent";
 
 window
   .matchMedia("(prefers-color-scheme: dark)")
@@ -33,6 +34,7 @@ const App = () => {
           <Route path="/more" exact component={More} />
           <Route path="/more/settings" exact component={Settings} />
           <Route path="/more/favorites" exact component={Favorites} />
+          <Route path="/more/recent" exact component={Recent} />
           {/* <Route path="/reciters/:slug" exact render={() => <Chapters />} /> */}
           <Route path="/reciters/:slug" exact component={Chapters} />
           <Route path="/reciters" exact render={() => <Reciters />} />

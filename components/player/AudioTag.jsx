@@ -9,6 +9,7 @@ import {
   setCurrentTime,
   setDur,
 } from "../../store";
+import { useRecentStorage } from "../../hooks/useRecentStorage";
 
 const AudioTag = () => {
   const audio = useRef(null);
@@ -81,6 +82,14 @@ const AudioTag = () => {
       audio.current.currentTime = currentTime;
     }
   }, [isProgress]);
+
+  // add to recently played
+  const { addRecent } = useRecentStorage();
+  useEffect(() => {
+    if (playing) {
+      addRecent(reciterId, chapterIndex);
+    }
+  }, [playing, reciterId, chapterIndex]);
 
   return (
     <audio
