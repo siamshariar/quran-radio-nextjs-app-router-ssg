@@ -1,0 +1,33 @@
+.content {
+  --padding-start: 15px;
+  --padding-end: 15px;
+}
+.separator {
+  background: none;
+  border-top: 1px solid rgba(229, 231, 235, 1);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  padding: 10px 0;
+  display: inline-block;
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  padding-left: 5px;
+}
+.inner .icon {
+  color: #444;
+  font-size: 16px;
+  margin-right: 10px;
+}
+.inner .label {
+  color: #444;
+  font-size: 14px;
+}

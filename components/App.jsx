@@ -8,6 +8,9 @@ import Menu from "./ui/Menu";
 import Home from "./pages/Home";
 import Chapters from "./pages/Chapters";
 import Reciters from "./pages/Reciters";
+import More from "./pages/More";
+import Settings from "./pages/Settings";
+import Favorites from "./pages/Favorites";
 
 window
   .matchMedia("(prefers-color-scheme: dark)")
@@ -27,6 +30,9 @@ const App = () => {
         <Player />
         <IonRouterOutlet id="main" style={{ zIndex: "9" }}>
           <Route path="/" exact render={() => <Home />} />
+          <Route path="/more" exact component={More} />
+          <Route path="/more/settings" exact component={Settings} />
+          <Route path="/more/favorites" exact component={Favorites} />
           {/* <Route path="/reciters/:slug" exact render={() => <Chapters />} /> */}
           <Route path="/reciters/:slug" exact component={Chapters} />
           <Route path="/reciters" exact render={() => <Reciters />} />

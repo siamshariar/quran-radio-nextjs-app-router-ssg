@@ -2,14 +2,9 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import classNames from "classnames";
 
-import {
-  IonContent,
-  IonIcon,
-  IonRouterLink,
-  IonLabel,
-  IonList,
-} from "@ionic/react";
+import { IonIcon, IonRouterLink, IonLabel, IonList } from "@ionic/react";
 
+import { grid, gridOutline } from "ionicons/icons";
 import { PlayerStore } from "../../store";
 
 import {
@@ -46,10 +41,10 @@ const pages = [
     url: "/reciters",
   },
   {
-    title: "Settings",
-    icon: library,
-    iconOutline: libraryOutline,
-    url: "/settings",
+    title: "More",
+    icon: grid,
+    iconOutline: gridOutline,
+    url: "/more",
   },
 ];
 
@@ -77,7 +72,17 @@ const AudioMiniMenu = () => {
           >
             <div className={styles.inner}>
               <IonIcon
-                icon={p.url === path ? p.icon : p.iconOutline}
+                icon={
+                  p.type &&
+                  p.type === "chapter" &&
+                  path === `${p.url}/${reciterSlug}`
+                    ? p.icon
+                    : p.type !== "chapter" && p.url === path
+                    ? p.icon
+                    : p.url === "/more" && path.indexOf("/more") === 0
+                    ? p.icon
+                    : p.iconOutline
+                }
                 slot="start"
                 className={styles.icon}
               />
