@@ -2,3 +2,42 @@
   --padding-start: 15px;
   --padding-end: 15px;
 }
+.list {
+  display: flex;
+  flex-direction: column;
+}
+.item {
+  padding: 10px 0;
+  display: inline-block;
+}
+.inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 5px;
+}
+.left {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.left .icon {
+  color: #444;
+  font-size: 16px;
+  margin-right: 10px;
+}
+.left .label {
+  color: #444;
+  font-size: 14px;
+}
+.right {
+}
+.right .btn {
+  color: #444;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  padding: 2px 15px;
+  border-radius: 19px;
+  /* box-shadow: inset -1px -2px 4px #ddd; */
+  background-color: #ddd;
+}

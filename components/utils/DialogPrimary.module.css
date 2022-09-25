@@ -1,0 +1,56 @@
+.dialog {
+  width: 0;
+  height: 0;
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 7;
+  background-color: var(--app-backdrop-background);
+  visibility: hidden;
+  opacity: 0;
+  transition-property: all;
+  transition-duration: var(--app-transition-duration);
+  transition-timing-function: var(--app-transition-timing-function);
+}
+.dialog.open .backdrop {
+  visibility: visible;
+  opacity: 1;
+}
+
+.content {
+  width: calc(100% - 64px);
+  max-width: 440px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, calc(-50% - 10px));
+  z-index: 9;
+  background-color: var(--app-background-color-primary);
+  border: 2px solid var(--app-border-secondary);
+  padding: 32px;
+  visibility: hidden;
+  opacity: 0;
+  transition-property: all;
+  transition-duration: var(--app-transition-duration);
+  transition-timing-function: var(--app-transition-timing-function);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.dialog.open .content {
+  visibility: visible;
+  transform: translate(-50%, -50%);
+  opacity: 1;
+}
+
+@media screen and (min-width: 1024px) {
+  .content {
+    padding: 40px;
+  }
+}
