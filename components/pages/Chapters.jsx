@@ -17,7 +17,7 @@ const ChapterList = ({ match }) => {
   const reciterImage = PlayerStore.useState((s) => s.reciterImage);
 
   return (
-    <IonPage style={{ paddingBottom: "132px" }}>
+    <IonPage className="page-primary">
       <IonHeader className={styles.header}>
         <IonButton
           className={styles.back} //

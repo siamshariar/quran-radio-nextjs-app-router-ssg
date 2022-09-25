@@ -62,7 +62,7 @@ const pages = [
 
 const Home = () => {
   return (
-    <IonPage style={{ paddingBottom: "132px" }}>
+    <IonPage className="page-primary">
       <div className={styles.panel_content}>
         <div className={styles.wrapper}>
           <div className={styles.header}>

@@ -14,7 +14,7 @@ const Reciters = () => {
   const reciters = PlayerStore.useState((s) => s.reciters);
 
   return (
-    <IonPage style={{ paddingBottom: "132px" }}>
+    <IonPage className="page-primary">
       <IonHeader className={styles.header}>
         <IonButton
           className={styles.back} //

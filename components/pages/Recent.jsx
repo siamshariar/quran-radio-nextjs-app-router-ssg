@@ -41,7 +41,7 @@ const RecentlyPlayed = () => {
   };
 
   return (
-    <IonPage style={{ paddingBottom: "132px" }}>
+    <IonPage className="page-primary">
       <Header title="Recently played" />
 
       <IonContent className={styles.content}>

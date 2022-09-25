@@ -161,7 +161,7 @@ const MenuItems = ({ pages }) => {
 
 const More = () => {
   return (
-    <IonPage style={{ paddingBottom: "132px" }}>
+    <IonPage className="page-primary">
       <Header title="Quran Radio" />
 
       <IonContent className={styles.content}>

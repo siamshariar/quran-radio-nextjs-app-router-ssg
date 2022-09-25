@@ -59,7 +59,7 @@ const pages1 = [
 
 const Settings = () => {
   return (
-    <IonPage style={{ paddingBottom: "132px" }}>
+    <IonPage className="page-primary">
       <Header title="Settings" />
       <IonContent className={styles.content}>Settings page</IonContent>
     </IonPage>

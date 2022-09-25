@@ -53,7 +53,7 @@ const Favorites = () => {
   };
 
   return (
-    <IonPage style={{ paddingBottom: "132px" }}>
+    <IonPage className="page-primary">
       <Header title="Favorites" />
       <IonContent className={styles.content}>
         <IonList className={styles.list}>
