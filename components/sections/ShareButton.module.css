@@ -1,0 +1,15 @@
+.content {
+  margin-top: 20px;
+  width: 100px;
+  margin: 24px auto;
+  padding: 5px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: inset -8px -8px 20px 0px #fff9, inset -6px -6px 6px 0px #fff9,
+    inset 8px 8px 20px #0001, 5px 5px 6px 0px #0001;
+  color: var(--main-color);
+  font-size: 15px;
+  box-shadow: -8px -8px 20px 0px #fff9, -6px -6px 6px 0px #fff9,
+    -8px -8px 20px #0001, -5px -5px 6px 0px #0001,
+    inset -3px -3px 3px rgb(0 0 0 / 5%);
+}

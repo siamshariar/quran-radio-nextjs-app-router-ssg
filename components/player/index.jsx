@@ -8,13 +8,13 @@ import {
   setPlaying,
 } from "../../store";
 
-import Header from "./Header";
-import Content from "./Content";
-import Audio from "./Audio";
+import Header from "../sections/Header";
+import Content from "../sections/Content";
+import ControlButtons from "../sections/ControlButtons";
 import AudioMini from "./AudioMini";
-import AudioMiniMenu from "./AudioMiniMenu";
-import Timer from "./Timer";
-import AudioTag from "./AudioTag";
+import Footer from "../sections/Footer";
+import Timer from "../sections/Timer";
+import AudioTag from "./Audio";
 import styles from "./index.module.css";
 
 const Player = () => {
@@ -207,7 +207,7 @@ const Player = () => {
         </div>
 
         <div className={styles.mini_menu} ref={miniMenuRef}>
-          <AudioMiniMenu />
+          <Footer />
         </div>
 
         <div
@@ -228,11 +228,12 @@ const Player = () => {
             <div className={styles.timer}>
               <Timer />
             </div>
+
             <div className={styles.audio}>
-              <Audio />
+              <ControlButtons />
             </div>
             <div className={styles.menu}>
-              <AudioMiniMenu />
+              <Footer />
             </div>
           </div>
         </div>

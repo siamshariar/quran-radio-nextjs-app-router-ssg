@@ -24,10 +24,9 @@ import Name from "../sections/Name";
 import Image from "../sections/Image";
 import ButtonGroup from "../sections/ButtonGroup";
 import ShareButton from "../sections/ShareButton";
-import Visualizer from "../sections/Visualizer";
-import ControlButtons from "../sections/ControlButtons";
+import Audio from "../sections/Audio";
 import AudioMini from "../player/AudioMini";
-import Footer from "../sections/Footer";
+import AudioMiniMenu from "../sections/AudioMiniMenu";
 import Timer from "../sections/Timer";
 import styles from "./Home.module.css";
 
@@ -77,22 +76,19 @@ const Home = () => {
           </div>
           <div className={styles.image}>
             <Image />
-            <div className={styles.buttons}>
-              <ButtonGroup />
-            </div>
           </div>
-
+          <div className={styles.buttons}>
+            <ButtonGroup />
+          </div>
           <div className={styles.share}>
             <ShareButton />
           </div>
-          <div className={styles.visualizer}>
-            <Visualizer />
-          </div>
+          <div className={styles.visualizer}>{/* <ShareButton /> */}</div>
           <div className={styles.audio}>
-            <ControlButtons />
+            <Audio />
           </div>
           <div className={styles.menu}>
-            <Footer />
+            <AudioMiniMenu />
           </div>
         </div>
       </div>

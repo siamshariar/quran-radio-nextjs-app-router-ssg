@@ -10,6 +10,15 @@
 .icon {
   font-size: 20px;
   cursor: pointer;
-  margin: 0 13px;
   color: #777;
+}
+.item {
+  margin: 0 13px;
+}
+.btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

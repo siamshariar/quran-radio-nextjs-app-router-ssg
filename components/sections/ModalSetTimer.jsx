@@ -1,5 +1,6 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
+import { IonDatetime } from "@ionic/react";
 import classNames from "classnames";
 import styles from "./ModalSetTimer.module.css";
 
@@ -45,25 +46,25 @@ const ModalSetTimer = ({ open, handler }) => {
     // });
   }
 
-  useEffect(() => {
-    document.body.addEventListener("touchstart", (e) => {
-      // e.preventDefault();
-      var mouseInitial = { x: e.pageX, y: e.pageY };
-      var center = findCenter(hourRef.current);
-      var radians = Math.atan2(
-        mouseInitial.x - center.x,
-        mouseInitial.y - center.y
-      );
-      startDragDegree = radians * (180 / Math.PI) * -1;
-    });
+  // useEffect(() => {
+  //   document.body.addEventListener("touchstart", (e) => {
+  //     // e.preventDefault();
+  //     var mouseInitial = { x: e.pageX, y: e.pageY };
+  //     var center = findCenter(hourRef.current);
+  //     var radians = Math.atan2(
+  //       mouseInitial.x - center.x,
+  //       mouseInitial.y - center.y
+  //     );
+  //     startDragDegree = radians * (180 / Math.PI) * -1;
+  //   });
 
-    document.body.addEventListener("touchmove", (e2) => {
-      rotateOnMouse(e2, hourRef.current);
-      // console.log("moving");
-    });
+  //   document.body.addEventListener("touchmove", (e2) => {
+  //     rotateOnMouse(e2, hourRef.current);
+  //     // console.log("moving");
+  //   });
 
-    document.body.addEventListener("touchend", closeDragElement);
-  }, []);
+  //   document.body.addEventListener("touchend", closeDragElement);
+  // }, []);
 
   return (
     <div
@@ -81,7 +82,10 @@ const ModalSetTimer = ({ open, handler }) => {
             <button>half hour</button>
           </div>
         </div>
-        <div className={styles.timer}>
+
+        <IonDatetime presentation="time"></IonDatetime>
+
+        {/* <div className={styles.timer}>
           <div className={styles.hour} ref={hourRef}>
             <div className={styles.h_bullet}></div>
             <div className={styles.hour12}></div>
@@ -102,7 +106,7 @@ const ModalSetTimer = ({ open, handler }) => {
             <div className={styles.hour4}></div>
             <div className={styles.hour5}></div>
           </div>
-        </div>
+        </div> */}
 
         <div className={styles.bottom}>
           <button>Cancel</button>

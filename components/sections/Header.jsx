@@ -1,0 +1,48 @@
+import { IonIcon, IonMenuButton, IonRouterLink } from "@ionic/react";
+import { menu, settings, timeOutline, time } from "ionicons/icons";
+import Timer from "../actions/TimerPrimary";
+import styles from "./Header.module.css";
+
+const Header = () => {
+  return (
+    <div className={styles.wrapper}>
+      <div className={styles.bg}></div>
+      <div className={styles.content}>
+        <div className={styles.left}>
+          <IonRouterLink
+            routerLink="/more" //
+            className={styles.link}
+          >
+            <div className={styles.menu_btn}>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </IonRouterLink>
+        </div>
+
+        <div className={styles.logo}>
+          <div className={styles.title}>QR</div>
+        </div>
+
+        <div className={styles.right}>
+          <div className={styles.btn}>
+            <Timer
+              classes={{
+                root: styles.item,
+                btn: styles.btn,
+                icon: styles.icon,
+              }}
+              icon={{
+                added: time,
+                removed: timeOutline,
+              }}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Header;

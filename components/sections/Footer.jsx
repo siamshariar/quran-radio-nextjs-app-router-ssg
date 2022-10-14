@@ -18,7 +18,7 @@ import {
   libraryOutline,
 } from "../../icons";
 
-import styles from "./AudioMiniMenu.module.css";
+import styles from "./Footer.module.css";
 
 const pages = [
   {

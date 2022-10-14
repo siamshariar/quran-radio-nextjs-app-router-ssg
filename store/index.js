@@ -23,6 +23,10 @@ export const PlayerStore = new Store({
   currentTime: 0,
   dur: 0,
   isProgress: false,
+  timer: {
+    isSet: false,
+    value: 0,
+  },
 });
 
 export const setPlayerOpen = (open) => {
@@ -96,5 +100,14 @@ export const setDur = (dur) => {
 export const setIsProgress = (isProgress) => {
   PlayerStore.update((s) => {
     s.isProgress = isProgress;
+  });
+};
+
+export const setTimer = (isSet, value) => {
+  PlayerStore.update((s) => {
+    s.timer = {
+      isSet: isSet,
+      value: value,
+    };
   });
 };
