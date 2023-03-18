@@ -1,28 +1,34 @@
 import { IonIcon, IonMenuButton, IonRouterLink } from "@ionic/react";
-import { menu, settings, timeOutline, time } from "ionicons/icons";
+import { menu, timeOutline, time } from "ionicons/icons";
+import { settings, hamburger } from "../../icons";
 import Timer from "../actions/TimerPrimary";
 import styles from "./Header.module.css";
 
 const Header = () => {
   return (
     <div className={styles.wrapper}>
-      <div className={styles.bg}></div>
+      {/* <div className={styles.bg}></div> */}
       <div className={styles.content}>
         <div className={styles.left}>
-          <IonRouterLink
+          {/* <IonRouterLink
             routerLink="/more" //
             className={styles.link}
-          >
-            <div className={styles.menu_btn}>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-          </IonRouterLink>
+          > */}
+          <div className={styles.menu_btn}>
+          <IonIcon
+          icon={hamburger} //
+          slot="start"
+          className={styles.icon}
+        />
+
+          </div>
+          {/* </IonRouterLink> */}
         </div>
 
         <div className={styles.logo}>
-          <div className={styles.title}>QR</div>
+          <div className={styles.title}>
+            <img src="/img/logo/logo.png" alt="" />
+          </div>
         </div>
 
         <div className={styles.right}>
@@ -35,7 +41,7 @@ const Header = () => {
               }}
               icon={{
                 added: time,
-                removed: timeOutline,
+                removed: settings,
               }}
             />
           </div>

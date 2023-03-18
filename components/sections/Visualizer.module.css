@@ -1,13 +1,16 @@
 .root {
   width: 100%;
-  max-width: 260px;
+  max-width: 240px;
   margin: 0 auto;
 }
 .duration {
-  width: 100%;
+  width: calc(100% + 68px);
   display: flex;
   justify-content: space-between;
-  margin-bottom: 6px;
+  margin-bottom: -12px;
+  margin-left: -34px;
+  position: relative;
+  z-index: -1;
 }
 .start,
 .end {

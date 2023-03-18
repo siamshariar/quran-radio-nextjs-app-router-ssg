@@ -15,6 +15,24 @@
   font-size: 15px;
   font-weight: 600;
   color: #000;
+
+
+
+  font-family: 'SFProDisplay';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 19px;
+/* identical to box height */
+
+
+background: linear-gradient(270.02deg, #3C3E47 -1.09%, #474A52 103.81%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+text-fill-color: transparent;
+color: #3C3E47;
+margin-bottom: 9px;
 }
 .reciter {
   font-family: "Montserrat";
@@ -25,4 +43,11 @@
   color: #000;
 }
 .reciter span {
+  font-family: "SFProDisplay";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  color: #3D3D3F;
+
 }

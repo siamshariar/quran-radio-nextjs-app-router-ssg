@@ -3,11 +3,13 @@ import {
   timeOutline,
   bookmark,
   bookmarkOutline,
-  shareOutline,
+  // shareOutline,
   timer,
   time,
   musicalNoteOutline,
 } from "ionicons/icons";
+
+import { starOutline, shareOutline, clockOutline } from "../../icons";
 
 import styles from "./ButtonGroup.module.css";
 import Favorite from "../actions/Favorite";
@@ -24,7 +26,7 @@ const Buttons = () => {
         }}
         icon={{
           added: bookmark,
-          removed: bookmarkOutline,
+          removed: starOutline,
         }}
       />
       <PlaybackRate
@@ -33,7 +35,15 @@ const Buttons = () => {
           btn: styles.btn,
           icon: styles.icon,
         }}
-        icon={musicalNoteOutline}
+        icon={shareOutline}
+      />
+      <PlaybackRate
+        classes={{
+          root: styles.item,
+          btn: styles.btn,
+          icon: styles.icon,
+        }}
+        icon={clockOutline}
       />
     </div>
   );

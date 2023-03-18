@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 import classNames from "classnames";
 import {
   PlayerStore,
@@ -16,6 +16,8 @@ import Footer from "../sections/Footer";
 import Timer from "../sections/Timer";
 import AudioTag from "./Audio";
 import styles from "./index.module.css";
+
+import { useRouter } from "next/router";
 
 const Player = () => {
   const [windowHeight, setWindowHeight] = useState(0);
@@ -35,12 +37,13 @@ const Player = () => {
   const backdropRef = useRef(null);
   const miniMenuRef = useRef(null);
 
-  const location = useLocation();
+  // const location = useLocation();
+  const router = useRouter();
   const [path, setPath] = useState("/");
 
   useEffect(() => {
-    setPath(location.pathname);
-  }, [location]);
+    setPath(router.pathname);
+  }, [router]);
 
   useEffect(() => {
     setWindowHeight(window.innerHeight);

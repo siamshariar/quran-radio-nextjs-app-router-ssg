@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 import classNames from "classnames";
 
 import { IonIcon, IonRouterLink, IonLabel, IonList } from "@ionic/react";
 
 import { grid, gridOutline } from "ionicons/icons";
 import { PlayerStore } from "../../store";
+import { useRouter } from "next/router";
 
 import {
   home,
@@ -49,12 +50,13 @@ const pages = [
 ];
 
 const AudioMiniMenu = () => {
-  const location = useLocation();
+  // const location = useLocation();
+  const router = useRouter();
   const [path, setPath] = useState("/");
 
   useEffect(() => {
-    setPath(location.pathname);
-  }, [location]);
+    setPath(router.pathname);
+  }, [router]);
 
   const reciterSlug = PlayerStore.useState((s) => s.reciterSlug);
 

@@ -1,13 +1,16 @@
 import { IonIcon } from "@ionic/react";
 import classNames from "classnames";
 import {
-  play as playIcon,
+  // play as playIcon,
   pause as pauseIcon,
-  playSkipForward as playNextIcon,
-  playSkipBack as playPreviousIcon,
-  shuffleOutline as shuffleIcon,
-  repeatOutline as repeatIcon,
+  // playSkipForward as playNextIcon,
+  // playSkipBack as playPreviousIcon,
+  // shuffleOutline as shuffleIcon,
+  // repeatOutline as repeatIcon,
 } from "ionicons/icons";
+
+import {playOutline as playIcon, nextOutline as playNextIcon, previousOutline as playPreviousIcon, repeat as repeatIcon, shuffle as shuffleIcon} from '../../icons'
+
 import { PlayerStore, setChapter, setSrc, setPlaying } from "../../store";
 import Loader from "../utils/Loader";
 import styles from "./ControlButtons.module.css";
