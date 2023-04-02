@@ -30,10 +30,10 @@ const menus = [
 
 const Menu = () => {
   return (
-    <ion-menu side="start" content-id="main-content" menuId="menu1">
+    <ion-menu side="start" content-id="main-content" menuId="menu2">
       <ion-header>
         <ion-toolbar>
-          <ion-title>Menu 1</ion-title>
+          <ion-title>Menu 2</ion-title>
         </ion-toolbar>
       </ion-header>
       <ion-content className="menu">

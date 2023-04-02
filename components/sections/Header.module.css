@@ -47,7 +47,12 @@
   width: 63.64%;
 }
 .menu_btn .icon {
-  color: #3D3D3F;
+  color: #3d3d3f;
+}
+.ion_btn {
+}
+.ion_btn button {
+  display: none;
 }
 .btn {
   border-radius: 50%;

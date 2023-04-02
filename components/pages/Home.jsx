@@ -1,14 +1,3 @@
-// import {
-//   IonPage,
-//   IonHeader,
-//   IonButton,
-//   IonIcon,
-//   IonContent,
-//   IonRouterLink,
-//   IonLabel,
-//   IonList,
-// } from "@ionic/react";
-
 import classNames from "classnames";
 import { menu } from "ionicons/icons";
 
@@ -18,7 +7,7 @@ import {
   subscriptionOutline,
   libraryOutline,
   musicalNoteOutline,
-  musicalNote
+  musicalNote,
 } from "../../icons";
 
 import Header from "../sections/Header";
@@ -70,51 +59,45 @@ const pages = [
 
 const Home = () => {
   return (
-    <ion-page className="page-primary">
-      <div className={styles.panel_content}>
-        <div className={styles.wrapper}>
-          <div className={styles.header}>
-            <Header />
-          </div>
-          <div className={styles.name}>
-            <Name />
-          </div>
-          <div className={styles.image}>
-            <div className={classNames(styles.item, styles.btn)}></div>
-            <Tune />
-            <PlaybackRate
-              classes={{
-                root: styles.item,
-                btn: styles.btn,
-                icon: styles.icon,
-              }}
-              icon={musicalNote}
-            />
+    <div className={styles.panel_content}>
+      <div className={styles.wrapper}>
+        <div className={styles.header}>
+          <Header />
+        </div>
+        <div className={styles.name}>
+          <Name />
+        </div>
+        <div className={styles.image}>
+          <div className={classNames(styles.item, styles.btn)}></div>
+          <Tune />
+          <PlaybackRate
+            classes={{
+              root: styles.item,
+              btn: styles.btn,
+              icon: styles.icon,
+            }}
+            icon={musicalNote}
+          />
+        </div>
 
-            {/* <div className={styles.buttons}>
-              <ButtonGroup />
-            </div> */}
-          </div>
+        <div className={styles.buttons}>
+          <ButtonGroup />
+        </div>
 
-          <div className={styles.buttons}>
-            <ButtonGroup />
-          </div>
-
-          {/* <div className={styles.share}>
+        {/* <div className={styles.share}>
             <ShareButton />
           </div> */}
-          <div className={styles.visualizer}>
-            <Visualizer />
-          </div>
-          <div className={styles.audio}>
-            <ControlButtons />
-          </div>
-          {/* <div className={styles.menu}>
+        <div className={styles.visualizer}>
+          <Visualizer />
+        </div>
+        <div className={styles.audio}>
+          <ControlButtons />
+        </div>
+        {/* <div className={styles.menu}>
             <Footer />
           </div> */}
-        </div>
       </div>
-    </ion-page>
+    </div>
   );
 };
 

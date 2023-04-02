@@ -26,6 +26,7 @@ import "../styles/global.scss";
 
 import Player from "../components/player";
 import Menu from "../components/ui/Menu";
+import Menu2 from "../components/ui/Menu2";
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
@@ -46,10 +47,14 @@ function MyApp({ Component, pageProps }) {
   // );
 
   return (
-    <ion-app>
+    <>
+      {/* <ion-app> */}
+      <Menu2 />
       <Menu />
+
       {/* <Player /> */}
-      <div className="ion-page" id="main-content">
+      <div className="page-primary ion-page" id="main-content">
+        {/* <div className="ion-page" > */}
         {/* {Component.header} */}
         <ion-content fullscreen>
           <Component {...pageProps} />
@@ -60,7 +65,8 @@ function MyApp({ Component, pageProps }) {
           </ion-toolbar>
         </ion-footer> */}
       </div>
-    </ion-app>
+      {/* </ion-app> */}
+    </>
   );
 }
 
