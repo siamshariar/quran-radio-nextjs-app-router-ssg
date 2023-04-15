@@ -7,7 +7,7 @@
   position: relative;
 }
 .chapter {
-  padding-top: 24px;
+  padding-top: 0;
   text-align: center;
 }
 .chapter h2 {
@@ -16,23 +16,21 @@
   font-weight: 600;
   color: #000;
 
+  font-family: "SFProDisplay";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  /* identical to box height */
 
-
-  font-family: 'SFProDisplay';
-font-style: normal;
-font-weight: 500;
-font-size: 16px;
-line-height: 19px;
-/* identical to box height */
-
-
-background: linear-gradient(270.02deg, #3C3E47 -1.09%, #474A52 103.81%);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-background-clip: text;
-text-fill-color: transparent;
-color: #3C3E47;
-margin-bottom: 9px;
+  background: linear-gradient(270.02deg, #3c3e47 -1.09%, #474a52 103.81%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  color: #3c3e47;
+  margin-bottom: 9px;
+  color: #43454e;
 }
 .reciter {
   font-family: "Montserrat";
@@ -48,6 +46,5 @@ margin-bottom: 9px;
   font-weight: 400;
   font-size: 12px;
   line-height: 14px;
-  color: #3D3D3F;
-
+  color: #3d3d3f;
 }

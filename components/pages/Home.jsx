@@ -76,7 +76,7 @@ const Home = () => {
               btn: styles.btn,
               icon: styles.icon,
             }}
-            icon={musicalNote}
+            icon={musicalNoteOutline}
           />
         </div>
 

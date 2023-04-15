@@ -38,7 +38,7 @@ const Header = () => {
             className={styles.link}
           > */}
           <div className={styles.menu_btn}>
-            <ion-buttons slot="start">
+            {/* <ion-buttons slot="icon">
               <ion-menu-button autoHide="false" menuId="menu1">
                 <ion-icon
                   slot="icon"
@@ -46,22 +46,16 @@ const Header = () => {
                   icon={hamburger}
                 ></ion-icon>
               </ion-menu-button>
-            </ion-buttons>
-
-            {/* <ion-buttons slot="start">
-              <ion-menu-button autoHide="false" menuId="menu2">
-                menu 2
-              </ion-menu-button>
             </ion-buttons> */}
 
-            {/* <ion-menu-button className={styles.ion_btn}>
-              <ion-icon
-                icon={hamburger} //
-                slot="icon"
-                className={styles.icon}
-                // onClick={menuClick}
-              ></ion-icon>
-            </ion-menu-button> */}
+            {/* <ion-menu-button className={styles.ion_btn}> */}
+            <ion-icon
+              icon={hamburger} //
+              slot="icon"
+              className={styles.icon}
+              onClick={menuClick}
+            ></ion-icon>
+            {/* </ion-menu-button> */}
           </div>
           {/* </IonRouterLink> */}
         </div>

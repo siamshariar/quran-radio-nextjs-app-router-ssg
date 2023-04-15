@@ -12,10 +12,13 @@
   height: 100%;
   z-index: 11;
   background: linear-gradient(90deg, #cedfe5 0%, #797b88 100%);
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 .header {
-  margin-bottom: 32px;
+  margin-bottom: 70px;
+  padding-top: 30px;
 }
 .name {
   padding-bottom: 0;
@@ -43,6 +46,7 @@
   width: 250px;
   position: relative;
   margin: 40px auto 80px;
+  margin: 24px auto 64px;
 }
 .share {
   padding: 8px 0;

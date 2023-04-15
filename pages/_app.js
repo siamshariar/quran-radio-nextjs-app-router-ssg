@@ -52,7 +52,7 @@ function MyApp({ Component, pageProps }) {
       <Menu2 />
       <Menu />
 
-      {/* <Player /> */}
+      <Player />
       <div className="page-primary ion-page" id="main-content">
         {/* <div className="ion-page" > */}
         {/* {Component.header} */}

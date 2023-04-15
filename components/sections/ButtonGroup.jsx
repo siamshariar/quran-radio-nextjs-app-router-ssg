@@ -43,7 +43,7 @@ const Buttons = () => {
         }}
         icon={shareOutline}
       />
-      <Timer
+      {/* <Timer
         classes={{
           root: styles.item,
           btn: styles.btn,
@@ -53,7 +53,7 @@ const Buttons = () => {
           added: time,
           removed: timeOutline,
         }}
-      />
+      /> */}
       <PlaybackRate
         classes={{
           root: styles.item,

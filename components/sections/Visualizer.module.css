@@ -1,5 +1,6 @@
 .root {
   width: 100%;
+  width: calc(100% - 80px);
   max-width: 240px;
   margin: 0 auto;
 }
