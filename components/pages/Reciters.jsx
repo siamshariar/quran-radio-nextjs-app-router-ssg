@@ -14,27 +14,31 @@ const Reciters = () => {
   const reciters = PlayerStore.useState((s) => s.reciters);
 
   return (
-    <IonPage className="page-primary">
-      <IonHeader className={styles.header}>
-        <IonButton
-          className={styles.back} //
-          fill="clear"
-          routerLink="/"
-        >
-          <IonIcon icon={chevronBack} slot="start" className={styles.icon} />
-        </IonButton>
-        <span>Reciters List</span>
-      </IonHeader>
-      <div className={styles.search}>
-        <input type="text" name="search" placeholder="Search reciter" />
-      </div>
-      <IonContent>
+    <div className={styles.panel_content}>
+      <div className={styles.wrapper}>
+        <div className={styles.header}>
+          {/* <Header /> */}
+
+          <IonButton
+            className={styles.back} //
+            fill="clear"
+            routerLink="/"
+          >
+            <IonIcon icon={chevronBack} slot="start" className={styles.icon} />
+          </IonButton>
+        </div>
+
+        <div className={styles.search}>
+          <input type="text" name="search" placeholder="Search reciter" />
+        </div>
+        {/* <ion-content> */}
         {reciters &&
           reciters.map((reciter, index) => (
             <ReciterCard key={index} reciter={reciter} />
           ))}
-      </IonContent>
-    </IonPage>
+        {/* </ion-content> */}
+      </div>
+    </div>
   );
 };
 

@@ -9,12 +9,12 @@ import Timer from "../actions/TimerPrimary";
 import styles from "./Header.module.css";
 
 const Header = () => {
-  const menuClick = async (e) => {
-    e.preventDefault();
-    window.menuController = menuController;
-    console.log("Nazmul");
-    await menuController.open();
-  };
+  // const menuClick = async (e) => {
+  //   e.preventDefault();
+  //   window.menuController = menuController;
+  //   await menuController.open();
+  //   console.log("Nazmul");
+  // };
 
   return (
     <div className={styles.wrapper}>
@@ -53,8 +53,20 @@ const Header = () => {
               icon={hamburger} //
               slot="icon"
               className={styles.icon}
-              onClick={menuClick}
+              // onClick={menuClick}
             ></ion-icon>
+
+            {/* <ion-buttons slot="start">
+              <ion-menu-button>
+                <ion-icon
+                  ico={hamburger} //
+                  slot="icon"
+                  className={styles.icon}
+                  // onClick={menuClick}
+                ></ion-icon>
+              </ion-menu-button>
+            </ion-buttons> */}
+
             {/* </ion-menu-button> */}
           </div>
           {/* </IonRouterLink> */}

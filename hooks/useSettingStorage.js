@@ -42,7 +42,14 @@ export const useSettingStorage = () => {
     store?.set(STORE_KEY, updatedSettings);
   };
 
+  const setMode = async (mode) => {
+    const updatedSettings = { ...settings, mode: mode };
+    setSettings(updatedSettings);
+    store?.set(STORE_KEY, updatedSettings);
+  };
+
   return {
     setPlaybackRate,
+    setMode,
   };
 };

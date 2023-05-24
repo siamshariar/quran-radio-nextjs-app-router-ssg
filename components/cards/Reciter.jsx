@@ -6,6 +6,8 @@ import {
   setPlayerMini,
   setChapter,
 } from "../../store";
+import { chevronBack } from "ionicons/icons";
+import {playCircle, pauseCircle} from '../../icons'
 import styles from "./Reciter.module.css";
 
 const Reciter = ({ reciter }) => {
@@ -37,8 +39,16 @@ const Reciter = ({ reciter }) => {
               <img src={`/img/reciters/${reciter.reciter_image}`} alt="" />
             </div>
           </div>
-          <div className={styles.right}>
+          <div className={styles.middle}>
             <div className={styles.name}>{reciter.reciter_name}</div>
+            <div className={styles.name}>- Recited sura 114</div>
+          </div>
+          <div className={styles.right}>
+            <ion-icon
+              icon={playCircle}
+              slot="start"
+              className={styles.icon}
+            ></ion-icon>
           </div>
         </div>
       </IonRouterLink>

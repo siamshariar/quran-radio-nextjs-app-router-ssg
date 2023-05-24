@@ -1,6 +1,8 @@
 .card {
   margin-top: 0;
   padding: 0 15px;
+  padding: 0;
+  border: none;
 }
 .card:first-child {
   margin-top: 44px;
@@ -16,11 +18,16 @@
 }
 .wrapper {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-  padding: 10px 12px;
+  padding: 10px 0;
 }
 .left {
+  width: 84px;
+  height: 64px;
+}
+.middle {
+  width: calc(100% - 124px);
 }
 .image {
   width: 64px;
@@ -37,8 +44,12 @@
   object-position: center center;
 }
 .right {
-  width: calc(100% - 64px);
+  width: 44px;
   padding-left: 15px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0;
 }
 .name {
   color: #445b78;
@@ -53,4 +64,19 @@
   border-radius: 14px;
   background-color: #ecf0f3;
   box-shadow: inset 3px 3px 15px #ddd, inset -4px -4px 6px white;
+}
+
+
+.icon {
+  color: #58585D;
+  --color: #222;
+}
+.icon svg {
+  fill: none;
+}
+.icon svg circle {
+  stroke: #58585D;
+}
+.icon svg rect {
+  fill: #58585D;
 }

@@ -41,12 +41,14 @@ const Menu = () => {
           {menus.map((m, k) => (
             <ion-menu-toggle auto-hide={false} key={k}>
               <Link href={m.url} passHref>
-                <ion-item detail={false} lines="none">
-                  {/* <a> */}
-                  <ion-icon icon={m.icon} slot="start" />
-                  {m.title}
-                  {/* </a> */}
-                </ion-item>
+                <a>
+                  <ion-item detail={false} lines="none">
+                    {/* <a> */}
+                    <ion-icon icon={m.icon} slot="start" />
+                    {m.title}
+                    {/* </a> */}
+                  </ion-item>
+                </a>
               </Link>
             </ion-menu-toggle>
           ))}

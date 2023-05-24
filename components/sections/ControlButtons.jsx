@@ -2,14 +2,20 @@ import { IonIcon } from "@ionic/react";
 import classNames from "classnames";
 import {
   // play as playIcon,
-  pause as pauseIcon,
+  playOutline as pauseIcon,
   // playSkipForward as playNextIcon,
   // playSkipBack as playPreviousIcon,
   // shuffleOutline as shuffleIcon,
   // repeatOutline as repeatIcon,
 } from "ionicons/icons";
 
-import {playOutline as playIcon, nextOutline as playNextIcon, previousOutline as playPreviousIcon, repeat as repeatIcon, shuffle as shuffleIcon} from '../../icons'
+import {
+  playOutline as playIcon,
+  nextOutline as playNextIcon,
+  previousOutline as playPreviousIcon,
+  repeat as repeatIcon,
+  shuffle as shuffleIcon,
+} from "../../icons";
 
 import { PlayerStore, setChapter, setSrc, setPlaying } from "../../store";
 import Loader from "../utils/Loader";
@@ -54,7 +60,7 @@ const ControlButtons = () => {
           className={classNames(styles.btn, styles.small)}
           // onClick={playPrevious}
         >
-          <IonIcon icon={shuffleIcon} slot="start" className={styles.icon} />
+          <IonIcon icon={repeatIcon} slot="start" className={styles.icon} />
         </div>
 
         <div
@@ -80,7 +86,7 @@ const ControlButtons = () => {
           >
             {loading && <Loader />}
             {!loading && (
-              <IonIcon icon={pauseIcon} slot="start" className={styles.icon} />
+              <IonIcon icon={playIcon} slot="start" className={styles.icon} />
             )}
           </div>
         )}
@@ -97,7 +103,7 @@ const ControlButtons = () => {
           >
             {loading && <Loader />}
             {!loading && (
-              <IonIcon icon={playIcon} slot="start" className={styles.icon} />
+              <IonIcon icon={pauseIcon} slot="start" className={styles.icon} />
             )}
           </div>
         )}
@@ -113,7 +119,7 @@ const ControlButtons = () => {
           className={classNames(styles.btn, styles.small)}
           // onClick={playNext}
         >
-          <IonIcon icon={repeatIcon} slot="start" className={styles.icon} />
+          <IonIcon icon={shuffleIcon} slot="start" className={styles.icon} />
         </div>
       </div>
     </div>

@@ -49,7 +49,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       {/* <ion-app> */}
-      <Menu2 />
+      {/* <Menu2 /> */}
       <Menu />
 
       <Player />
