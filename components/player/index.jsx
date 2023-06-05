@@ -18,6 +18,7 @@ import AudioTag from "./Audio";
 import styles from "./index.module.css";
 
 import { useRouter } from "next/router";
+import HomeContent from "../ui/HomeContent";
 
 const Player = () => {
   const [windowHeight, setWindowHeight] = useState(0);
@@ -50,13 +51,14 @@ const Player = () => {
     // setPanelHeight(panelRef.current.offsetHeight);
     // setMostTranslate(panelRef.current.offsetHeight - 72);
     setPanelHeight(window.innerHeight);
-    setMostTranslate(window.innerHeight - 72);
+    // setMostTranslate(window.innerHeight - 72);
+    setMostTranslate(window.innerHeight);
     setTranslate(
       path === "/"
         ? 2 * window.innerHeight
         : isPlayerMini
-        ? window.innerHeight - 72
-        : window.innerHeight - 72
+        ? window.innerHeight
+        : window.innerHeight
     );
   }, [path]);
 
@@ -64,8 +66,8 @@ const Player = () => {
     const handleResize = () => {
       setWindowHeight(window.innerHeight);
       setPanelHeight(window.innerHeight);
-      setMostTranslate(window.innerHeight - 72);
-      setTranslate(isPlayerMini ? window.innerHeight - 72 : 0);
+      setMostTranslate(window.innerHeight);
+      setTranslate(isPlayerMini ? window.innerHeight : 0);
     };
     window.addEventListener("resize", handleResize);
     return () => {
@@ -158,14 +160,15 @@ const Player = () => {
   useEffect(() => {
     containerRef.current.style.transform = `translateY(${translate}px)`;
     backdropRef.current.style.opacity = 1 - translate / mostTranslate;
+    miniMenuRef.current.style.opacity = 1 - translate / mostTranslate;
 
-    if (translate < mostTranslate - 90) {
-      miniMenuRef.current.style.visibility = "hidden";
-      miniMenuRef.current.style.opacity = 0;
-    } else {
-      miniMenuRef.current.style.visibility = "visible";
-      miniMenuRef.current.style.opacity = 1 - (mostTranslate - translate) / 90;
-    }
+    // if (translate > mostTranslate - 90) {
+    //   // miniMenuRef.current.style.visibility = "hidden";
+    //   miniMenuRef.current.style.opacity = 0;
+    // } else {
+    //   // miniMenuRef.current.style.visibility = "visible";
+    //   miniMenuRef.current.style.opacity = 1 - (mostTranslate - translate) / 90;
+    // }
 
     if (translate < mostTranslate) {
       setPlayerMini(false);
@@ -209,10 +212,6 @@ const Player = () => {
           <AudioMini />
         </div>
 
-        <div className={styles.mini_menu} ref={miniMenuRef}>
-          <Footer />
-        </div>
-
         <div
           className={styles.panel_header}
           onTouchStart={handleTouchStart}
@@ -220,8 +219,8 @@ const Player = () => {
           onTouchEnd={handleTouchEnd}
         ></div>
 
-        <div className={styles.panel_content}>
-          <div className={styles.wrapper}>
+        <div className={styles.panel_content} ref={miniMenuRef}>
+          {/* <div className={styles.wrapper}>
             <div className={styles.header}>
               <Header />
             </div>
@@ -238,7 +237,8 @@ const Player = () => {
             <div className={styles.menu}>
               <Footer />
             </div>
-          </div>
+          </div> */}
+          <HomeContent />
         </div>
       </div>
 

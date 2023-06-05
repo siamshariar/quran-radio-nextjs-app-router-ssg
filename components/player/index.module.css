@@ -31,6 +31,7 @@
   background-color: var(--ion-background-color);
   transform: translateY(-100%);
   background-color: #fff;
+  display: none;
 }
 
 .audio_mini {
@@ -39,6 +40,7 @@
   left: 0;
   right: 0;
   transform: translateY(-100%);
+  /* transform: translateY(0); */
 }
 .mini_menu {
   z-index: 99;

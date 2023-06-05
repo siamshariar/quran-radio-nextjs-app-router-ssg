@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { PlayerStore } from "../../store";
 import Pulse from "../utils/PulseSecondary";
-import styles from "./Tune.module.css";
+import styles from "./TuneMini.module.css";
 
 const Tune = () => {
   const reciterImage = PlayerStore.useState((s) => s.reciterImage);
@@ -21,7 +21,7 @@ const Tune = () => {
         </div>
       </div>
       <div className={styles.outer}></div>
-      <div className={styles.subtract}></div>
+      {/* <div className={styles.subtract}></div> */}
       <div className={styles.inner}>
         <div className={styles.el3}></div>
         <div className={styles.el2}></div>

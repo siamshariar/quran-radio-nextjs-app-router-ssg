@@ -1,4 +1,5 @@
-import { IonRouterLink } from "@ionic/react";
+import Link from "next/link";
+import { IonIcon } from "@ionic/react";
 import classNames from "classnames";
 import {
   PlayerStore,
@@ -6,11 +7,11 @@ import {
   setPlayerMini,
   setChapter,
 } from "../../store";
-import { chevronBack } from "ionicons/icons";
-import {playCircle, pauseCircle} from '../../icons'
+import { playCircle, pauseCircle } from "../../icons";
 import styles from "./Reciter.module.css";
 
 const Reciter = ({ reciter }) => {
+  const playing = PlayerStore.useState((s) => s.playing);
   const reciterId = PlayerStore.useState((s) => s.reciterId);
 
   const handleReciterChange = () => {
@@ -28,12 +29,8 @@ const Reciter = ({ reciter }) => {
         reciterId === reciter.reciter_id ? styles.active : ""
       )}
     >
-      <IonRouterLink
-        className={styles.inner}
-        onClick={() => handleReciterChange()}
-        routerLink="/"
-      >
-        <div className={styles.wrapper}>
+      <Link href="/">
+        <a className={styles.wrapper} onClick={() => handleReciterChange()}>
           <div className={styles.left}>
             <div className={styles.image}>
               <img src={`/img/reciters/${reciter.reciter_image}`} alt="" />
@@ -41,17 +38,26 @@ const Reciter = ({ reciter }) => {
           </div>
           <div className={styles.middle}>
             <div className={styles.name}>{reciter.reciter_name}</div>
-            <div className={styles.name}>- Recited sura 114</div>
+            <div className={styles.name2}>- Recited sura 114</div>
           </div>
           <div className={styles.right}>
-            <ion-icon
-              icon={playCircle}
-              slot="start"
-              className={styles.icon}
-            ></ion-icon>
+            {reciterId === reciter.reciter_id && playing && (
+              <IonIcon
+                icon={playCircle} //
+                slot="start"
+                className={styles.icon}
+              />
+            )}
+            {(reciterId !== reciter.reciter_id || !playing) && (
+              <IonIcon
+                icon={pauseCircle}
+                slot="start"
+                className={styles.icon}
+              />
+            )}
           </div>
-        </div>
-      </IonRouterLink>
+        </a>
+      </Link>
     </div>
   );
 };

@@ -21,45 +21,13 @@ import AudioMini from "../player/AudioMini";
 import Footer from "../sections/Footer";
 import Timer from "../sections/Timer";
 import PlaybackMode from "../actions/PlaybackMode";
+import HomeContent from "../ui/HomeContent";
 import styles from "./Home.module.css";
 
 const Home = () => {
   return (
     <div className={styles.panel_content}>
-      <div className={styles.wrapper}>
-        <div className={styles.header}>
-          <Header />
-        </div>
-        <div className={styles.name}>
-          <Name />
-        </div>
-        <div className={styles.image}>
-          <div className={classNames(styles.item, styles.btn)}></div>
-          <Tune />
-          <PlaybackMode
-            classes={{
-              root: styles.item,
-              btn: styles.btn,
-              icon: styles.icon,
-            }}
-            icon={{
-              normal: musicalNoteOutline,
-              live: musicalNote,
-            }}
-          />
-        </div>
-
-        <div className={styles.buttons}>
-          <ButtonGroup />
-        </div>
-
-        <div className={styles.visualizer}>
-          <Visualizer />
-        </div>
-        <div className={styles.audio}>
-          <ControlButtons />
-        </div>
-      </div>
+      <HomeContent />
     </div>
   );
 };
