@@ -14,7 +14,7 @@ const TimerSet = ({ classes, icon }) => {
   return (
     <div
       className={classes.btn}
-      expand="block"
+      // expand="block"
       onClick={() =>
         present(
           [
@@ -89,7 +89,7 @@ const UnsetTimer = ({ classes, icon }) => {
   return (
     <div
       className={classes.btn}
-      expand="block"
+      // expand="block"
       onClick={() =>
         present(
           [

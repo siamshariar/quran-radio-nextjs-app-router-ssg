@@ -81,7 +81,7 @@ const PlaybackRateModal = ({ open, handler }) => {
     return () => {
       document.body.removeEventListener("click", handleOpen);
     };
-  }, []);
+  }, [handler]);
 
   const setPlaybackSpeed = (rate) => {
     setPlaybackRate(rate);

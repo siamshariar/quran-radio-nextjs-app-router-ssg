@@ -17,7 +17,7 @@ import { LocalStore } from "../../store/local";
 import { checkIsFavorite } from "../../lib/check";
 
 import Favorite from "../actions/Favorite";
-import TimerAction from "../actions/TimerPrimary";
+// import TimerAction from "../actions/TimerPrimary";
 import styles from "./ShareButton.module.css";
 
 const Timer = () => {
