@@ -1,6 +1,21 @@
 import { useEffect, useState } from "react";
-import { IonIcon, useIonPicker, IonButton } from "@ionic/react";
+// import { IonIcon, useIonPicker, IonButton } from "@ionic/react";
 import { PlayerStore, setTimer } from "../../store";
+
+import dynamic from "next/dynamic";
+
+const IonIcon = dynamic(
+  () => import("@ionic/react").then((mod) => mod.IonIcon),
+  {
+    ssr: false,
+  }
+);
+const useIonPicker = dynamic(
+  () => import("@ionic/react").then((mod) => mod.useIonPicker),
+  {
+    ssr: false,
+  }
+);
 
 const TimerSet = ({ classes, icon }) => {
   const timer = PlayerStore.useState((s) => s.timer);

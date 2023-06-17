@@ -1,9 +1,24 @@
-import { IonButton, IonIcon } from "@ionic/react";
+// import { IonButton, IonIcon } from "@ionic/react";
 import classNames from "classnames";
 import { chevronBack } from "../../icons";
 import { PlayerStore } from "../../store";
 import ReciterCard from "../cards/Reciter";
 import styles from "./Reciters.module.css";
+
+import dynamic from "next/dynamic";
+
+const IonButton = dynamic(
+  () => import("@ionic/react").then((mod) => mod.IonButton),
+  {
+    ssr: false,
+  }
+);
+const IonIcon = dynamic(
+  () => import("@ionic/react").then((mod) => mod.IonIcon),
+  {
+    ssr: false,
+  }
+);
 
 const Reciters = () => {
   const reciters = PlayerStore.useState((s) => s.reciters);

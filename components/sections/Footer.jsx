@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 // import { useLocation } from "react-router-dom";
 import classNames from "classnames";
 
-import { IonIcon, IonRouterLink, IonLabel, IonList } from "@ionic/react";
+// import { IonIcon, IonRouterLink, IonLabel, IonList } from "@ionic/react";
 
 import { grid, gridOutline } from "ionicons/icons";
 import { PlayerStore } from "../../store";
@@ -20,6 +20,33 @@ import {
 } from "../../icons";
 
 import styles from "./Footer.module.css";
+
+import dynamic from "next/dynamic";
+
+const IonList = dynamic(
+  () => import("@ionic/react").then((mod) => mod.IonList),
+  {
+    ssr: false,
+  }
+);
+const IonLabel = dynamic(
+  () => import("@ionic/react").then((mod) => mod.IonLabel),
+  {
+    ssr: false,
+  }
+);
+const IonRouterLink = dynamic(
+  () => import("@ionic/react").then((mod) => mod.IonRouterLink),
+  {
+    ssr: false,
+  }
+);
+const IonIcon = dynamic(
+  () => import("@ionic/react").then((mod) => mod.IonIcon),
+  {
+    ssr: false,
+  }
+);
 
 const pages = [
   {

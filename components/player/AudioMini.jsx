@@ -1,4 +1,4 @@
-import { IonContent, IonIcon } from "@ionic/react";
+// import { IonContent, IonIcon } from "@ionic/react";
 import classNames from "classnames";
 import { PlayerStore, setPlaying, setPlayerMini } from "../../store";
 import Tune from "../sections/TuneMini";
@@ -9,6 +9,15 @@ import {
 } from "ionicons/icons";
 import { playCircle, pauseCircle } from "../../icons";
 import styles from "./AudioMini.module.css";
+
+import dynamic from "next/dynamic";
+
+const IonIcon = dynamic(
+  () => import("@ionic/react").then((mod) => mod.IonIcon),
+  {
+    ssr: false,
+  }
+);
 
 const AudioMini = () => {
   const playing = PlayerStore.useState((s) => s.playing);

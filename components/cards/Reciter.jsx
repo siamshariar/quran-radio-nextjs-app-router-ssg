@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { IonIcon } from "@ionic/react";
+// import { IonIcon } from "@ionic/react";
 import classNames from "classnames";
 import {
   PlayerStore,
@@ -9,6 +9,15 @@ import {
 } from "../../store";
 import { playCircle, pauseCircle } from "../../icons";
 import styles from "./Reciter.module.css";
+
+import dynamic from "next/dynamic";
+
+const IonIcon = dynamic(
+  () => import("@ionic/react").then((mod) => mod.IonIcon),
+  {
+    ssr: false,
+  }
+);
 
 const Reciter = ({ reciter }) => {
   const playing = PlayerStore.useState((s) => s.playing);
@@ -29,7 +38,7 @@ const Reciter = ({ reciter }) => {
         reciterId === reciter.reciter_id ? styles.active : ""
       )}
     >
-      <Link href="/">
+      <Link href="/" legacyBehavior>
         <a className={styles.wrapper} onClick={() => handleReciterChange()}>
           <div className={styles.left}>
             <div className={styles.image}>

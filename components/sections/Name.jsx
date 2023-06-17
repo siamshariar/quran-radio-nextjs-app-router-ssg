@@ -15,7 +15,7 @@ const NameSection = () => {
         <>
           <div className={styles.chapter}>
             <h2>
-              <Link href="/reciters">
+              <Link href="/reciters" legacyBehavior>
                 <a>Reciter - {reciterName}</a>
               </Link>
             </h2>

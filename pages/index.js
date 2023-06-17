@@ -11,7 +11,7 @@
 import Link from "next/link";
 import { menuController } from "@ionic/core";
 import { menuSharp } from "ionicons/icons";
-import HomeContent from "../components/pages/Home";
+import HomeContent from "@/components/pages/Home";
 
 const menuClick = async (e) => {
   e.preventDefault();

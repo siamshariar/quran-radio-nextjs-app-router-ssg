@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { IonIcon, IonRouterLink } from "@ionic/react";
+// import { IonIcon, IonRouterLink } from "@ionic/react";
 import { play as playIcon, pause as pauseIcon } from "ionicons/icons";
 import {
   PlayerStore,
@@ -8,6 +8,15 @@ import {
   setPlayerMini,
 } from "../../store";
 import styles from "./Chapter.module.css";
+
+import dynamic from "next/dynamic";
+
+const IonRouterLink = dynamic(
+  () => import("@ionic/react").then((mod) => mod.IonRouterLink),
+  {
+    ssr: false,
+  }
+);
 
 const Chapter = ({ chapter }) => {
   const playing = PlayerStore.useState((s) => s.playing);

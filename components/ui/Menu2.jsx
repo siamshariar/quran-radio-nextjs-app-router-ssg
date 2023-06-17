@@ -40,7 +40,7 @@ const Menu = () => {
         <ion-list>
           {menus.map((m, k) => (
             <ion-menu-toggle auto-hide={false} key={k}>
-              <Link href={m.url} passHref>
+              <Link href={m.url} passHref legacyBehavior>
                 <ion-item detail={false} lines="none">
                   {/* <a> */}
                   <ion-icon icon={m.icon} slot="start" />

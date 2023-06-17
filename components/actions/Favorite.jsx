@@ -1,9 +1,18 @@
 import { useEffect, useState } from "react";
-import { IonIcon } from "@ionic/react";
+// import { IonIcon } from "@ionic/react";
 import { PlayerStore } from "../../store";
 import { LocalStore } from "../../store/local";
 import { useFavoriteStorage } from "../../hooks/useFavoriteStorage";
 import { checkIsFavorite } from "../../lib/check";
+
+import dynamic from "next/dynamic";
+
+const IonIcon = dynamic(
+  () => import("@ionic/react").then((mod) => mod.IonIcon),
+  {
+    ssr: false,
+  }
+);
 
 const Favorite = ({ classes, icon }) => {
   const favorites = LocalStore.useState((s) => s.favorites);

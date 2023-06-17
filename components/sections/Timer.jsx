@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { IonIcon } from "@ionic/react";
+// import { IonIcon } from "@ionic/react";
 import classNames from "classnames";
 import {
   timeOutline,
@@ -18,6 +18,15 @@ import { checkIsFavorite } from "../../lib/check";
 import styles from "./Timer.module.css";
 import Favorite from "../actions/Favorite";
 import TimerAction from "../actions/TimerPrimary";
+
+import dynamic from "next/dynamic";
+
+const IonIcon = dynamic(
+  () => import("@ionic/react").then((mod) => mod.IonIcon),
+  {
+    ssr: false,
+  }
+);
 
 const Timer = () => {
   // const [setTimerOpen, updateSetTimerOpen] = useState(false);

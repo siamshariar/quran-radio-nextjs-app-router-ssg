@@ -1,4 +1,4 @@
-import { IonIcon } from "@ionic/react";
+// import { IonIcon } from "@ionic/react";
 import classNames from "classnames";
 import {
   // play as playIcon,
@@ -20,6 +20,15 @@ import {
 import { PlayerStore, setChapter, setSrc, setPlaying } from "../../store";
 import Loader from "../utils/Loader";
 import styles from "./ControlButtons.module.css";
+
+import dynamic from "next/dynamic";
+
+const IonIcon = dynamic(
+  () => import("@ionic/react").then((mod) => mod.IonIcon),
+  {
+    ssr: false,
+  }
+);
 
 const ControlButtons = () => {
   const playing = PlayerStore.useState((s) => s.playing);

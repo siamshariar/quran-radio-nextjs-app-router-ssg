@@ -22,11 +22,11 @@ import "@ionic/core/css/flex-utils.css";
 import "@ionic/core/css/display.css";
 // import "../styles/variables.css";
 // import "../styles/custom.css";
-import "../styles/global.scss";
+import "@/styles/global.scss";
 
-import Player from "../components/player";
-import Menu from "../components/ui/Menu";
-import Menu2 from "../components/ui/Menu2";
+import Player from "@/components/player";
+import Menu from "@/components/ui/Menu";
+// import Menu2 from "@/components/ui/Menu2";
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
