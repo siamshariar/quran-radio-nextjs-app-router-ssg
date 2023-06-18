@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-// import { useLocation } from "react-router-dom";
+import { useRouter } from "next/router";
 import classNames from "classnames";
 import {
   PlayerStore,
@@ -7,18 +7,10 @@ import {
   setPlayerMini,
   setPlaying,
 } from "../../store";
-
-import Header from "../sections/Header";
-import Content from "../sections/Content";
-import ControlButtons from "../sections/ControlButtons";
 import AudioMini from "./AudioMini";
-import Footer from "../sections/Footer";
-import Timer from "../sections/Timer";
 import AudioTag from "./Audio";
-import styles from "./index.module.css";
-
-import { useRouter } from "next/router";
 import HomeContent from "../ui/HomeContent";
+import styles from "./index.module.css";
 
 const Player = () => {
   const [windowHeight, setWindowHeight] = useState(0);
@@ -68,6 +60,7 @@ const Player = () => {
       setPanelHeight(window.innerHeight);
       setMostTranslate(window.innerHeight);
       setTranslate(isPlayerMini ? window.innerHeight : 0);
+      console.log("Hello");
     };
     window.addEventListener("resize", handleResize);
     return () => {
@@ -220,24 +213,6 @@ const Player = () => {
         ></div>
 
         <div className={styles.panel_content} ref={miniMenuRef}>
-          {/* <div className={styles.wrapper}>
-            <div className={styles.header}>
-              <Header />
-            </div>
-            <div className={styles.content}>
-              <Content />
-            </div>
-            <div className={styles.timer}>
-              <Timer />
-            </div>
-
-            <div className={styles.audio}>
-              <ControlButtons />
-            </div>
-            <div className={styles.menu}>
-              <Footer />
-            </div>
-          </div> */}
           <HomeContent />
         </div>
       </div>

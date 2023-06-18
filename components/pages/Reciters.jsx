@@ -1,24 +1,9 @@
-// import { IonButton, IonIcon } from "@ionic/react";
+import Link from "next/link";
 import classNames from "classnames";
-import { chevronBack } from "../../icons";
+import { chevronBack, search } from "../../icons";
 import { PlayerStore } from "../../store";
 import ReciterCard from "../cards/Reciter";
 import styles from "./Reciters.module.css";
-
-import dynamic from "next/dynamic";
-
-const IonButton = dynamic(
-  () => import("@ionic/react").then((mod) => mod.IonButton),
-  {
-    ssr: false,
-  }
-);
-const IonIcon = dynamic(
-  () => import("@ionic/react").then((mod) => mod.IonIcon),
-  {
-    ssr: false,
-  }
-);
 
 const Reciters = () => {
   const reciters = PlayerStore.useState((s) => s.reciters);
@@ -28,13 +13,11 @@ const Reciters = () => {
       <div className={styles.wrapper}>
         <div className={styles.header}>
           <div className={styles.nav_left}>
-            <IonButton className={styles.back} fill="clear" routerLink="/">
-              <IonIcon
-                icon={chevronBack}
-                slot="start"
-                className={styles.icon}
-              />
-            </IonButton>
+            <Link href="/">
+              <ion-button class={styles.back} fill="clear">
+                <ion-icon icon={chevronBack} slot="start" class={styles.icon} />
+              </ion-button>
+            </Link>
           </div>
 
           <div className={styles.nav_text}>Reciters</div>
@@ -42,14 +25,16 @@ const Reciters = () => {
         </div>
 
         <div className={styles.search}>
+          <ion-icon icon={search} slot="start" class={styles.s_icon} />
           <input type="text" name="search" placeholder="Search" />
         </div>
-        {/* <ion-content> */}
-        {reciters &&
-          reciters.map((reciter, index) => (
-            <ReciterCard key={index} reciter={reciter} />
-          ))}
-        {/* </ion-content> */}
+
+        <div className={styles.content}>
+          {reciters &&
+            reciters.map((reciter, index) => (
+              <ReciterCard key={index} reciter={reciter} />
+            ))}
+        </div>
       </div>
     </div>
   );

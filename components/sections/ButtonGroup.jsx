@@ -19,7 +19,6 @@ import {
 import styles from "./ButtonGroup.module.css";
 import Favorite from "../actions/Favorite";
 import PlaybackRate from "../actions/PlaybackRate";
-import Timer from "../actions/TimerPrimary";
 
 const Buttons = () => {
   return (

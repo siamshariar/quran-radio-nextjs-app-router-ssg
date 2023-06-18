@@ -1,20 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-// import { IonIcon } from "@ionic/react";
 import classNames from "classnames";
 import { PlayerStore } from "../../store";
 import { LocalStore } from "../../store/local";
 import { useSettingStorage } from "../../hooks/useSettingStorage";
 import { checkIsFavorite } from "../../lib/check";
 import styles from "./PlaybackMode.module.css";
-
-import dynamic from "next/dynamic";
-
-const IonIcon = dynamic(
-  () => import("@ionic/react").then((mod) => mod.IonIcon),
-  {
-    ssr: false,
-  }
-);
 
 const PlaybackMode = ({ classes, icon }) => {
   const mode = LocalStore.useState((s) => s.settings.mode);
@@ -60,11 +50,7 @@ const PlaybackMode = ({ classes, icon }) => {
             className={classes.btn} //
             onClick={(e) => setPlaybackMode(e, "live")}
           >
-            <IonIcon
-              icon={icon.normal} //
-              slot="start"
-              className={classes.icon}
-            />
+            <ion-icon icon={icon.normal} slot="start" class={classes.icon} />
           </div>
         )}
 
@@ -73,11 +59,7 @@ const PlaybackMode = ({ classes, icon }) => {
             className={classes.btn} //
             onClick={(e) => setPlaybackMode(e, "normal")}
           >
-            <IonIcon
-              icon={icon.live} //
-              slot="start"
-              className={classes.icon}
-            />
+            <ion-icon icon={icon.live} slot="start" class={classes.icon} />
           </div>
         )}
       </div>

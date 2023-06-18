@@ -1,13 +1,3 @@
-// import dynamic from "next/dynamic";
-
-// const App = dynamic(() => import("../components/App"), {
-//   ssr: false,
-// });
-
-// export default function Index() {
-//   return <App />;
-// }
-
 import Link from "next/link";
 import { menuController } from "@ionic/core";
 import { menuSharp } from "ionicons/icons";

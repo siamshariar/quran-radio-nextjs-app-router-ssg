@@ -1,4 +1,3 @@
-// import { IonIcon } from "@ionic/react";
 import classNames from "classnames";
 import {
   // play as playIcon,
@@ -20,15 +19,6 @@ import {
 import { PlayerStore, setChapter, setSrc, setPlaying } from "../../store";
 import Loader from "../utils/Loader";
 import styles from "./ControlButtons.module.css";
-
-import dynamic from "next/dynamic";
-
-const IonIcon = dynamic(
-  () => import("@ionic/react").then((mod) => mod.IonIcon),
-  {
-    ssr: false,
-  }
-);
 
 const ControlButtons = () => {
   const playing = PlayerStore.useState((s) => s.playing);
@@ -69,18 +59,14 @@ const ControlButtons = () => {
           className={classNames(styles.btn, styles.small)}
           // onClick={playPrevious}
         >
-          <IonIcon icon={repeatIcon} slot="start" className={styles.icon} />
+          <ion-icon icon={repeatIcon} slot="start" class={styles.icon} />
         </div>
 
         <div
           className={classNames(styles.btn, styles.small, styles.shadow)}
           onClick={playPrevious}
         >
-          <IonIcon
-            icon={playPreviousIcon}
-            slot="start"
-            className={styles.icon}
-          />
+          <ion-icon icon={playPreviousIcon} slot="start" class={styles.icon} />
         </div>
 
         {playing && (
@@ -95,7 +81,7 @@ const ControlButtons = () => {
           >
             {loading && <Loader />}
             {!loading && (
-              <IonIcon icon={playIcon} slot="start" className={styles.icon} />
+              <ion-icon icon={playIcon} slot="start" class={styles.icon} />
             )}
           </div>
         )}
@@ -112,7 +98,7 @@ const ControlButtons = () => {
           >
             {loading && <Loader />}
             {!loading && (
-              <IonIcon icon={pauseIcon} slot="start" className={styles.icon} />
+              <ion-icon icon={pauseIcon} slot="start" class={styles.icon} />
             )}
           </div>
         )}
@@ -121,14 +107,14 @@ const ControlButtons = () => {
           className={classNames(styles.btn, styles.small, styles.shadow)}
           onClick={playNext}
         >
-          <IonIcon icon={playNextIcon} slot="start" className={styles.icon} />
+          <ion-icon icon={playNextIcon} slot="start" class={styles.icon} />
         </div>
 
         <div
           className={classNames(styles.btn, styles.small)}
           // onClick={playNext}
         >
-          <IonIcon icon={shuffleIcon} slot="start" className={styles.icon} />
+          <ion-icon icon={shuffleIcon} slot="start" class={styles.icon} />
         </div>
       </div>
     </div>

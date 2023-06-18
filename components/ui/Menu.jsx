@@ -1,29 +1,25 @@
-import {
-  shareSocialOutline,
-  informationCircleOutline,
-  homeOutline,
-} from "ionicons/icons";
+import { share, searchOutline, nextOutline } from "@/icons";
 import Link from "next/link";
 
 const menus = [
   {
     title: "হোম",
-    icon: homeOutline,
+    icon: share,
     url: "/",
   },
   {
     title: "About",
-    icon: informationCircleOutline,
+    icon: searchOutline,
     url: "/about",
   },
   {
     title: "List",
-    icon: informationCircleOutline,
+    icon: nextOutline,
     url: "/list",
   },
   {
     title: "শেয়ার করুন",
-    icon: shareSocialOutline,
+    icon: nextOutline,
     url: "#",
   },
 ];
@@ -40,15 +36,13 @@ const Menu = () => {
         <ion-list>
           {menus.map((m, k) => (
             <ion-menu-toggle auto-hide={false} key={k}>
-              <Link href={m.url} passHref legacyBehavior>
-                <a>
-                  <ion-item detail={false} lines="none">
-                    {/* <a> */}
-                    <ion-icon icon={m.icon} slot="start" />
-                    {m.title}
-                    {/* </a> */}
-                  </ion-item>
-                </a>
+              <Link href={m.url} passHref>
+                <ion-item detail={false} lines="none">
+                  {/* <a> */}
+                  <ion-icon icon={m.icon} slot="start" />
+                  {m.title}
+                  {/* </a> */}
+                </ion-item>
               </Link>
             </ion-menu-toggle>
           ))}

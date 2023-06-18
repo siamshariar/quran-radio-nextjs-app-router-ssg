@@ -2,17 +2,16 @@ import React, { useEffect } from "react";
 import { defineCustomElements as ionDefineCustomElements } from "@ionic/core/loader";
 import Head from "next/head";
 import Script from "next/script";
-// import Menu from "../component/Menu";
 
-/* Core CSS required for Ionic components to work properly */
+// Core CSS required for Ionic components to work properly
 import "@ionic/core/css/core.css";
 
-/* Basic CSS for apps built with Ionic */
+// Basic CSS for apps built with Ionic
 import "@ionic/core/css/normalize.css";
 import "@ionic/core/css/structure.css";
 import "@ionic/core/css/typography.css";
 
-/* Optional CSS utils that can be commented out */
+// Optional CSS utils that can be commented out
 import "tailwindcss/tailwind.css";
 import "@ionic/core/css/padding.css";
 import "@ionic/core/css/float-elements.css";
@@ -20,8 +19,8 @@ import "@ionic/core/css/text-alignment.css";
 import "@ionic/core/css/text-transformation.css";
 import "@ionic/core/css/flex-utils.css";
 import "@ionic/core/css/display.css";
-// import "../styles/variables.css";
-// import "../styles/custom.css";
+
+// custom css
 import "@/styles/global.scss";
 
 import Player from "@/components/player";
@@ -51,8 +50,8 @@ function MyApp({ Component, pageProps }) {
       {/* <ion-app> */}
       {/* <Menu2 /> */}
       <Menu />
-
       <Player />
+      {/* <ion-page> */}
       <div className="page-primary ion-page" id="main-content">
         {/* <div className="ion-page" > */}
         {/* {Component.header} */}
@@ -65,6 +64,7 @@ function MyApp({ Component, pageProps }) {
           </ion-toolbar>
         </ion-footer> */}
       </div>
+      {/* </ion-page> */}
       {/* </ion-app> */}
     </>
   );

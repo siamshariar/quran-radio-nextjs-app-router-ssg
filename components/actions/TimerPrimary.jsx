@@ -1,15 +1,8 @@
 import { useEffect, useState } from "react";
-// import { IonIcon, useIonPicker, IonButton } from "@ionic/react";
 import { PlayerStore, setTimer } from "../../store";
 
 import dynamic from "next/dynamic";
 
-const IonIcon = dynamic(
-  () => import("@ionic/react").then((mod) => mod.IonIcon),
-  {
-    ssr: false,
-  }
-);
 const useIonPicker = dynamic(
   () => import("@ionic/react").then((mod) => mod.useIonPicker),
   {
@@ -83,11 +76,7 @@ const TimerSet = ({ classes, icon }) => {
         )
       }
     >
-      <IonIcon
-        icon={icon} //
-        slot="start"
-        className={classes.icon}
-      />
+      <ion-icon icon={icon} slot="start" class={classes.icon} />
     </div>
   );
 };
@@ -128,11 +117,7 @@ const UnsetTimer = ({ classes, icon }) => {
         )
       }
     >
-      <IonIcon
-        icon={icon} //
-        slot="start"
-        className={classes.icon}
-      />
+      <ion-icon icon={icon} slot="start" class={classes.icon} />
     </div>
   );
 };

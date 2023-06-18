@@ -1,17 +1,6 @@
 import React, { useEffect, useRef } from "react";
-
-// import { IonDatetime } from "@ionic/react";
 import classNames from "classnames";
 import styles from "./ModalSetTimer.module.css";
-
-import dynamic from "next/dynamic";
-
-const IonDatetime = dynamic(
-  () => import("@ionic/react").then((mod) => mod.IonDatetime),
-  {
-    ssr: false,
-  }
-);
 
 const ModalSetTimer = ({ open, handler }) => {
   const hourRef = useRef(null);
@@ -92,7 +81,9 @@ const ModalSetTimer = ({ open, handler }) => {
           </div>
         </div>
 
-        <IonDatetime presentation="time"></IonDatetime>
+        {/* <IonDatetime presentation="time"></IonDatetime> */}
+
+        <ion-datetime presentation="time"></ion-datetime>
 
         {/* <div className={styles.timer}>
           <div className={styles.hour} ref={hourRef}>

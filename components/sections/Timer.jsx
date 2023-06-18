@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-// import { IonIcon } from "@ionic/react";
 import classNames from "classnames";
 import {
   timeOutline,
@@ -19,15 +18,6 @@ import styles from "./Timer.module.css";
 import Favorite from "../actions/Favorite";
 import TimerAction from "../actions/TimerPrimary";
 
-import dynamic from "next/dynamic";
-
-const IonIcon = dynamic(
-  () => import("@ionic/react").then((mod) => mod.IonIcon),
-  {
-    ssr: false,
-  }
-);
-
 const Timer = () => {
   // const [setTimerOpen, updateSetTimerOpen] = useState(false);
   // const handleSetTimerOpen = (open) => {
@@ -37,11 +27,7 @@ const Timer = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.content}>
-        <IonIcon
-          icon={shareOutline} //
-          slot="start"
-          className={styles.icon}
-        />
+        <ion-icon icon={shareOutline} slot="start" class={styles.icon} />
 
         <Favorite
           classes={{

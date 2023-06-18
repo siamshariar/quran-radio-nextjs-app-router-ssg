@@ -35,7 +35,7 @@
   background-color: var(--main-color);
 }
 .progress input {
-  -webkit-appearance: none;
+  appearance: none;
   outline: none;
   border: none;
   padding: 0;

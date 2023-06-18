@@ -1,5 +1,4 @@
 import Link from "next/link";
-// import { IonIcon } from "@ionic/react";
 import classNames from "classnames";
 import {
   PlayerStore,
@@ -9,15 +8,6 @@ import {
 } from "../../store";
 import { playCircle, pauseCircle } from "../../icons";
 import styles from "./Reciter.module.css";
-
-import dynamic from "next/dynamic";
-
-const IonIcon = dynamic(
-  () => import("@ionic/react").then((mod) => mod.IonIcon),
-  {
-    ssr: false,
-  }
-);
 
 const Reciter = ({ reciter }) => {
   const playing = PlayerStore.useState((s) => s.playing);
@@ -51,18 +41,10 @@ const Reciter = ({ reciter }) => {
           </div>
           <div className={styles.right}>
             {reciterId === reciter.reciter_id && playing && (
-              <IonIcon
-                icon={playCircle} //
-                slot="start"
-                className={styles.icon}
-              />
+              <ion-icon icon={playCircle} slot="start" class={styles.icon} />
             )}
             {(reciterId !== reciter.reciter_id || !playing) && (
-              <IonIcon
-                icon={pauseCircle}
-                slot="start"
-                className={styles.icon}
-              />
+              <ion-icon icon={pauseCircle} slot="start" class={styles.icon} />
             )}
           </div>
         </a>
