@@ -1,44 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import classNames from "classnames";
-import { PlayerStore } from "../../store";
-import { LocalStore } from "../../store/local";
-import { useSettingStorage } from "../../hooks/useSettingStorage";
-import { checkIsFavorite } from "../../lib/check";
+import { LocalStore } from "@/store/local";
+import { useSettingStorage } from "@/hooks/useSettingStorage";
 import styles from "./PlaybackRate.module.css";
 
 const PlaybackRate = ({ classes, icon }) => {
-  const favorites = LocalStore.useState((s) => s.favorites);
-  const reciterId = PlayerStore.useState((s) => s.reciterId);
-  const chapterIndex = PlayerStore.useState((s) => s.chapterIndex);
-
-  const { addFavorite, removeFavorite } = useSettingStorage();
-  const [isFavorite, setIsFavorite] = useState(false);
-
-  useEffect(() => {
-    if (checkIsFavorite(favorites, reciterId, chapterIndex)) {
-      setIsFavorite(true);
-    } else {
-      setIsFavorite(false);
-    }
-  }, [favorites, chapterIndex, reciterId]);
-
-  const handleAddFavorite = async () => {
-    if (checkIsFavorite(favorites, reciterId, chapterIndex)) {
-      return;
-    }
-    await addFavorite(reciterId, chapterIndex);
-    setIsFavorite(true);
-  };
-
-  const handleRemoveFavorite = async () => {
-    if (checkIsFavorite(favorites, reciterId, chapterIndex)) {
-      await removeFavorite(reciterId, chapterIndex);
-      setIsFavorite(false);
-      return;
-    }
-    return;
-  };
-
   const [modalOpen, setModalOpen] = useState(false);
 
   const handleModal = (e, open) => {
@@ -56,7 +22,6 @@ const PlaybackRate = ({ classes, icon }) => {
           <ion-icon icon={icon} slot="start" class={classes.icon} />
         </div>
       </div>
-
       <PlaybackRateModal open={modalOpen} handler={handleModal} />
     </>
   );
@@ -86,7 +51,7 @@ const PlaybackRateModal = ({ open, handler }) => {
     <div
       ref={modalRef}
       className={classNames(styles.modal, open ? styles.open : "")}
-      onClick={(e) => handler(e, false)}
+      // onClick={(e) => handler(e, false)}
     >
       <div className={styles.playback}>
         <button

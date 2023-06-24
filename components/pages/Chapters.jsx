@@ -1,50 +1,57 @@
-import {
-  IonPage,
-  IonHeader,
-  IonButton,
-  IonIcon,
-  IonContent,
-} from "@ionic/react";
-import { chevronBack } from "ionicons/icons";
-import { PlayerStore } from "../../store";
-import ChapterCard from "../cards/Chapter";
-import styles from "./Chapters.module.css";
+import Link from "next/link";
+import classNames from "classnames";
+import { PlayerStore } from "@/store";
+import { chevronBack, search } from "@/icons";
+import ChapterCard from "@/components/cards/Chapter";
+import styles from "./Pages.module.css";
 
-const ChapterList = ({ match }) => {
-  const slug = match.params.slug;
-  const chapters = PlayerStore.useState((s) => s.chapters);
-  const reciterName = PlayerStore.useState((s) => s.reciterName);
-  const reciterImage = PlayerStore.useState((s) => s.reciterImage);
+// const ChapterList = ({ match }) => {
+const ChapterListPage = ({ reciter, chapterList }) => {
+  // const slug = match.params.slug;
 
   return (
-    <IonPage className="page-primary">
-      <IonHeader className={styles.header}>
-        <IonButton
-          className={styles.back} //
-          fill="clear"
-          routerLink="/"
-        >
-          <IonIcon icon={chevronBack} slot="start" className={styles.icon} />
-        </IonButton>
-        <span>Chapters List</span>
-      </IonHeader>
-      <IonContent>
+    <div className={styles.panel_content}>
+      <div className={styles.wrapper}>
+        <div className={styles.header}>
+          <div className={styles.nav_left}>
+            <Link href="/">
+              <ion-button class={styles.back} fill="clear">
+                <ion-icon icon={chevronBack} slot="start" class={styles.icon} />
+              </ion-button>
+            </Link>
+          </div>
+
+          <div className={styles.nav_text}>Chapters</div>
+          <div className={styles.nav_left}></div>
+        </div>
+
         <div className={styles.reciter}>
           <div className={styles.reciter_name}>
-            <span>{reciterName}</span>
+            <span>{reciter.name}</span>
           </div>
           <div className={styles.image}>
-            <img src={`/img/reciters/${reciterImage}`} alt="reciter" />
+            <img
+              src="/img/reciters/Abdul-Basit-Abdus-Samad.jpg"
+              alt="reciter"
+            />
           </div>
         </div>
-        {chapters &&
-          chapters.length &&
-          chapters.map((chapter) => (
-            <ChapterCard key={chapter.chapterNo} chapter={chapter} />
-          ))}
-      </IonContent>
-    </IonPage>
+
+        <div className={styles.content}>
+          {chapterList &&
+            chapterList.length &&
+            chapterList.map((chapterNo, index) => (
+              <ChapterCard
+                key={chapterNo}
+                index={index}
+                reciterId={reciter.id}
+                chapterNo={chapterNo}
+              />
+            ))}
+        </div>
+      </div>
+    </div>
   );
 };
 
-export default ChapterList;
+export default ChapterListPage;

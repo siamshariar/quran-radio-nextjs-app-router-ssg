@@ -1,15 +1,4 @@
-import classNames from "classnames";
-
-import {
-  homeOutline,
-  exploreOutline,
-  subscriptionOutline,
-  libraryOutline,
-  musicalNoteOutline,
-  musicalNote,
-} from "../../icons";
-
-import HomeContent from "../ui/HomeContent";
+import HomeContent from "@/components/ui/HomeContent";
 import styles from "./Home.module.css";
 
 const Home = () => {

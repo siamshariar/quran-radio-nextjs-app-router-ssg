@@ -56,18 +56,16 @@ export const useRecentStorage = () => {
       newRecentArr = newRecentArr.slice(0, -1);
     }
 
-    const filtered = reciters.filter(
-      (reciter) => reciter.reciter_id === reciterId
-    );
+    const filtered = reciters.filter((reciter) => reciter.id === reciterId);
 
     const reciter = filtered[0];
 
     const newRecentItem = {
       id: "" + new Date().getTime(),
       reciterId: reciterId,
-      reciterSlug: reciter.reciter_slug,
-      reciterName: reciter.reciter_name,
-      reciterImage: reciter.reciter_image,
+      reciterSlug: "reciter.reciter_slug",
+      reciterName: reciter.name,
+      reciterImage: "reciter.reciter_image",
       chapterIndex: chapterIndex,
       chapterName: chapters[chapterIndex].name,
       createdAt: new Date().getTime(),

@@ -40,20 +40,19 @@ export const useFavoriteStorage = () => {
     initStorage();
   }, []);
 
-  const addFavorite = async (reciterId, chapterIndex) => {
-    const filtered = reciters.filter(
-      (reciter) => reciter.reciter_id === reciterId
-    );
-    const reciter = filtered[0];
+  const addFavorite = async (reciterId, chapterNo) => {
+    const reciter = reciters.find((obj) => obj.id === reciterId);
+    console.log(reciterId, chapterNo);
+    console.log(reciter);
 
     const newFavorite = {
       id: "" + new Date().getTime(),
       reciterId: reciterId,
-      reciterSlug: reciter.reciter_slug,
-      reciterName: reciter.reciter_name,
-      reciterImage: reciter.reciter_image,
-      chapterIndex: chapterIndex,
-      chapterName: chapters[chapterIndex].name,
+      reciterSlug: "",
+      reciterName: reciter.name,
+      reciterImage: "",
+      chapterNo: chapterNo,
+      chapterName: chapters[chapterNo - 1].name,
       createdAt: new Date().getTime(),
       status: 1,
     };
@@ -63,10 +62,9 @@ export const useFavoriteStorage = () => {
     store?.set(STORE_KEY, updatedFavorites);
   };
 
-  const removeFavorite = async (reciterId, chapterIndex) => {
+  const removeFavorite = async (reciterId, chapterNo) => {
     let updated = favorites.filter(
-      (item) =>
-        item.reciterId !== reciterId || item.chapterIndex !== chapterIndex
+      (item) => item.reciterId !== reciterId || item.chapterNo !== chapterNo
     );
     setFavorites(updated);
     return store?.set(STORE_KEY, updated);

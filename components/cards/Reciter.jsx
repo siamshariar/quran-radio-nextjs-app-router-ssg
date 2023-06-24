@@ -3,52 +3,70 @@ import classNames from "classnames";
 import {
   PlayerStore,
   setReciter,
-  setPlayerMini,
   setChapter,
-} from "../../store";
-import { playCircle, pauseCircle } from "../../icons";
-import styles from "./Reciter.module.css";
+  setChapterList,
+  // setPlaying,
+} from "@/store";
+import { playCircle, pauseCircle } from "@/icons";
+import styles from "./Card.module.css";
 
 const Reciter = ({ reciter }) => {
   const playing = PlayerStore.useState((s) => s.playing);
   const reciterId = PlayerStore.useState((s) => s.reciterId);
 
   const handleReciterChange = () => {
-    setPlayerMini(false);
-    if (reciterId === reciter.reciter_id) return;
-    const randomChapterIndex = Math.floor(Math.random() * 114);
-    setReciter(reciter.reciter_id);
-    setChapter(randomChapterIndex);
+    if (reciterId === reciter.id) {
+      return;
+    } else {
+      const reciterId = reciter.id;
+      const chapterList = reciter.moshaf[0].surah_list.split(",");
+      const randomChapterIndex = Math.floor(Math.random() * chapterList.length);
+      setReciter(reciterId);
+      setChapter(chapterList, randomChapterIndex);
+      setChapterList(reciterId);
+      // setPlaying(true);
+    }
   };
 
   return (
     <div
       className={classNames(
         styles.card,
-        reciterId === reciter.reciter_id ? styles.active : ""
+        reciterId === reciter.id ? styles.active : ""
       )}
     >
-      <Link href="/" legacyBehavior>
-        <a className={styles.wrapper} onClick={() => handleReciterChange()}>
-          <div className={styles.left}>
-            <div className={styles.image}>
-              <img src={`/img/reciters/${reciter.reciter_image}`} alt="" />
-            </div>
+      <div className={styles.wrapper}>
+        <div className={styles.left}>
+          <div className={styles.image}>
+            {/* <img src={`/img/reciters/${reciter.reciter_image}`} alt="" /> */}
+            <img
+              src="/img/reciters/mishary-rashid-alafasy-profile.webp"
+              alt=""
+            />
           </div>
-          <div className={styles.middle}>
-            <div className={styles.name}>{reciter.reciter_name}</div>
-            <div className={styles.name2}>- Recited sura 114</div>
+        </div>
+
+        <Link href={`/reciters/${reciter.id}`} className={styles.middle}>
+          <div className={styles.name}>{reciter.name}</div>
+          <div className={styles.meaning}>
+            - Recited sura {reciter.moshaf[0].surah_list.split(",").length}
           </div>
-          <div className={styles.right}>
-            {reciterId === reciter.reciter_id && playing && (
-              <ion-icon icon={playCircle} slot="start" class={styles.icon} />
-            )}
-            {(reciterId !== reciter.reciter_id || !playing) && (
-              <ion-icon icon={pauseCircle} slot="start" class={styles.icon} />
-            )}
-          </div>
-        </a>
-      </Link>
+        </Link>
+
+        <div className={styles.right}>
+          {reciterId === reciter.id && playing && (
+            <ion-icon icon={playCircle} slot="start" class={styles.icon} />
+          )}
+          {(reciterId !== reciter.id || !playing) && (
+            <ion-icon
+              icon={pauseCircle}
+              slot="start"
+              class={styles.icon}
+              onClick={() => handleReciterChange()}
+            />
+          )}
+        </div>
+      </div>
     </div>
   );
 };

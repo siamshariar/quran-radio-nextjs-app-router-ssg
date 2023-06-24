@@ -1,36 +1,33 @@
 import { useEffect, useState } from "react";
-import { PlayerStore } from "../../store";
-import { LocalStore } from "../../store/local";
-import { useFavoriteStorage } from "../../hooks/useFavoriteStorage";
-import { checkIsFavorite } from "../../lib/check";
+import { LocalStore } from "@/store/local";
+import { useFavoriteStorage } from "@/hooks/useFavoriteStorage";
+import { checkIsFavorite } from "@/lib/check";
 
-const Favorite = ({ classes, icon }) => {
+const Favorite = ({ reciterId, chapterNo, classes, icon }) => {
   const favorites = LocalStore.useState((s) => s.favorites);
-  const reciterId = PlayerStore.useState((s) => s.reciterId);
-  const chapterIndex = PlayerStore.useState((s) => s.chapterIndex);
-
   const { addFavorite, removeFavorite } = useFavoriteStorage();
   const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
-    if (checkIsFavorite(favorites, reciterId, chapterIndex)) {
+    if (checkIsFavorite(favorites, reciterId, chapterNo)) {
       setIsFavorite(true);
     } else {
       setIsFavorite(false);
     }
-  }, [favorites, chapterIndex, reciterId]);
+  }, [favorites, chapterNo, reciterId]);
 
   const handleAddFavorite = async () => {
-    if (checkIsFavorite(favorites, reciterId, chapterIndex)) {
+    if (checkIsFavorite(favorites, reciterId, chapterNo)) {
       return;
     }
-    await addFavorite(reciterId, chapterIndex);
+    await addFavorite(reciterId, chapterNo);
     setIsFavorite(true);
+    return;
   };
 
   const handleRemoveFavorite = async () => {
-    if (checkIsFavorite(favorites, reciterId, chapterIndex)) {
-      await removeFavorite(reciterId, chapterIndex);
+    if (checkIsFavorite(favorites, reciterId, chapterNo)) {
+      await removeFavorite(reciterId, chapterNo);
       setIsFavorite(false);
       return;
     }

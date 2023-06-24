@@ -1,53 +1,110 @@
-import { share, searchOutline, nextOutline } from "@/icons";
 import Link from "next/link";
+import classNames from "classnames";
+import {
+  peopleOutline,
+  informationCircleOutline,
+  helpCircleOutline,
+} from "ionicons/icons";
+import {
+  homeOutline,
+  musicalNoteOutline,
+  starOutline,
+  musicalNote,
+  settingsOutline,
+  share,
+} from "@/icons";
+import { PlayerStore, setChapter, setSrc, setPlaying } from "@/store";
+import styles from "./Menu.module.css";
 
 const menus = [
   {
-    title: "হোম",
-    icon: share,
+    title: "Home",
+    icon: homeOutline,
     url: "/",
   },
   {
+    title: "Reciters",
+    icon: peopleOutline,
+    url: "/reciters",
+  },
+  {
+    title: "Chapters",
+    icon: musicalNoteOutline,
+    url: "/chapters",
+  },
+  {
+    title: "Favorites",
+    icon: starOutline,
+    url: "/favorites",
+  },
+  {
+    title: "Recent",
+    icon: musicalNote,
+    url: "/recent",
+  },
+  {
     title: "About",
-    icon: searchOutline,
+    icon: informationCircleOutline,
     url: "/about",
   },
   {
-    title: "List",
-    icon: nextOutline,
-    url: "/list",
+    title: "Support",
+    icon: helpCircleOutline,
+    url: "/support",
   },
   {
-    title: "শেয়ার করুন",
-    icon: nextOutline,
+    title: "Settings",
+    icon: settingsOutline,
+    url: "/settings",
+  },
+  {
+    title: "Share",
+    icon: share,
     url: "#",
   },
 ];
 
 const Menu = () => {
+  const reciterId = PlayerStore.useState((s) => s.reciterId);
   return (
-    <ion-menu side="start" content-id="main-content" menuId="menu1">
-      <ion-header>
-        <ion-toolbar>
-          <ion-title>Menu 1</ion-title>
-        </ion-toolbar>
+    <ion-menu
+      side="start"
+      content-id="main-content"
+      menuId="main-menu"
+      class={styles.menu}
+    >
+      <ion-header class={styles.header}>
+        <div className={styles.logo}>
+          <div className={styles.title}>
+            <Link href="/">
+              <img src="/img/logo/logo.png" alt="" />
+            </Link>
+          </div>
+        </div>
       </ion-header>
-      <ion-content className="menu">
-        <ion-list>
+      <ion-content class={styles.content}>
+        <ion-list class={styles.list}>
           {menus.map((m, k) => (
             <ion-menu-toggle auto-hide={false} key={k}>
-              <Link href={m.url} passHref>
-                <ion-item detail={false} lines="none">
-                  {/* <a> */}
-                  <ion-icon icon={m.icon} slot="start" />
+              <Link
+                href={m.url === "/chapters" ? `/reciters/${reciterId}` : m.url}
+              >
+                <ion-item detail={false} lines="none" class={styles.item}>
+                  <ion-icon icon={m.icon} slot="start" class={styles.icon} />
                   {m.title}
-                  {/* </a> */}
                 </ion-item>
               </Link>
             </ion-menu-toggle>
           ))}
         </ion-list>
       </ion-content>
+
+      <div className={classNames(styles.footer, "p-4 text-base")}>
+        <span>Powered by - </span>
+        <ion-menu-toggle auto-hide={false} class="md">
+          <a href="https://www.deeniinfotech.com/">Deeni Info Tech</a>
+        </ion-menu-toggle>
+      </div>
     </ion-menu>
   );
 };

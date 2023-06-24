@@ -8,9 +8,10 @@ import {
   setLoading,
   setCurrentTime,
   setDur,
-} from "../../store";
-import { LocalStore } from "../../store/local";
-import { useRecentStorage } from "../../hooks/useRecentStorage";
+  setChapterList,
+} from "@/store";
+import { LocalStore } from "@/store/local";
+import { useRecentStorage } from "@/hooks/useRecentStorage";
 
 const AudioTag = () => {
   const audioRef = useRef(null);
@@ -23,6 +24,7 @@ const AudioTag = () => {
   const loading = PlayerStore.useState((s) => s.loading);
   const currentTime = PlayerStore.useState((s) => s.currentTime);
   const isProgress = PlayerStore.useState((s) => s.isProgress);
+  const chapterList = PlayerStore.useState((s) => s.chapterList);
 
   // to prevent the play request was interrupted by a call to pause error
   const playAudio = () => {
@@ -46,26 +48,32 @@ const AudioTag = () => {
     const index = chapterIndex + 1;
     if (index >= 114) {
       setPlaying(false);
-      setChapter(0);
-      setSrc(reciterId, 0);
+      setChapter(chapterList, 0);
+      setSrc(chapterList, reciterId, 0);
       return;
     }
-    setChapter(index);
-    setSrc(reciterId, index);
+    setChapter(chapterList, index);
+    setSrc(chapterList, reciterId, index);
     setPlaying(true);
   };
 
   useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * reciters.length);
+    const reciter = reciters[randomIndex];
+
+    const randomReciterId = reciter.id;
+
     const randomChapterIndex = Math.floor(Math.random() * 114);
-    const randomReciterIndex = Math.floor(Math.random() * reciters.length);
-    const randomReciterId = reciters[randomReciterIndex].reciter_id;
+    // const randomReciterIndex = Math.floor(Math.random() * reciters.length);
+    // const randomReciterId = reciters[randomReciterIndex].reciter_id;
     setReciter(randomReciterId);
-    setChapter(randomChapterIndex);
+    setChapter(chapterList, randomChapterIndex);
+    setChapterList(randomReciterId);
   }, []);
 
   useEffect(() => {
-    setSrc(reciterId, chapterIndex);
-  }, [reciterId, chapterIndex]);
+    setSrc(chapterList, reciterId, chapterIndex);
+  }, [chapterList, reciterId, chapterIndex]);
 
   useEffect(() => {
     if (playing) {
@@ -101,9 +109,7 @@ const AudioTag = () => {
       onEnded={handleEnd}
       onTimeUpdate={(e) => setCurrentTime(e.target.currentTime)}
       onCanPlay={(e) => setDur(e.target.duration)}
-    >
-      {/* <source src={src} type="audio/mpeg" /> */}
-    </audio>
+    ></audio>
   );
 };
 

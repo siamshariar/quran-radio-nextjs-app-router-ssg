@@ -9,7 +9,7 @@ import {
 } from "../../store";
 import AudioMini from "./AudioMini";
 import AudioTag from "./Audio";
-import HomeContent from "../ui/HomeContent";
+import HomeContent from "@/components/ui/HomeContent";
 import styles from "./index.module.css";
 
 const Player = () => {

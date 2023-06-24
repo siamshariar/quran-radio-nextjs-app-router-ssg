@@ -1,27 +1,19 @@
 import classNames from "classnames";
 import {
-  // play as playIcon,
-  playOutline as pauseIcon,
-  // playSkipForward as playNextIcon,
-  // playSkipBack as playPreviousIcon,
-  // shuffleOutline as shuffleIcon,
-  // repeatOutline as repeatIcon,
-} from "ionicons/icons";
-
-import {
   playOutline as playIcon,
+  pauseOutline as pauseIcon,
   nextOutline as playNextIcon,
   previousOutline as playPreviousIcon,
   repeat as repeatIcon,
   shuffle as shuffleIcon,
 } from "../../icons";
-
 import { PlayerStore, setChapter, setSrc, setPlaying } from "../../store";
 import Loader from "../utils/Loader";
 import styles from "./ControlButtons.module.css";
 
 const ControlButtons = () => {
   const playing = PlayerStore.useState((s) => s.playing);
+  const currentChapterList = PlayerStore.useState((s) => s.chapterList);
   const chapterIndex = PlayerStore.useState((s) => s.chapterIndex);
   const reciterId = PlayerStore.useState((s) => s.reciterId);
   const loading = PlayerStore.useState((s) => s.loading);
@@ -39,7 +31,7 @@ const ControlButtons = () => {
     const index = chapterIndex - 1;
     if (index < 0) return;
     setChapter(index);
-    setSrc(reciterId, index);
+    setSrc(currentChapterList, reciterId, index);
     setPlaying(true);
   };
 
@@ -48,7 +40,7 @@ const ControlButtons = () => {
     const index = chapterIndex + 1;
     if (index >= 114) return;
     setChapter(index);
-    setSrc(reciterId, index);
+    setSrc(currentChapterList, reciterId, index);
     setPlaying(true);
   };
 

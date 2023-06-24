@@ -3,7 +3,6 @@ import Link from "next/link";
 import { menuController } from "@ionic/core";
 import { menu, timeOutline, time } from "ionicons/icons";
 import { settings, hamburger } from "../../icons";
-import Settings from "../actions/Settings";
 import styles from "./Header.module.css";
 
 const Header = () => {
@@ -38,14 +37,9 @@ const Header = () => {
 
         <div className={styles.right}>
           <div className={styles.btn}>
-            <Settings
-              classes={{
-                root: styles.item,
-                btn: styles.btn,
-                icon: styles.icon,
-              }}
-              icon={settings}
-            />
+            <Link href="/settings">
+              <ion-icon icon={settings} slot="start" class={styles.icon} />
+            </Link>
           </div>
         </div>
       </div>

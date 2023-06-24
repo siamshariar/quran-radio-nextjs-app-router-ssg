@@ -1,11 +1,6 @@
 import classNames from "classnames";
 import { PlayerStore, setPlaying, setPlayerMini } from "../../store";
 import Tune from "../sections/TuneMini";
-import {
-  play as playIcon,
-  pause as pauseIcon,
-  chevronUpOutline as upIcon,
-} from "ionicons/icons";
 import { playCircle, pauseCircle } from "../../icons";
 import styles from "./AudioMini.module.css";
 

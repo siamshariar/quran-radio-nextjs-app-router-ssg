@@ -1,3 +1,37 @@
-.wrapper {
+.menu {
   z-index: 99999;
+}
+.header {
+  box-shadow: none;
+  border-bottom: 1px solid #ddd;
+  padding: 4px 0;
+}
+.logo {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 7px;
+}
+.title {
+}
+.title img {
+  width: 130px;
+}
+.content {
+}
+.list {
+}
+.item {
+  color: #444;
+}
+.icon {
+  font-size: 20px;
+  margin-right: 12px;
+  color: #444;
+}
+.footer {
+  border-top: 1px solid #ddd;
+  font-size: 14px;
+}
+.footer a {
 }

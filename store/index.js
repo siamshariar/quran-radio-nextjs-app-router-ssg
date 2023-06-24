@@ -1,27 +1,47 @@
 import { Store } from "pullstate";
 import { chapters } from "../data/chapters";
 import { reciters } from "../data/reciters";
-import { recitations } from "../data/recitations";
+
+const getReciterById = (reciterId) => {
+  const reciter = reciters.find((obj) => obj.id === reciterId);
+  return reciter;
+};
+
+const getChapterList = (reciterId) => {
+  const reciter = reciters.find((obj) => obj.id === reciterId);
+  const chapterList = reciter.moshaf[0].surah_list.split(",");
+  return chapterList;
+};
 
 export const PlayerStore = new Store({
+  chapters, // all chapters info
+  reciters, // all reciters
+
   open: true,
   mini: false,
-  chapters,
-  reciters,
-  recitations,
+
+  // current reciter
+  reciter: getReciterById(10), // reciter object
+  reciterId: 10, // reciter id
+  reciterLetter: null,
+  reciterName: null,
+  reciterImage: null,
+  reciterSlug: null,
+
+  // current chapter
+  chapterList: getChapterList(10),
+  chapterIndex: 0, // index of current chapter list
+  chapterName: null,
+  chapterMeaning: null,
+
   src: null,
+
+  loading: false,
   playing: false,
   playbackRate: 1,
-  chapterIndex: 0,
-  chapterName: chapters[0].name,
-  chapterMeaning: chapters[0].meaning,
-  reciterId: 7,
-  reciterSlug: "mishary-rashid-alafasy",
-  reciterName: reciters[7].reciter_name,
-  reciterImage: reciters[7].reciter_image,
-  loading: false,
   currentTime: 0,
   dur: 0,
+
   isProgress: false,
   timer: {
     isSet: false,
@@ -41,47 +61,63 @@ export const setPlayerMini = (isMini) => {
   });
 };
 
-export const setPlaying = (isPlaying) => {
+export const setReciter = (reciterId) => {
+  const reciter = getReciterById(reciterId);
+
   PlayerStore.update((s) => {
-    s.playing = isPlaying;
+    s.reciter = reciter;
+    s.reciterId = reciter.id;
+    s.reciterName = reciter.name;
+    s.reciterLetter = reciter.letter;
+    s.reciterSlug = "";
+    s.reciterImage = "mishary-rashid-alafasy-profile.webp";
   });
 };
 
-export const setChapter = (index) => {
+export const setChapterList = (reciterId) => {
+  PlayerStore.update((s) => {
+    s.chapterList = getChapterList(reciterId);
+  });
+};
+
+export const setChapter = (currentChapters, index) => {
+  const chapterNo = currentChapters[index];
+  const chapter = chapters[chapterNo - 1]; // base chapter
   PlayerStore.update((s) => {
     s.chapterIndex = index;
-    s.chapterName = chapters[index].name;
-    s.chapterMeaning = chapters[index].meaning;
+    s.chapterName = chapter.name;
+    s.chapterMeaning = chapter.meaning;
   });
 };
 
-export const setSrc = (reciterId, chapterIndex) => {
-  PlayerStore.update((s) => {
-    s.src = recitations[reciterId][chapterIndex];
-  });
-};
+export const setSrc = (currentChapters, reciterId, chapterIndex) => {
+  let chapterNo = currentChapters[chapterIndex];
+  let str = "0000" + chapterNo;
+  str = str.slice(-3);
 
-export const setReciter = (id) => {
-  const filtered = reciters.filter((reciter) => reciter.reciter_id === id);
-  const reciter = filtered[0];
+  const reciter = getReciterById(reciterId);
+  const src = reciter.moshaf[0].server + str + ".mp3";
 
   PlayerStore.update((s) => {
-    s.reciterId = id;
-    s.reciterSlug = reciter.reciter_slug;
-    s.reciterName = reciter.reciter_name;
-    s.reciterImage = reciter.reciter_image;
-  });
-};
-
-export const setPlaybackRate = (rate) => {
-  PlayerStore.update((s) => {
-    s.playbackRate = rate;
+    s.src = src;
   });
 };
 
 export const setLoading = (isLoading) => {
   PlayerStore.update((s) => {
     s.loading = isLoading;
+  });
+};
+
+export const setPlaying = (isPlaying) => {
+  PlayerStore.update((s) => {
+    s.playing = isPlaying;
+  });
+};
+
+export const setPlaybackRate = (rate) => {
+  PlayerStore.update((s) => {
+    s.playbackRate = rate;
   });
 };
 

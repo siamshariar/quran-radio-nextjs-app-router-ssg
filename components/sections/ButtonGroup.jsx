@@ -7,8 +7,10 @@ import {
   // timer,
   time,
   musicalNoteOutline,
+  star,
 } from "ionicons/icons";
 
+import { PlayerStore } from "@/store";
 import {
   starOutline,
   shareOutline,
@@ -21,9 +23,15 @@ import Favorite from "../actions/Favorite";
 import PlaybackRate from "../actions/PlaybackRate";
 
 const Buttons = () => {
+  const reciterId = PlayerStore.useState((s) => s.reciterId);
+  const chapterIndex = PlayerStore.useState((s) => s.chapterIndex);
+  const chapterList = PlayerStore.useState((s) => s.chapterList);
+
   return (
     <div className={styles.content}>
       <Favorite
+        reciterId={reciterId}
+        chapterNo={chapterList[chapterIndex]}
         classes={{
           root: styles.item,
           btn: styles.btn,

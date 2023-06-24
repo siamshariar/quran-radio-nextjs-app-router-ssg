@@ -1,9 +1,9 @@
 import Link from "next/link";
 import classNames from "classnames";
-import { chevronBack, search } from "../../icons";
-import { PlayerStore } from "../../store";
-import ReciterCard from "../cards/Reciter";
-import styles from "./Reciters.module.css";
+import { chevronBack, search } from "@/icons";
+import { PlayerStore } from "@/store";
+import ReciterCard from "@/components/cards/Reciter";
+import styles from "./Pages.module.css";
 
 const Reciters = () => {
   const reciters = PlayerStore.useState((s) => s.reciters);
