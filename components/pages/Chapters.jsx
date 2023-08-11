@@ -44,7 +44,7 @@ const ChapterListPage = ({ reciter, chapterList }) => {
               <ChapterCard
                 key={chapterNo}
                 index={index}
-                reciterId={reciter.id}
+                reciter={reciter}
                 chapterNo={chapterNo}
               />
             ))}

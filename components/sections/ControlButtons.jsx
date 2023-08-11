@@ -6,17 +6,18 @@ import {
   previousOutline as playPreviousIcon,
   repeat as repeatIcon,
   shuffle as shuffleIcon,
-} from "../../icons";
-import { PlayerStore, setChapter, setSrc, setPlaying } from "../../store";
+} from "@/icons";
+import { PlayerStore, setChapter, setSrc, setPlaying, setLoop } from "@/store";
 import Loader from "../utils/Loader";
 import styles from "./ControlButtons.module.css";
 
 const ControlButtons = () => {
   const playing = PlayerStore.useState((s) => s.playing);
-  const currentChapterList = PlayerStore.useState((s) => s.chapterList);
+  const currentChapters = PlayerStore.useState((s) => s.chapterList);
   const chapterIndex = PlayerStore.useState((s) => s.chapterIndex);
   const reciterId = PlayerStore.useState((s) => s.reciterId);
   const loading = PlayerStore.useState((s) => s.loading);
+  const loop = PlayerStore.useState((s) => s.loop);
 
   const play = () => {
     setPlaying(true);
@@ -30,26 +31,39 @@ const ControlButtons = () => {
     if (loading) return;
     const index = chapterIndex - 1;
     if (index < 0) return;
-    setChapter(index);
-    setSrc(currentChapterList, reciterId, index);
+    setChapter(currentChapters, index);
+    setSrc(currentChapters, reciterId, index);
     setPlaying(true);
   };
 
   const playNext = () => {
     if (loading) return;
     const index = chapterIndex + 1;
-    if (index >= 114) return;
-    setChapter(index);
-    setSrc(currentChapterList, reciterId, index);
+    if (index >= currentChapters.length) return;
+    setChapter(currentChapters, index);
+    setSrc(currentChapters, reciterId, index);
     setPlaying(true);
+  };
+
+  const handleRepeat = () => {
+    setLoop(!loop);
+    return;
+  };
+
+  const handleShuffle = () => {
+    return;
   };
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.controls}>
         <div
-          className={classNames(styles.btn, styles.small)}
-          // onClick={playPrevious}
+          className={classNames(
+            styles.btn,
+            styles.small,
+            loop ? styles.loop : ""
+          )}
+          onClick={handleRepeat}
         >
           <ion-icon icon={repeatIcon} slot="start" class={styles.icon} />
         </div>
@@ -104,7 +118,7 @@ const ControlButtons = () => {
 
         <div
           className={classNames(styles.btn, styles.small)}
-          // onClick={playNext}
+          onClick={handleShuffle}
         >
           <ion-icon icon={shuffleIcon} slot="start" class={styles.icon} />
         </div>

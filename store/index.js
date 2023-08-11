@@ -38,6 +38,7 @@ export const PlayerStore = new Store({
 
   loading: false,
   playing: false,
+  loop: false,
   playbackRate: 1,
   currentTime: 0,
   dur: 0,
@@ -112,6 +113,12 @@ export const setLoading = (isLoading) => {
 export const setPlaying = (isPlaying) => {
   PlayerStore.update((s) => {
     s.playing = isPlaying;
+  });
+};
+
+export const setLoop = (isLoop) => {
+  PlayerStore.update((s) => {
+    s.loop = isLoop;
   });
 };
 

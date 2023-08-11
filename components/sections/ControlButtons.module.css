@@ -11,7 +11,6 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0;
-
 }
 .btn {
   cursor: pointer;
@@ -32,7 +31,11 @@
 .btn.large {
   min-height: 57px;
   min-width: 57px;
-  background: linear-gradient(140.96deg, #3D3D3F 14.8%, rgba(61, 61, 63, 0.74) 89.51%);
+  background: linear-gradient(
+    140.96deg,
+    #3d3d3f 14.8%,
+    rgba(61, 61, 63, 0.74) 89.51%
+  );
   background-color: transparent !important;
 }
 .btn.shadow {
@@ -45,17 +48,21 @@
     -8px -8px 20px #0001, -5px -5px 6px 0px #0001,
     inset -3px -3px 3px rgb(0 0 0 / 5%);
 
-    background-color: #58585E;
-    box-shadow: none;
+  background-color: #58585e;
+  box-shadow: none;
 }
 .icon {
   width: 14px;
   height: 14px;
   fill: #505054;
 }
+.loop .icon {
+  fill: red;
+}
+
 .btn.shadow .icon {
-  color: #D0D0D0;
-  fill: #D0D0D0;
+  color: #d0d0d0;
+  fill: #d0d0d0;
 }
 .btn.large .icon {
   width: 16px;

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Link from "next/link";
 import classNames from "classnames";
 import { chevronBack, search } from "@/icons";
@@ -7,6 +8,11 @@ import styles from "./Pages.module.css";
 
 const Reciters = () => {
   const reciters = PlayerStore.useState((s) => s.reciters);
+  const [filter, setFilter] = useState("");
+
+  const filteredReciters = reciters.filter((item) =>
+    item.name.toLowerCase().includes(filter.toLowerCase())
+  );
 
   return (
     <div className={styles.panel_content}>
@@ -26,12 +32,18 @@ const Reciters = () => {
 
         <div className={styles.search}>
           <ion-icon icon={search} slot="start" class={styles.s_icon} />
-          <input type="text" name="search" placeholder="Search" />
+          <input
+            type="text"
+            name="search"
+            placeholder="Search"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          />
         </div>
 
         <div className={styles.content}>
-          {reciters &&
-            reciters.map((reciter, index) => (
+          {filteredReciters &&
+            filteredReciters.map((reciter, index) => (
               <ReciterCard key={index} reciter={reciter} />
             ))}
         </div>
