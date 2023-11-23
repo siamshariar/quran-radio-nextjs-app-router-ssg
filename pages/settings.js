@@ -1,7 +1,11 @@
+import { IonContent } from "@ionic/react";
+
 export default function Settings() {
-  return (
-    <div className="">
-      <div className="">Settings Page</div>
-    </div>
-  );
+	return (
+		<IonContent>
+			<div className="">
+				<div className="">Settings Page</div>
+			</div>
+		</IonContent>
+	);
 }

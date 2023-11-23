@@ -1,88 +1,88 @@
 .panel_content {
 }
 .wrapper {
-  background: linear-gradient(90deg, #cdd8e0 0%, #8b959e 100%);
-  padding-left: 30px;
-  padding-right: 30px;
-  min-height: calc(100vh - 76px);
+	background: linear-gradient(90deg, #cdd8e0 0%, #8b959e 100%);
+	padding-left: 30px;
+	padding-right: 30px;
+	min-height: calc(100vh - 76px);
 }
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #3d3d3f;
-  margin-bottom: 13px;
-  padding-top: 13px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	color: #3d3d3f;
+	padding: 10px 30px 10px 30px;
+	background: linear-gradient(90deg, #cdd8e0 0%, #8b959e 100%);
 }
 .nav_left {
-  width: 50px;
-  display: flex;
-  justify-content: flex-start;
+	width: 50px;
+	display: flex;
+	justify-content: flex-start;
 }
 .back {
-  --padding-start: 0;
-  --padding-end: 0;
+	--padding-start: 0;
+	--padding-end: 0;
 }
 .back a {
 }
 .icon {
-  font-size: 20px;
-  color: #3d3d3f;
+	font-size: 20px;
+	color: #3d3d3f;
 }
 .nav_text {
-  font-family: "SFProDisplay";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 17px;
-  line-height: 20px;
-  text-align: center;
-  letter-spacing: 0.5px;
-  color: #3d3d3f;
+	font-family: "SFProDisplay";
+	font-style: normal;
+	font-weight: 400;
+	font-size: 17px;
+	line-height: 20px;
+	text-align: center;
+	letter-spacing: 0.5px;
+	color: #3d3d3f;
 }
 .search {
-  padding: 0;
-  margin-bottom: 14px;
-  height: 35px;
-  background-color: rgba(217, 217, 217, 0.6);
-  border-radius: 24px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  padding-left: 14px;
+	padding: 0;
+	margin-bottom: 14px;
+	height: 35px;
+	background-color: rgba(217, 217, 217, 0.6);
+	border-radius: 24px;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	padding-left: 14px;
 }
 .s_icon {
-  font-size: 18px;
-  color: #3d3d3f;
+	font-size: 18px;
+	color: #3d3d3f;
 }
 .search input {
-  border: none;
-  width: 100%;
-  line-height: 35px;
-  padding: 0 14px;
-  background-color: transparent;
-  font-family: "SFProDisplay";
-  font-size: 16px;
-  font-weight: 400;
-  letter-spacing: 0.5px;
-  color: #3d3d3f;
+	border: none;
+	width: 100%;
+	line-height: 35px;
+	padding: 0 14px;
+	background-color: transparent;
+	font-family: "SFProDisplay";
+	font-size: 16px;
+	font-weight: 400;
+	letter-spacing: 0.5px;
+	color: #3d3d3f;
 }
 .search input::placeholder {
-  /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: #3d3d3f;
-  opacity: 1; /* Firefox */
+	/* Chrome, Firefox, Opera, Safari 10.1+ */
+	color: #3d3d3f;
+	opacity: 1; /* Firefox */
 }
 .search input:-ms-input-placeholder {
-  /* Internet Explorer 10-11 */
-  color: #3d3d3f;
+	/* Internet Explorer 10-11 */
+	color: #3d3d3f;
 }
 .search input::-ms-input-placeholder {
-  /* Microsoft Edge */
-  color: #3d3d3f;
+	/* Microsoft Edge */
+	color: #3d3d3f;
 }
 
 .content {
-  max-width: 360px;
-  margin: 0 auto;
+	max-width: 360px;
+	margin: 0 auto;
 }
 
 .no_record {
@@ -90,33 +90,33 @@
 
 /* chapters page */
 .reciter {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 24px;
-  margin-top: 24px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 24px;
+	padding-top: 24px;
 }
 .reciter .reciter_name {
-  margin-bottom: 16px;
-  font-family: "SFProDisplay";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 17px;
-  line-height: 20px;
-  text-align: center;
-  letter-spacing: 0.5px;
-  color: #3d3d3f;
+	margin-bottom: 16px;
+	font-family: "SFProDisplay";
+	font-style: normal;
+	font-weight: 400;
+	font-size: 17px;
+	line-height: 20px;
+	text-align: center;
+	letter-spacing: 0.5px;
+	color: #3d3d3f;
 }
 .reciter .image {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  overflow: hidden;
+	width: 140px;
+	height: 140px;
+	border-radius: 50%;
+	overflow: hidden;
 }
 .reciter .image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center center;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center center;
 }

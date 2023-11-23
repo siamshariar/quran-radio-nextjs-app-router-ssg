@@ -3,11 +3,11 @@ import { menuController } from "@ionic/core";
 import { menuSharp } from "ionicons/icons";
 import HomeContent from "@/components/pages/Home";
 
-const menuClick = async (e) => {
-  e.preventDefault();
-  window.menuController = menuController;
-  await menuController.open();
-};
+// const menuClick = async (e) => {
+//   e.preventDefault();
+//   window.menuController = menuController;
+//   await menuController.open();
+// };
 
 // Home.header = (
 //   <ion-header translucent>
@@ -25,5 +25,5 @@ const menuClick = async (e) => {
 // );
 
 export default function Home() {
-  return <HomeContent />;
+	return <HomeContent />;
 }

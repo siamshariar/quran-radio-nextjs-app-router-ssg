@@ -1,17 +1,17 @@
 ion-header::after,
 ion-footer::before {
-  display: none;
+	display: none;
 }
 .ion-page {
-  background-color: #fff;
-  // background-color: #f9f9f9;
+	background-color: #fff;
+	// background-color: #f9f9f9;
 }
 // hide scrollbar
 ion-content {
-  --offset-bottom: auto !important;
-  --overflow: hidden;
-  overflow: auto;
+	// --offset-bottom: auto !important;
+	// --overflow: auto;
+	// overflow: auto;
 }
 ion-content::-webkit-scrollbar {
-  display: none;
+	// display: none;
 }

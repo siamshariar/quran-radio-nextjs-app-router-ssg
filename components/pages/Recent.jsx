@@ -1,9 +1,13 @@
+import { IonContent } from "@ionic/react";
+
 const Recent = () => {
-  return (
-    <div className="">
-      <div className="">Recent page</div>
-    </div>
-  );
+	return (
+		<IonContent>
+			<div className="">
+				<div className="">Recent page</div>
+			</div>
+		</IonContent>
+	);
 };
 
 export default Recent;
