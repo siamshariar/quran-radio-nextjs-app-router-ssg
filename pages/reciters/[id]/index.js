@@ -9,27 +9,6 @@ import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import CommonHeader from "@/components/sections/CommonHeader";
 
-// const menuClick = async (e) => {
-// 	e.preventDefault();
-// 	window.menuController = menuController;
-// 	await menuController.open();
-// };
-
-// Home.header = (
-//   <ion-header translucent>
-//     <ion-toolbar>
-//       <ion-buttons slot="start">
-//         <Link href="/">
-//           <ion-button onClick={menuClick}>
-//             <ion-icon icon={menuSharp}></ion-icon>
-//           </ion-button>
-//         </Link>
-//       </ion-buttons>
-//       <ion-title>Home</ion-title>
-//     </ion-toolbar>
-//   </ion-header>
-// );
-
 export default function Home({ reciter, chapterList }) {
 	const isBack = LocalStore.useState((s) => s.isBack);
 	const yp = LocalStore.useState((s) => s.yp);

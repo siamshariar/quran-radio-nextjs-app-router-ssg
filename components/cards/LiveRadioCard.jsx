@@ -3,12 +3,19 @@ import { PlayerStore, setPlaying, setLiveRadio, setLiveSrc } from "@/store";
 import { playCircle, pauseCircle } from "@/icons";
 import styles from "./Card.module.css";
 import { IonIcon } from "@ionic/react";
+import { useSettingStorage } from "@/hooks/useSettingStorage";
+import { LocalStore } from "@/store/local";
 
 const LiveRadioCard = ({ liveRadio, index }) => {
 	const playing = PlayerStore.useState((s) => s.playing);
 	const currLive = PlayerStore.useState((s) => s.currLive);
+	const mode = LocalStore.useState((s) => s.settings.mode);
+	const { setMode } = useSettingStorage();
 
 	const handlePlay = () => {
+		if (mode === "normal") {
+			setMode("live");
+		}
 		if (currLive.id === liveRadio.id) {
 			setPlaying(true);
 		} else {

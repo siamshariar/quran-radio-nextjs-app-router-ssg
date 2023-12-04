@@ -28,7 +28,7 @@ const Reciter = ({ reciter }) => {
 
 	const handleReciterChange = () => {
 		if (mode === "live") {
-			// setPlaybackMode("normal");
+			setPlaybackMode("normal");
 		}
 
 		const reciterId = reciter.id;
@@ -43,7 +43,7 @@ const Reciter = ({ reciter }) => {
 
 	const play = () => {
 		if (mode === "live") {
-			// setPlaybackMode("normal");
+			setPlaybackMode("normal");
 		}
 		setPlaying(true);
 	};

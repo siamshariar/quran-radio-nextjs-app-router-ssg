@@ -26,7 +26,7 @@ import Menu from "@/components/ui/Menu";
 import { IonApp, IonPage, setupIonicReact, IonContent } from "@ionic/react";
 import NonSSRWrapper from "../components/core/NoSSRWrapper";
 import { useRouter } from "next/router";
-import { setIsBack } from "@/store/local";
+import { setFavorites, setIsBack, setRecent, setSettings } from "@/store/local";
 
 function MyApp({ Component, pageProps }) {
 	setupIonicReact();
@@ -39,18 +39,20 @@ function MyApp({ Component, pageProps }) {
 		});
 	}, [router]);
 
-	// return (
-	//   <>
-	//     <Head>
-	//       <meta
-	//         name="viewport"
-	//         content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-	//       ></meta>
-	//     </Head>
-	//     <Component {...pageProps} />
-	//     {/* <Script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></Script> */}
-	//   </>
-	// );
+	useEffect(() => {
+		const localSettings = localStorage.getItem("settings");
+		const localFavorites = localStorage.getItem("favorites");
+		const localRecents = localStorage.getItem("recent");
+		if (localSettings) {
+			setSettings(JSON.parse(localSettings));
+		}
+		if (localFavorites) {
+			setFavorites(JSON.parse(localFavorites));
+		}
+		if (localRecents) {
+			setRecent(JSON.parse(localRecents));
+		}
+	}, []);
 
 	return (
 		<>

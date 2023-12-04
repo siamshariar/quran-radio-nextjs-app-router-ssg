@@ -7,7 +7,6 @@ import styles from "./Pages.module.css";
 import { IonButton, IonIcon } from "@ionic/react";
 import CommonHeader from "../sections/CommonHeader";
 
-// const ChapterList = ({ match }) => {
 const ChapterListPage = ({ reciter, chapterList }) => {
 	// const slug = match.params.slug;
 

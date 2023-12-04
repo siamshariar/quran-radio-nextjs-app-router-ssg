@@ -5,12 +5,13 @@ import {
 	setReciter,
 	setChapter,
 	setChapterList,
-	setPlayerMini,
 	setSrc,
 } from "@/store";
 import { playCircle, pauseCircle } from "@/icons";
 import styles from "./Card.module.css";
 import { IonIcon } from "@ionic/react";
+import { useSettingStorage } from "@/hooks/useSettingStorage";
+import { LocalStore } from "@/store/local";
 
 const Chapter = ({ index, reciter, chapterNo }) => {
 	const playing = PlayerStore.useState((s) => s.playing);
@@ -18,24 +19,31 @@ const Chapter = ({ index, reciter, chapterNo }) => {
 	const chapters = PlayerStore.useState((s) => s.chapters);
 	const currentChapters = PlayerStore.useState((s) => s.chapterList);
 	const currentReciter = PlayerStore.useState((s) => s.reciter);
-	const loading = PlayerStore.useState((s) => s.loading);
+	const mode = LocalStore.useState((s) => s.settings.mode);
+	const { setMode } = useSettingStorage();
 
 	const handleChapterChange = () => {
-		if (
-			reciter.id === currentReciter.id &&
-			currentChapters[chapterIndex] === chapterNo &&
-			playing
-		) {
-			setPlaying(false);
-			return;
-		} else {
-			setReciter(reciter.id);
-			setChapterList(reciter.id);
-			setChapter(reciter.moshaf[0].surah_list.split(","), index);
-			setSrc(reciter.moshaf[0].surah_list.split(","), reciter.id, index);
-			setPlaying(true);
-			return;
+		if (mode === "live") {
+			setMode("normal");
 		}
+		console.log("diff");
+		setReciter(reciter.id);
+		setChapterList(reciter.id);
+		setChapter(reciter.moshaf[0].surah_list.split(","), index);
+		setSrc(reciter.moshaf[0].surah_list.split(","), reciter.id, index);
+		setPlaying(true);
+		return;
+	};
+
+	const play = () => {
+		if (mode === "live") {
+			setMode("normal");
+		}
+		setPlaying(true);
+	};
+
+	const pause = () => {
+		setPlaying(false);
 	};
 
 	return (
@@ -66,14 +74,22 @@ const Chapter = ({ index, reciter, chapterNo }) => {
 
 				<div className={styles.right}>
 					{reciter.id === currentReciter.id &&
-					currentChapters[chapterIndex] === chapterNo &&
-					playing ? (
-						<IonIcon
-							icon={playCircle}
-							slot="start"
-							class={styles.icon}
-							onClick={() => handleChapterChange()}
-						/>
+					currentChapters[chapterIndex] === chapterNo ? (
+						playing && mode === "normal" ? (
+							<IonIcon
+								icon={playCircle}
+								slot="start"
+								className={styles.icon}
+								onClick={pause}
+							/>
+						) : (
+							<IonIcon
+								icon={pauseCircle}
+								slot="start"
+								className={styles.icon}
+								onClick={play}
+							/>
+						)
 					) : (
 						<IonIcon
 							icon={pauseCircle}
