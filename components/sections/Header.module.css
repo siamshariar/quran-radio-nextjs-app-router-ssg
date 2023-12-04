@@ -92,3 +92,8 @@
 		height: 75px;
 	}
 }
+@media screen and (max-height: 560px) {
+	.logo {
+		scale: 0.8;
+	}
+}

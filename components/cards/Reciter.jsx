@@ -5,28 +5,51 @@ import {
 	setReciter,
 	setChapter,
 	setChapterList,
-	// setPlaying,
+	setPlaying,
+	setSrc,
 } from "@/store";
 import { playCircle, pauseCircle } from "@/icons";
 import styles from "./Card.module.css";
 import { IonIcon } from "@ionic/react";
+import { useSettingStorage } from "@/hooks/useSettingStorage";
+import { LocalStore } from "@/store/local";
 
 const Reciter = ({ reciter }) => {
 	const playing = PlayerStore.useState((s) => s.playing);
 	const reciterId = PlayerStore.useState((s) => s.reciterId);
+	const mode = LocalStore.useState((s) => s.settings.mode);
+
+	const { setMode } = useSettingStorage();
+
+	const setPlaybackMode = async (mode) => {
+		await setMode(mode);
+		return;
+	};
 
 	const handleReciterChange = () => {
-		if (reciterId === reciter.id) {
-			return;
-		} else {
-			const reciterId = reciter.id;
-			const chapterList = reciter.moshaf[0].surah_list.split(",");
-			const randomChapterIndex = Math.floor(Math.random() * chapterList.length);
-			setReciter(reciterId);
-			setChapter(chapterList, randomChapterIndex);
-			setChapterList(reciterId);
-			// setPlaying(true);
+		if (mode === "live") {
+			// setPlaybackMode("normal");
 		}
+
+		const reciterId = reciter.id;
+		const chapterList = reciter.moshaf[0].surah_list.split(",");
+		const randomChapterIndex = Math.floor(Math.random() * chapterList.length);
+		setReciter(reciterId);
+		setChapter(chapterList, randomChapterIndex);
+		setChapterList(reciterId);
+		setSrc(chapterList, reciterId, randomChapterIndex);
+		setPlaying(true);
+	};
+
+	const play = () => {
+		if (mode === "live") {
+			// setPlaybackMode("normal");
+		}
+		setPlaying(true);
+	};
+
+	const pause = () => {
+		setPlaying(false);
 	};
 
 	return (
@@ -54,14 +77,27 @@ const Reciter = ({ reciter }) => {
 				</Link>
 
 				<div className={styles.right}>
-					{reciterId === reciter.id && playing && (
-						<IonIcon icon={playCircle} slot="start" class={styles.icon} />
-					)}
-					{(reciterId !== reciter.id || !playing) && (
+					{reciterId === reciter.id &&
+						(playing && mode === "normal" ? (
+							<IonIcon
+								icon={playCircle}
+								slot="start"
+								className={styles.icon}
+								onClick={pause}
+							/>
+						) : (
+							<IonIcon
+								icon={pauseCircle}
+								slot="start"
+								className={styles.icon}
+								onClick={play}
+							/>
+						))}
+					{reciterId !== reciter.id && (
 						<IonIcon
 							icon={pauseCircle}
 							slot="start"
-							class={styles.icon}
+							className={styles.icon}
 							onClick={() => handleReciterChange()}
 						/>
 					)}

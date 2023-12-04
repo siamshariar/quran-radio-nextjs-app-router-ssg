@@ -42,6 +42,11 @@ const menus = [
 		url: "/chapters",
 	},
 	{
+		title: "Live Radios",
+		icon: musicalNote,
+		url: "/live-radio",
+	},
+	{
 		title: "Favorites",
 		icon: starOutline,
 		url: "/favorites",

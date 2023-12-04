@@ -4,39 +4,44 @@ import { PlayerStore } from "../../store";
 import styles from "./Name.module.css";
 
 const NameSection = () => {
-  const mode = LocalStore.useState((s) => s.settings.mode);
-  const chapterName = PlayerStore.useState((s) => s.chapterName);
-  const chapterMeaning = PlayerStore.useState((s) => s.chapterMeaning);
-  const reciterName = PlayerStore.useState((s) => s.reciterName);
+	const mode = LocalStore.useState((s) => s.settings.mode);
+	const chapterName = PlayerStore.useState((s) => s.chapterName);
+	const chapterMeaning = PlayerStore.useState((s) => s.chapterMeaning);
+	const reciterName = PlayerStore.useState((s) => s.reciterName);
+	const currLive = PlayerStore.useState((s) => s.currLive);
 
-  return (
-    <div className={styles.wrapper}>
-      {mode === "normal" && (
-        <>
-          <div className={styles.chapter}>
-            <h2>
-              <Link href="/reciters" legacyBehavior>
-                <a>Reciter - {reciterName}</a>
-              </Link>
-            </h2>
-          </div>
+	return (
+		<div className={styles.wrapper}>
+			{mode === "normal" && (
+				<>
+					<div className={styles.chapter}>
+						<h2>
+							<Link href="/reciters" legacyBehavior>
+								<a>Reciter - {reciterName}</a>
+							</Link>
+						</h2>
+					</div>
 
-          <div className={styles.reciter}>
-            <span>
-              {chapterName} ({chapterMeaning})
-            </span>
-          </div>
-        </>
-      )}
+					<div className={styles.reciter}>
+						<span>
+							{chapterName} ({chapterMeaning})
+						</span>
+					</div>
+				</>
+			)}
 
-      {mode === "live" && (
-        <>
-          <h2>Now Playing</h2>
-          <h1>LIVE RADIO</h1>
-        </>
-      )}
-    </div>
-  );
+			{mode === "live" && (
+				<>
+					<h1>LIVE RADIO</h1>
+					<h2>
+						<Link href="/live-radio" legacyBehavior>
+							<a>{currLive.name}</a>
+						</Link>
+					</h2>
+				</>
+			)}
+		</div>
+	);
 };
 
 export default NameSection;

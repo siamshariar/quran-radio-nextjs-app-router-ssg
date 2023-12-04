@@ -17,12 +17,12 @@
 }
 
 .header {
-	margin-bottom: 70px;
+	margin-bottom: 60px;
 	padding-top: 30px;
 }
 .name {
 	padding-bottom: 0;
-	overflow: hidden;
+	/* overflow: hidden; */
 }
 .image {
 	position: relative;
@@ -105,5 +105,29 @@
 	}
 	.audio {
 		margin-top: 3.75vh;
+	}
+	.image {
+		scale: 0.9;
+	}
+}
+@media screen and (max-height: 560px) {
+	.buttons {
+		scale: 0.8;
+		margin: 0.5vh auto 2vh;
+	}
+	.image {
+		scale: 0.7;
+	}
+	.audio {
+		margin-top: 2vh;
+	}
+	.header {
+		margin-bottom: 1vh;
+		padding-top: 0;
+	}
+}
+@media screen and (max-height: 420px) {
+	.wrapper {
+		overflow: auto;
 	}
 }

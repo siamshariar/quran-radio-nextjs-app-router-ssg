@@ -1,0 +1,65 @@
+import classNames from "classnames";
+import { PlayerStore, setPlaying, setLiveRadio, setLiveSrc } from "@/store";
+import { playCircle, pauseCircle } from "@/icons";
+import styles from "./Card.module.css";
+import { IonIcon } from "@ionic/react";
+
+const LiveRadioCard = ({ liveRadio, index }) => {
+	const playing = PlayerStore.useState((s) => s.playing);
+	const currLive = PlayerStore.useState((s) => s.currLive);
+
+	const handlePlay = () => {
+		if (currLive.id === liveRadio.id) {
+			setPlaying(true);
+		} else {
+			setLiveRadio(index);
+			// update liveSrc and playing at same time to avoid 2 effects from Audio.jsx
+			setLiveSrc(index);
+			setPlaying(true);
+		}
+	};
+
+	const pause = () => {
+		setPlaying(false);
+	};
+
+	return (
+		<div
+			className={classNames(
+				styles.card,
+				currLive.id === liveRadio.id ? styles.active : ""
+			)}>
+			<div className={styles.wrapper}>
+				<div className={styles.left}>
+					<div className={styles.image}>
+						<img src={liveRadio.logo} alt="" />
+					</div>
+				</div>
+
+				<div className={styles.middle}>
+					<div className={styles.name}>{liveRadio.name}</div>
+				</div>
+
+				<div className={styles.right}>
+					{playing && currLive.id === liveRadio.id ? (
+						<IonIcon
+							icon={playCircle}
+							slot="start"
+							className={styles.icon}
+							onClick={pause}
+						/>
+					) : (
+						<IonIcon
+							icon={pauseCircle}
+							slot="start"
+							className={styles.icon}
+							onClick={handlePlay}
+						/>
+					)}
+				</div>
+			</div>
+		</div>
+	);
+};
+
+export default LiveRadioCard;

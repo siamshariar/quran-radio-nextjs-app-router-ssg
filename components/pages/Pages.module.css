@@ -120,3 +120,9 @@
 	object-fit: cover;
 	object-position: center center;
 }
+@media screen and (max-height: 560px) {
+	.header {
+		padding-top: 5px;
+		padding-bottom: 5px;
+	}
+}
