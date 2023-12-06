@@ -13,24 +13,30 @@ export const liveRadios = [
 	},
 	{
 		id: 3,
+		name: "Wrong URL",
+		liveUrl: "https://radio.radioquraan.com/9994  stream",
+		logo: "/img/live-radio/live-radio-1.jpg",
+	},
+	{
+		id: 4,
 		name: "Radio 3",
 		liveUrl: "https://qurango.net/radio/tarateel",
 		logo: "/img/live-radio/live-radio-1.jpg",
 	},
 	{
-		id: 4,
+		id: 5,
 		name: "Radio 4",
 		liveUrl: "https://radio.radioquraan.com/9994/stream",
 		logo: "/img/live-radio/live-radio-1.jpg",
 	},
 	{
-		id: 5,
+		id: 6,
 		name: "Radio 5",
 		liveUrl: "https://qurango.net/radio/tarateel",
 		logo: "/img/live-radio/live-radio-1.jpg",
 	},
 	{
-		id: 6,
+		id: 7,
 		name: "Radio 6",
 		liveUrl: "https://radio.radioquraan.com/9994/stream",
 		logo: "/img/live-radio/live-radio-1.jpg",

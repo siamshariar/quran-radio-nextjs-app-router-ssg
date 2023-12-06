@@ -26,7 +26,6 @@ const Chapter = ({ index, reciter, chapterNo }) => {
 		if (mode === "live") {
 			setMode("normal");
 		}
-		console.log("diff");
 		setReciter(reciter.id);
 		setChapterList(reciter.id);
 		setChapter(reciter.moshaf[0].surah_list.split(","), index);

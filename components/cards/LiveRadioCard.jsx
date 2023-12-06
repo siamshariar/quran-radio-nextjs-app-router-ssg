@@ -48,7 +48,7 @@ const LiveRadioCard = ({ liveRadio, index }) => {
 				</div>
 
 				<div className={styles.right}>
-					{playing && currLive.id === liveRadio.id ? (
+					{playing && mode === "live" && currLive.id === liveRadio.id ? (
 						<IonIcon
 							icon={playCircle}
 							slot="start"

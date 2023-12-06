@@ -1,6 +1,7 @@
 import { AudioStore, setCurrentTime, setIsProgress } from "@/store/audio";
 import styles from "./Visualizer.module.css";
 import { LocalStore } from "@/store/local";
+import classNames from "classnames";
 
 const Visualizer = () => {
 	const currentTime = AudioStore.useState((s) => s.currentTime);
@@ -31,10 +32,13 @@ const Visualizer = () => {
 
 			<div className={styles.progress}>
 				<div
-					className={styles.label}
+					className={classNames(
+						styles.label,
+						mode === "live" && styles.disabled
+					)}
 					style={{
 						width: `${
-							dur && mode === "normal" ? (currentTime * 100) / dur : 0
+							dur && mode === "normal" ? (currentTime * 100) / dur : 100
 						}%`,
 					}}></div>
 				<input
@@ -42,7 +46,7 @@ const Visualizer = () => {
 					type="range"
 					min="0"
 					max="100"
-					value={dur && mode === "normal" ? (currentTime * 100) / dur : 0}
+					value={dur && mode === "normal" ? (currentTime * 100) / dur : 100}
 					onChange={(e) => handleProgress(e.target.value)}
 					name="progresBar"
 				/>

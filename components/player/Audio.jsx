@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
 	PlayerStore,
 	setChapter,
@@ -13,6 +13,8 @@ import {
 import { LocalStore } from "@/store/local";
 import { useRecentStorage } from "@/hooks/useRecentStorage";
 import { AudioStore, setCurrentTime, setDur } from "@/store/audio";
+import styles from "./index.module.css";
+import classNames from "classnames";
 
 const AudioTag = () => {
 	const audioRef = useRef(null);
@@ -31,18 +33,41 @@ const AudioTag = () => {
 	const mode = LocalStore.useState((s) => s.settings.mode);
 	const currentTime = AudioStore.useState((s) => s.currentTime);
 	const isProgress = AudioStore.useState((s) => s.isProgress);
-	// to prevent the play request was interrupted by a call to pause error
+
+	const [isToast, setIsToast] = useState(false);
+
+	// to prevent "the play request was interrupted by a call to pause / a new load request" error
+	let c = 0;
 	const playAudio = () => {
+		console.log(c);
 		console.log("loading: " + loading);
 		if (loading) return;
+
 		setLoading(true);
+
 		const playPromise = audioRef.current.play();
 		console.log(playPromise);
 		if (playPromise !== undefined) {
-			playPromise.then(() => {
-				setLoading(false);
-				setPlaying(true);
-			});
+			playPromise
+				.then(() => {
+					setLoading(false);
+					setPlaying(true);
+				})
+				.catch((error) => {
+					console.error(error);
+					setTimeout(() => {
+						c += 1;
+						if (c > 5) {
+							c = 0;
+							setPlaying(false);
+							setLoading(false);
+							//  show some toast
+							setIsToast(true);
+							return;
+						}
+						playAudio();
+					}, 1000);
+				});
 		}
 	};
 
@@ -110,7 +135,7 @@ const AudioTag = () => {
 		} else {
 			pauseAudio();
 		}
-		console.log(playing, src, liveSrc);
+		console.log("playing: " + playing, src, liveSrc);
 	}, [playing, src, liveSrc, mode, playbackRate]);
 
 	useEffect(() => {
@@ -127,20 +152,33 @@ const AudioTag = () => {
 		}
 	}, [playing, reciterId, chapterIndex]);
 
+	useEffect(() => {
+		if (isToast) {
+			setTimeout(() => {
+				setIsToast(false);
+			}, 3000);
+		}
+	}, [isToast]);
+
 	return (
-		<audio
-			style={{ visibility: "hidden" }}
-			ref={audioRef}
-			// className={styles.audio}
-			controls={false}
-			src={mode == "normal" ? src : liveSrc}
-			onEnded={handleEnd}
-			onTimeUpdate={(e) => setCurrentTime(e.target.currentTime)}
-			onCanPlay={(e) => {
-				if (mode === "normal") {
-					setDur(e.target.duration);
-				}
-			}}></audio>
+		<>
+			<div className={classNames(styles.snackbar, isToast && styles.show)}>
+				<p>Something went wrong!</p>
+			</div>
+			<audio
+				style={{ visibility: "hidden" }}
+				ref={audioRef}
+				// className={styles.audio}
+				controls={false}
+				src={mode == "normal" ? src : liveSrc}
+				onEnded={handleEnd}
+				onTimeUpdate={(e) => setCurrentTime(e.target.currentTime)}
+				onCanPlay={(e) => {
+					if (mode === "normal") {
+						setDur(e.target.duration);
+					}
+				}}></audio>
+		</>
 	);
 };
 

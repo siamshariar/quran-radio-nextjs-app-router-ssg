@@ -5,6 +5,7 @@ import { playCircle, pauseCircle } from "../../icons";
 import styles from "./AudioMini.module.css";
 import { IonIcon } from "@ionic/react";
 import { LocalStore } from "@/store/local";
+import Loader from "../utils/Loader";
 
 const AudioMini = () => {
 	const playing = PlayerStore.useState((s) => s.playing);
@@ -13,6 +14,7 @@ const AudioMini = () => {
 	const chapterName = PlayerStore.useState((s) => s.chapterName);
 	const currLive = PlayerStore.useState((s) => s.currLive);
 	const mode = LocalStore.useState((s) => s.settings.mode);
+	const loading = PlayerStore.useState((s) => s.loading);
 
 	const play = () => {
 		setPlaying(true);
@@ -47,13 +49,13 @@ const AudioMini = () => {
 					</div>
 				)}
 				<div className={styles.right}>
-					{playing && (
+					{loading ? (
+						<Loader />
+					) : playing ? (
 						<div className={styles.btn} onClick={pause}>
 							<IonIcon icon={playCircle} slot="start" class={styles.icon} />
 						</div>
-					)}
-
-					{!playing && (
+					) : (
 						<div className={styles.btn} onClick={play}>
 							<IonIcon icon={pauseCircle} slot="start" class={styles.icon} />
 						</div>

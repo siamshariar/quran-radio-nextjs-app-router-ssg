@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 
 // Core CSS required for Ionic components to work properly
@@ -23,13 +23,39 @@ import "@/styles/global.scss";
 
 import Player from "@/components/player";
 import Menu from "@/components/ui/Menu";
-import { IonApp, IonPage, setupIonicReact, IonContent } from "@ionic/react";
+import {
+	IonApp,
+	IonPage,
+	setupIonicReact,
+	IonContent,
+	IonToast,
+} from "@ionic/react";
 import NonSSRWrapper from "../components/core/NoSSRWrapper";
 import { useRouter } from "next/router";
 import { setFavorites, setIsBack, setRecent, setSettings } from "@/store/local";
 
 function MyApp({ Component, pageProps }) {
 	setupIonicReact();
+	const [isTab, setIsTab] = useState(false);
+
+	useEffect(() => {
+		if (typeof window !== "undefined") {
+			// set isTab depending on screen size
+			const x = window.matchMedia("(max-width: 768px)");
+			if (x.matches) {
+				setIsTab(true);
+			} else {
+				setIsTab(false);
+			}
+			x.onchange = () => {
+				if (x.matches) {
+					setIsTab(true);
+				} else {
+					setIsTab(false);
+				}
+			};
+		}
+	}, []);
 
 	const router = useRouter();
 	useEffect(() => {
@@ -73,7 +99,7 @@ function MyApp({ Component, pageProps }) {
 						<link rel="icon" href="/favicon.ico" />
 					</Head>
 					<NonSSRWrapper>
-						<Component {...pageProps} />
+						<Component {...pageProps} isTab={isTab} />
 					</NonSSRWrapper>
 				</IonPage>
 			</IonApp>
