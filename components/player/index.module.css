@@ -41,6 +41,8 @@
 	right: 0;
 	transform: translateY(-100%);
 	/* transform: translateY(0); */
+	background-color: #bec2c6;
+	padding: 0 30px;
 }
 .mini_menu {
 	z-index: 99;
@@ -200,5 +202,10 @@
 	to {
 		bottom: 0;
 		opacity: 0;
+	}
+}
+@media screen and (max-width: 420px) {
+	.audio_mini {
+		padding: 0 15px;
 	}
 }

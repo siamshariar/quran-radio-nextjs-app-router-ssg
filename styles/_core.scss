@@ -5,15 +5,16 @@
 	--safe-area-right: env(safe-area-inset-right, 0);
 }
 body {
-	overflow: hidden;
-	height: 100vh;
-	width: 100vw;
+	position: relative;
+	overflow-x: hidden;
+	// height: 100vh;
+	// width: 100vw;
 }
 
-#__next {
-	height: 100vh;
-	width: 100vw;
-}
+// #__next {
+// 	height: 100vh;
+// 	width: 100vw;
+// }
 
 /**
  * Styles for the Icon UI component.
@@ -226,7 +227,11 @@ body {
 		}
 	}
 }
-
+.page_width {
+	max-width: 1024px;
+	width: 100%;
+	margin: 0 auto;
+}
 // Timer Primary
 .timer-primary {
 }

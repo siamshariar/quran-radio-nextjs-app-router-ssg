@@ -1,14 +1,17 @@
 import HomeContent from "@/components/ui/HomeContent";
 import styles from "./Home.module.css";
 import { IonContent } from "@ionic/react";
+import { LocalStore } from "@/store/local";
 
 const Home = () => {
-	return (
+	const isTab = LocalStore.useState((s) => s.isTab);
+
+	return isTab ? (
 		<IonContent>
-			<div className={styles.panel_content}>
-				<HomeContent />
-			</div>
+			<HomeContent />
 		</IonContent>
+	) : (
+		<HomeContent />
 	);
 };
 

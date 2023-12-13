@@ -13,8 +13,6 @@ import HomeContent from "@/components/ui/HomeContent";
 import styles from "./index.module.css";
 
 const Player = () => {
-	const [isTab, setIsTab] = useState(false);
-
 	const [windowHeight, setWindowHeight] = useState(0);
 	const [panelHeight, setPanelHeight] = useState(0);
 	const [maxTranslate, setMaxTranslate] = useState(1);
@@ -37,25 +35,6 @@ const Player = () => {
 
 	const router = useRouter();
 	const [path, setPath] = useState("/");
-
-	useEffect(() => {
-		if (typeof window !== "undefined") {
-			// set isTab depending on screen size
-			const x = window.matchMedia("(max-width: 768px)");
-			if (x.matches) {
-				setIsTab(true);
-			} else {
-				setIsTab(false);
-			}
-			x.onchange = () => {
-				if (x.matches) {
-					setIsTab(true);
-				} else {
-					setIsTab(false);
-				}
-			};
-		}
-	}, []);
 
 	useEffect(() => {
 		setPath(router.pathname);
@@ -183,7 +162,7 @@ const Player = () => {
 				</div>
 			</div>
 
-			<AudioTag isTab={isTab} />
+			<AudioTag />
 		</>
 	);
 };

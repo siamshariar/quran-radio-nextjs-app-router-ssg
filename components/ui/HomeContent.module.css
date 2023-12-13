@@ -1,6 +1,7 @@
 .panel_content {
 	height: auto;
 	min-height: calc(100% - 61px);
+	min-height: 100%;
 	overflow: auto;
 }
 
@@ -129,5 +130,11 @@
 @media screen and (max-height: 420px) {
 	.wrapper {
 		overflow: auto;
+	}
+}
+@media screen and (max-width: 420px) {
+	.wrapper {
+		padding-left: 15px;
+		padding-right: 15px;
 	}
 }

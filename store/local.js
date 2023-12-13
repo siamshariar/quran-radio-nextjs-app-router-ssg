@@ -8,6 +8,7 @@ export const LocalStore = new Store({
 	// to handle scroll
 	isBack: false,
 	yp: {},
+	isTab: true,
 });
 
 export const setSettings = (settings) => {
@@ -37,5 +38,11 @@ export const setIsBack = (v) => {
 export const setScrollPosition = (key, v) => {
 	LocalStore.update((s) => {
 		s.yp[key] = v;
+	});
+};
+
+export const setIsTab = (v) => {
+	LocalStore.update((s) => {
+		s.isTab = v;
 	});
 };

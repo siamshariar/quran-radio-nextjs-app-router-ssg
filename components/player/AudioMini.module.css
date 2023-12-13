@@ -2,10 +2,8 @@
 	height: 77px;
 	/* --ion-background-color: radial-gradient( circle, #64dcd5 0%, rgba(233, 241, 249, 0) 100% ); */
 	/* background: radial-gradient(circle, #64dcd5 0%, rgba(233, 241, 249, 0) 100%); */
-	background-color: #64dcd5;
-	padding: 0 15px;
+	/* padding: 0 30px; */
 	position: relative;
-	background-color: #bec2c6;
 }
 
 .up_icon {
@@ -83,3 +81,8 @@
 		padding-left: 15px;
 	}
 }
+/* @media screen and (max-width: 420px) {
+	.content {
+		padding: 0 15px;
+	}
+} */

@@ -52,7 +52,7 @@ const menus = [
 		url: "/favorites",
 	},
 	{
-		title: "Recent",
+		title: "Recents",
 		icon: musicalNote,
 		url: "/recent",
 	},

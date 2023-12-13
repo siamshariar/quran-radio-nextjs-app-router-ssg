@@ -1,29 +1,61 @@
-import Link from "next/link";
-import { menuController } from "@ionic/core";
-import { menuSharp } from "ionicons/icons";
 import FavoriteContent from "@/components/pages/Favorites";
-
-const menuClick = async (e) => {
-  e.preventDefault();
-  window.menuController = menuController;
-  await menuController.open();
-};
-
-// Home.header = (
-//   <ion-header translucent>
-//     <ion-toolbar>
-//       <ion-buttons slot="start">
-//         <Link href="/">
-//           <ion-button onClick={menuClick}>
-//             <ion-icon icon={menuSharp}></ion-icon>
-//           </ion-button>
-//         </Link>
-//       </ion-buttons>
-//       <ion-title>Home</ion-title>
-//     </ion-toolbar>
-//   </ion-header>
-// );
+import styles from "@/components/pages/Pages.module.css";
+import CommonHeader from "@/components/sections/CommonHeader";
+import { LocalStore, setIsBack, setScrollPosition } from "@/store/local";
+import { IonContent } from "@ionic/react";
+import { useRouter } from "next/router";
+import { useEffect, useRef } from "react";
 
 export default function Favorites() {
-  return <FavoriteContent />;
+	const isBack = LocalStore.useState((s) => s.isBack);
+	const yp = LocalStore.useState((s) => s.yp);
+	const isTab = LocalStore.useState((s) => s.isTab);
+
+	const router = useRouter();
+	const contentRef = useRef(null);
+
+	function handleScroll(ev) {
+		setScrollPosition(router.pathname, ev.detail.scrollTop);
+	}
+
+	useEffect(() => {
+		if (isTab) {
+			console.log("isBack: " + isBack, yp);
+			if (isBack == true) {
+				contentRef.current.scrollToPoint(0, yp[router.pathname]);
+			} else {
+				setScrollPosition(router.pathname, 0);
+			}
+			return () => {
+				setIsBack(false);
+			};
+		}
+	}, []);
+
+	return isTab ? (
+		<>
+			<CommonHeader title="Favorites" />
+			<IonContent
+				ref={contentRef}
+				scrollEvents={true}
+				onIonScroll={handleScroll}>
+				<div className={styles.panel_content}>
+					<div className={styles.wrapper}>
+						<div className="page_width">
+							<FavoriteContent />
+						</div>
+					</div>
+				</div>
+			</IonContent>
+		</>
+	) : (
+		<div className={styles.panel_content}>
+			<div className={styles.wrapper}>
+				<div className="page_width">
+					<CommonHeader title="Favorites" />
+					<FavoriteContent />
+				</div>
+			</div>
+		</div>
+	);
 }

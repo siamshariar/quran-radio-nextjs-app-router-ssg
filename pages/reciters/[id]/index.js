@@ -1,6 +1,3 @@
-import Link from "next/link";
-import { menuController } from "@ionic/core";
-import { menuSharp } from "ionicons/icons";
 import Chapters from "@/components/pages/Chapters";
 import { reciters } from "@/data/reciters";
 import { IonContent } from "@ionic/react";
@@ -8,8 +5,10 @@ import { LocalStore, setIsBack, setScrollPosition } from "@/store/local";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import CommonHeader from "@/components/sections/CommonHeader";
+import styles from "@/components/pages/Pages.module.css";
 
 export default function Home({ reciter, chapterList }) {
+	const isTab = LocalStore.useState((s) => s.isTab);
 	const isBack = LocalStore.useState((s) => s.isBack);
 	const yp = LocalStore.useState((s) => s.yp);
 
@@ -21,28 +20,41 @@ export default function Home({ reciter, chapterList }) {
 	}
 
 	useEffect(() => {
-		console.log("isBack: " + isBack, yp);
+		if (isTab) {
+			console.log("isBack: " + isBack, yp);
 
-		if (isBack == true) {
-			contentRef.current.scrollToPoint(0, yp[router.pathname]);
-		} else {
-			setScrollPosition(router.pathname, 0);
+			if (isBack == true) {
+				contentRef.current.scrollToPoint(0, yp[router.pathname]);
+			} else {
+				setScrollPosition(router.pathname, 0);
+			}
+			return () => {
+				setIsBack(false);
+			};
 		}
-		return () => {
-			setIsBack(false);
-		};
 	}, []);
 
-	return (
+	return isTab ? (
 		<>
 			<CommonHeader title="Chapters" prev_page="/reciters" />
 			<IonContent
 				ref={contentRef}
 				scrollEvents={true}
 				onIonScroll={handleScroll}>
-				<Chapters reciter={reciter} chapterList={chapterList} />
+				<div className={styles.panel_content}>
+					<div className={styles.wrapper}>
+						<Chapters reciter={reciter} chapterList={chapterList} />
+					</div>
+				</div>
 			</IonContent>
 		</>
+	) : (
+		<div className={styles.panel_content}>
+			<div className={styles.wrapper}>
+				<CommonHeader title="Chapters" prev_page="/reciters" />
+				<Chapters reciter={reciter} chapterList={chapterList} />
+			</div>
+		</div>
 	);
 }
 

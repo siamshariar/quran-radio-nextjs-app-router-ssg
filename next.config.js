@@ -14,6 +14,9 @@ const nextConfig = {
 		domains: ["images.unsplash.com"],
 		unoptimized: true,
 	},
+	experimental: {
+		scrollRestoration: true,
+	},
 	swcMinify: true,
 };
 

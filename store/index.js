@@ -47,7 +47,6 @@ export const PlayerStore = new Store({
 	playing: false,
 	loop: false,
 	playbackRate: 1,
-	// isPlayClicked: false,
 
 	timer: {
 		isSet: false,
@@ -154,8 +153,3 @@ export const setTimer = (isSet, value) => {
 		};
 	});
 };
-// export const setIsPlayClicked = (v) => {
-// 	PlayerStore.update((s) => {
-// 		s.isPlayClicked = v;
-// 	});
-// };

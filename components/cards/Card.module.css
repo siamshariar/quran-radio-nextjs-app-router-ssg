@@ -130,3 +130,14 @@
 .fav_card .right.btns .icon {
 	margin-left: 5px;
 }
+@media screen and (min-width: 769px) {
+	.name {
+		font-size: 16px;
+	}
+	.meaning {
+		font-size: 14px;
+	}
+	.icon {
+		font-size: 24px;
+	}
+}

@@ -26,14 +26,18 @@ export default function CommonHeader({ title, prev_page = "/" }) {
 
 	return (
 		<div className={styles.header}>
-			<div className={styles.nav_left}>
-				<IonButton class={styles.back} fill="clear" onClick={goBack}>
-					<IonIcon icon={chevronBack} slot="start" class={styles.icon} />
-				</IonButton>
-			</div>
+			<div className="page_width">
+				<div className={styles.header_content}>
+					<div className={styles.nav_left}>
+						<IonButton class={styles.back} fill="clear" onClick={goBack}>
+							<IonIcon icon={chevronBack} slot="start" class={styles.icon} />
+						</IonButton>
+					</div>
 
-			<div className={styles.nav_text}>{title}</div>
-			<div className={styles.nav_left}></div>
+					<div className={styles.nav_text}>{title}</div>
+					<div className={styles.nav_left}></div>
+				</div>
+			</div>
 		</div>
 	);
 }

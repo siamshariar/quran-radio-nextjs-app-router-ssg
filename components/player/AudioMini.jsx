@@ -25,41 +25,43 @@ const AudioMini = () => {
 	};
 
 	return (
-		<div className={styles.content}>
-			{/* <IonIcon
+		<div className="page_width">
+			<div className={styles.content}>
+				{/* <IonIcon
         icon={upIcon}
         slot="start"
         className={styles.up_icon}
         // onClick={() => setPlayerMini(false)}
       /> */}
-			<div className={styles.wrapper}>
-				<div className={styles.left}>
-					{/* <img src={`/img/reciters/${reciterImage}`} alt="" /> */}
-					<Tune />
-				</div>
-				{mode === "normal" ? (
-					<div className={styles.center}>
-						<span>{chapterName}</span>
-						<span>{reciterName}</span>
+				<div className={styles.wrapper}>
+					<div className={styles.left}>
+						{/* <img src={`/img/reciters/${reciterImage}`} alt="" /> */}
+						<Tune />
 					</div>
-				) : (
-					<div className={styles.center}>
-						<span>{currLive.name}</span>
-						{/* <span>{reciterName}</span> */}
-					</div>
-				)}
-				<div className={styles.right}>
-					{loading ? (
-						<Loader />
-					) : playing ? (
-						<div className={styles.btn} onClick={pause}>
-							<IonIcon icon={playCircle} slot="start" class={styles.icon} />
+					{mode === "normal" ? (
+						<div className={styles.center}>
+							<span>{chapterName}</span>
+							<span>{reciterName}</span>
 						</div>
 					) : (
-						<div className={styles.btn} onClick={play}>
-							<IonIcon icon={pauseCircle} slot="start" class={styles.icon} />
+						<div className={styles.center}>
+							<span>{currLive.name}</span>
+							{/* <span>{reciterName}</span> */}
 						</div>
 					)}
+					<div className={styles.right}>
+						{loading ? (
+							<Loader />
+						) : playing ? (
+							<div className={styles.btn} onClick={pause}>
+								<IonIcon icon={playCircle} slot="start" class={styles.icon} />
+							</div>
+						) : (
+							<div className={styles.btn} onClick={play}>
+								<IonIcon icon={pauseCircle} slot="start" class={styles.icon} />
+							</div>
+						)}
+					</div>
 				</div>
 			</div>
 		</div>
