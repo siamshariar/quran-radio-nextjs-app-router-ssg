@@ -1,119 +1,98 @@
-import { IonContent } from "@ionic/react";
+import { LocalStore } from "@/store/local";
+import { search } from "@/icons";
+import FavRecentList from "@/components/cards/FavRecentList";
+import styles from "./Pages.module.css";
+import { IonIcon } from "@ionic/react";
+import PropTypes from "prop-types";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Box from "@mui/material/Box";
+import { useState } from "react";
+import LiveFavRecent from "../cards/LiveFavRecent";
 
-const Recent = () => {
+function CustomTabPanel(props) {
+	const { children, value, index, ...other } = props;
+
 	return (
-		<IonContent>
-			<div className="">
-				<div className="">Recent page</div>
+		<div
+			role="tabpanel"
+			hidden={value !== index}
+			id={`simple-tabpanel-${index}`}
+			aria-labelledby={`simple-tab-${index}`}
+			{...other}>
+			{value === index && <>{children}</>}
+		</div>
+	);
+}
+
+CustomTabPanel.propTypes = {
+	children: PropTypes.node,
+	index: PropTypes.number.isRequired,
+	value: PropTypes.number.isRequired,
+};
+function a11yProps(index) {
+	return {
+		id: `simple-tab-${index}`,
+		"aria-controls": `simple-tabpanel-${index}`,
+	};
+}
+
+const Recents = () => {
+	const [value, setValue] = useState(0);
+	const recents = LocalStore.useState((s) => s.recent);
+	const liveRecents = LocalStore.useState((s) => s.liveRecent);
+
+	const handleChange = (event, newValue) => {
+		setValue(newValue);
+	};
+
+	return (
+		<>
+			<div className={styles.search}>
+				<IonIcon icon={search} slot="start" class={styles.s_icon} />
+				<input type="text" name="search" placeholder="Search" />
 			</div>
-		</IonContent>
+
+			<Box sx={{ width: "100%" }}>
+				<Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+					<Tabs
+						centered
+						value={value}
+						onChange={handleChange}
+						aria-label="basic tabs">
+						<Tab label="Surah" {...a11yProps(0)} />
+						<Tab label="Live Radio" {...a11yProps(1)} />
+					</Tabs>
+				</Box>
+
+				<CustomTabPanel value={value} index={0}>
+					<div className={styles.content}>
+						{recents &&
+							recents.map((recent, index) => (
+								<FavRecentList key={index} item={recent} noRemoveIcon={true} />
+							))}
+
+						{recents.length === 0 && (
+							<h2 className={styles.no_record}>No record found!</h2>
+						)}
+					</div>
+				</CustomTabPanel>
+
+				<CustomTabPanel value={value} index={1}>
+					<div className={styles.content}>
+						{liveRecents &&
+							liveRecents.map((recent, index) => (
+								<LiveFavRecent key={index} item={recent} noRemoveIcon={true} />
+							))}
+
+						{liveRecents.length === 0 && (
+							<h2 className={styles.no_record}>No record found!</h2>
+						)}
+					</div>
+				</CustomTabPanel>
+			</Box>
+		</>
 	);
 };
 
-export default Recent;
-
-// import {
-//   IonPage,
-//   IonContent,
-//   IonList,
-//   IonIcon,
-//   IonRouterLink,
-// } from "@ionic/react";
-
-// import { musicalNoteOutline, playOutline } from "ionicons/icons";
-
-// import {
-//   PlayerStore,
-//   setPlayerMini,
-//   setReciter,
-//   setChapter,
-// } from "../../store";
-
-// import { LocalStore } from "../../store/local";
-// import { formatDate } from "../../lib/format";
-// // import { useRecentStorage } from "../../hooks/useRecentStorage";
-// // import { checkIsInRecent } from "../../lib/check";
-// import Header from "../ui/HeaderPrimary";
-// import styles from "./Pages.module.css";
-
-// const RecentlyPlayed = () => {
-//   const recent = LocalStore.useState((s) => s.recent);
-//   const currentReciterId = PlayerStore.useState((s) => s.reciterId);
-//   const currentChapterIndex = PlayerStore.useState((s) => s.chapterIndex);
-
-//   const handlePlayRecent = async (reciterId, chapterIndex) => {
-//     setPlayerMini(false);
-//     if (
-//       reciterId === currentReciterId &&
-//       chapterIndex === currentChapterIndex
-//     ) {
-//       return;
-//     }
-//     setReciter(reciterId);
-//     setChapter(chapterIndex);
-//     return;
-//   };
-
-//   return (
-//     <IonPage className="page-primary">
-//       <Header title="Recently played" />
-
-//       <IonContent className={styles.content}>
-//         <IonList className={styles.list}>
-//           {recent.length > 0 &&
-//             recent.map((item) => (
-//               <IonRouterLink
-//                 key={item.id}
-//                 className={styles.item}
-//                 routerLink="/"
-//                 onClick={() =>
-//                   handlePlayRecent(item.reciterId, item.chapterIndex)
-//                 }
-//               >
-//                 <div className={styles.inner}>
-//                   <div className={styles.left}>
-//                     <div className={styles.image}>
-//                       {/* <img src={`/img/reciters/${item.reciterImage}`} alt="" /> */}
-//                       <IonIcon
-//                         icon={musicalNoteOutline} //
-//                         slot="start"
-//                         className={styles.icon}
-//                       />
-//                     </div>
-//                     <div className={styles.label}>
-//                       <div className={styles.reciter}>{item.reciterName}</div>
-//                       <div className={styles.chapter}>{item.chapterName}</div>
-//                       <div className={styles.date}>
-//                         {formatDate(item.createdAt)}
-//                       </div>
-//                     </div>
-//                   </div>
-
-//                   {/* <div className={styles.btns}>
-//                     <div
-//                       className={styles.btn}
-//                       onClick={() =>
-//                         handlePlayRecent(item.reciterId, item.chapterIndex)
-//                       }
-//                     >
-//                       <IonIcon
-//                         icon={playOutline} //
-//                         slot="start"
-//                         className={styles.icon}
-//                       />
-//                     </div>
-//                   </div> */}
-//                 </div>
-//               </IonRouterLink>
-//             ))}
-
-//           {recent.length === 0 && (
-//             <h2 className={styles.no_record}>No record found!</h2>
-//           )}
-//         </IonList>
-//       </IonContent>
-//     </IonPage>
-//   );
-// };
-
-// export default RecentlyPlayed;
+export default Recents;

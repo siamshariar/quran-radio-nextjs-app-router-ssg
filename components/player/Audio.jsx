@@ -15,6 +15,7 @@ import { useRecentStorage } from "@/hooks/useRecentStorage";
 import { AudioStore, setCurrentTime, setDur } from "@/store/audio";
 import styles from "./index.module.css";
 import classNames from "classnames";
+import { useLiveRecentStorage } from "@/hooks/useLiveRecentStorage";
 
 const AudioTag = () => {
 	const audioRef = useRef(null);
@@ -146,11 +147,18 @@ const AudioTag = () => {
 
 	// add to recently played
 	const { addRecent } = useRecentStorage();
+	const { addLiveRecent } = useLiveRecentStorage();
 	useEffect(() => {
 		if (playing) {
 			addRecent(reciterId, chapterIndex);
 		}
 	}, [playing, reciterId, chapterIndex]);
+
+	useEffect(() => {
+		if (playing) {
+			addLiveRecent(liveIndex);
+		}
+	}, [playing, liveIndex]);
 
 	useEffect(() => {
 		if (isToast) {

@@ -31,6 +31,7 @@ import {
 	setFavorites,
 	setIsBack,
 	setIsTab,
+	setLiveFavorites,
 	setRecent,
 	setSettings,
 } from "@/store/local";
@@ -71,6 +72,7 @@ function MyApp({ Component, pageProps }) {
 	useEffect(() => {
 		const localSettings = localStorage.getItem("settings");
 		const localFavorites = localStorage.getItem("favorites");
+		const localLiveFavorites = localStorage.getItem("liveFavorites");
 		const localRecents = localStorage.getItem("recent");
 		if (localSettings) {
 			setSettings(JSON.parse(localSettings));
@@ -80,6 +82,9 @@ function MyApp({ Component, pageProps }) {
 		}
 		if (localRecents) {
 			setRecent(JSON.parse(localRecents));
+		}
+		if (localLiveFavorites) {
+			setLiveFavorites(JSON.parse(localLiveFavorites));
 		}
 	}, []);
 

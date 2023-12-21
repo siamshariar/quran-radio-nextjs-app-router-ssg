@@ -7,11 +7,11 @@ export const useFavoriteStorage = () => {
 	const favorites = LocalStore.useState((s) => s.favorites);
 	const chapters = PlayerStore.useState((s) => s.chapters);
 	const reciters = PlayerStore.useState((s) => s.reciters);
+	const chapterList = PlayerStore.useState((s) => s.chapterList);
 
-	const addFavorite = async (reciterId, chapterNo) => {
+	const addFavorite = async (reciterId, chapterNo, chapterIndex) => {
 		const reciter = reciters.find((obj) => obj.id === reciterId);
 		console.log(reciterId, chapterNo);
-		console.log(reciter);
 
 		const newFavorite = {
 			// id: "" + new Date().getTime(),
@@ -19,6 +19,8 @@ export const useFavoriteStorage = () => {
 			reciterSlug: "",
 			reciterName: reciter.name,
 			reciterImage: "",
+			chapterIndex: chapterIndex,
+			chapterList: chapterList,
 			chapterNo: chapterNo,
 			chapterName: chapters[chapterNo - 1].name,
 			createdAt: new Date().getTime(),

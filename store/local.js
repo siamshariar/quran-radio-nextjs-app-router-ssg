@@ -4,7 +4,9 @@ import { settings } from "../lib/settings";
 export const LocalStore = new Store({
 	settings: settings,
 	favorites: [],
+	liveFavorites: [],
 	recent: [],
+	liveRecent: [],
 	// to handle scroll
 	isBack: false,
 	yp: {},
@@ -22,10 +24,21 @@ export const setFavorites = (favorites) => {
 		s.favorites = favorites;
 	});
 };
+export const setLiveFavorites = (favorites) => {
+	LocalStore.update((s) => {
+		s.liveFavorites = favorites;
+	});
+};
 
 export const setRecent = (recent) => {
 	LocalStore.update((s) => {
 		s.recent = recent;
+	});
+};
+
+export const setLiveRecent = (recent) => {
+	LocalStore.update((s) => {
+		s.liveRecent = recent;
 	});
 };
 
