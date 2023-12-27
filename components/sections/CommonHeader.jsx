@@ -1,6 +1,5 @@
 import { chevronBack } from "@/icons";
 import { IonButton, IonIcon } from "@ionic/react";
-import Link from "next/link";
 import styles from "../pages/Pages.module.css";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -9,7 +8,6 @@ import { setIsBack } from "@/store/local";
 export default function CommonHeader({ title, prev_page = "/" }) {
 	const router = useRouter();
 	const [historyLength, setHistoryLength] = useState(0);
-	// console.log("history length:" + historyLength);
 
 	useEffect(() => {
 		setHistoryLength(window.history.length);

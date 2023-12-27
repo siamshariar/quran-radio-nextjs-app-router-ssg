@@ -6,6 +6,7 @@ import {
 	setPlayerOpen,
 	setPlayerMini,
 	setPlaying,
+	setSliderDown,
 } from "../../store";
 import AudioMini from "./AudioMini";
 import AudioTag from "./Audio";
@@ -23,9 +24,11 @@ const Player = () => {
 
 	const isPlayerOpen = PlayerStore.useState((s) => s.open);
 	const isPlayerMini = PlayerStore.useState((s) => s.mini);
+	const sliderDown = PlayerStore.useState((s) => s.sliderDown);
 	// console.log("wh", +windowHeight);
 	// console.log("Tr", +translate);
 	// console.log("currentY", +currentY);
+	console.log(sliderDown);
 
 	const panelRef = useRef(null);
 	const headerRef = useRef(null);
@@ -41,6 +44,7 @@ const Player = () => {
 	}, [router]);
 
 	useEffect(() => {
+		setSliderDown(false);
 		setWindowHeight(window.innerHeight);
 		setPanelHeight(window.innerHeight);
 		setMaxTranslate(window.innerHeight);
@@ -51,7 +55,7 @@ const Player = () => {
 				? window.innerHeight
 				: window.innerHeight
 		);
-	}, [path]);
+	}, [path, sliderDown]);
 
 	useEffect(() => {
 		const handleResize = () => {

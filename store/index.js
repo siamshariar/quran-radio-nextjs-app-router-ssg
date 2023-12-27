@@ -21,6 +21,7 @@ export const PlayerStore = new Store({
 
 	open: true,
 	mini: false,
+	sliderDown: false,
 
 	// current reciter
 	reciter: getReciterById(10), // reciter object
@@ -63,6 +64,12 @@ export const setPlayerOpen = (open) => {
 export const setPlayerMini = (isMini) => {
 	PlayerStore.update((s) => {
 		s.mini = isMini;
+	});
+};
+
+export const setSliderDown = (v) => {
+	PlayerStore.update((s) => {
+		s.sliderDown = v;
 	});
 };
 

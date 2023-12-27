@@ -13,7 +13,13 @@ import {
 	settingsOutline,
 	share,
 } from "@/icons";
-import { PlayerStore, setChapter, setSrc, setPlaying } from "@/store";
+import {
+	PlayerStore,
+	setChapter,
+	setSrc,
+	setPlaying,
+	setSliderDown,
+} from "@/store";
 import styles from "./Menu.module.css";
 import {
 	IonContent,
@@ -24,6 +30,7 @@ import {
 	IonMenu,
 	IonMenuToggle,
 } from "@ionic/react";
+import Share from "../actions/share";
 
 const menus = [
 	{
@@ -66,15 +73,13 @@ const menus = [
 		icon: helpCircleOutline,
 		url: "/support",
 	},
+	// {
+	// 	title: "Settings",
+	// 	icon: settingsOutline,
+	// 	url: "/settings",
+	// },
 	{
-		title: "Settings",
-		icon: settingsOutline,
-		url: "/settings",
-	},
-	{
-		title: "Share",
-		icon: share,
-		url: "#",
+		title: "share",
 	},
 ];
 
@@ -97,17 +102,30 @@ const Menu = () => {
 			</IonHeader>
 			<IonContent class={styles.content}>
 				<IonList class={styles.list}>
-					{menus.map((m, k) => (
-						<IonMenuToggle auto-hide={false} key={k}>
-							<Link
-								href={m.url === "/chapters" ? `/reciters/${reciterId}` : m.url}>
+					{menus.map((m, k) =>
+						m.title === "share" ? (
+							<IonMenuToggle auto-hide={false} key={k}>
 								<IonItem detail={false} lines="none" class={styles.item}>
-									<IonIcon icon={m.icon} slot="start" class={styles.icon} />
-									{m.title}
+									<Share key={k} url="/" title="Quran Radio" />
 								</IonItem>
-							</Link>
-						</IonMenuToggle>
-					))}
+							</IonMenuToggle>
+						) : (
+							<IonMenuToggle
+								auto-hide={false}
+								key={k}
+								onClick={() => setSliderDown(true)}>
+								<Link
+									href={
+										m.url === "/chapters" ? `/reciters/${reciterId}` : m.url
+									}>
+									<IonItem detail={false} lines="none" class={styles.item}>
+										<IonIcon icon={m.icon} slot="start" class={styles.icon} />
+										{m.title}
+									</IonItem>
+								</Link>
+							</IonMenuToggle>
+						)
+					)}
 				</IonList>
 			</IonContent>
 
