@@ -15,14 +15,14 @@ import classNames from "classnames";
 import ShareIcon from "@mui/icons-material/Share";
 import ShareModal from "../actions/share-modal";
 import { server } from "@/lib/config";
-import Hamburger from "@/icons/component/Hamburger";
-import HomeOutline from "@/icons/component/HomeOutline";
-import PeopleOutline from "@/icons/component/PeopleOutline";
-import MusicalNoteOutline from "@/icons/component/MusicalOutline";
-import MusicalNote from "@/icons/component/MusicalNote";
-import StarOutline from "@/icons/component/StarOutline";
-import InformationCircleOutline from "@/icons/component/InformationCircleOutline";
-import HelpCircleOutline from "@/icons/component/HelpCircleOutline";
+// import Hamburger from "@/icons/component/Hamburger";
+// import HomeOutline from "@/icons/component/HomeOutline";
+// import PeopleOutline from "@/icons/component/PeopleOutline";
+// import MusicalNoteOutline from "@/icons/component/MusicalOutline";
+// import MusicalNote from "@/icons/component/MusicalNote";
+// import StarOutline from "@/icons/component/StarOutline";
+// import InformationCircleOutline from "@/icons/component/InformationCircleOutline";
+// import HelpCircleOutline from "@/icons/component/HelpCircleOutline";
 import {
 	hamburger,
 	homeOutline,
@@ -75,16 +75,16 @@ const HeaderHome = () => {
 						<>
 							<div className={styles.left}>
 								<IonMenuToggle>
-									{/* <div className={styles.menu_btn}> */}
-									<IconButton>
-										{/* <IonIcon
-												icon={hamburger}
-												slot="start"
-												class={styles.icon}
-											/> */}
-										<Hamburger />
-									</IconButton>
-									{/* </div> */}
+									<div className={styles.menu_btn}>
+										<IonIcon
+											icon={hamburger}
+											slot="start"
+											class={styles.icon}
+										/>
+										{/* <IconButton>
+											<Hamburger />
+										</IconButton> */}
+									</div>
 								</IonMenuToggle>
 							</div>
 							<div className={styles.logo}>
