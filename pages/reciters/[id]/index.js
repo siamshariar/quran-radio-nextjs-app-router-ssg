@@ -83,11 +83,11 @@ export async function getStaticProps(context) {
 export async function getStaticPaths() {
 	let paths = [];
 
-	// reciters.map((reciter) => {
-	//   let id = encodeURI(reciter.id);
-	//   let obj = { params: { id: id } };
-	//   paths.push(obj);
-	// });
+	reciters.map((reciter) => {
+		let id = encodeURI(reciter.id);
+		let obj = { params: { id: id } };
+		paths.push(obj);
+	});
 
 	return {
 		paths: paths,

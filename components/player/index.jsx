@@ -28,7 +28,7 @@ const Player = () => {
 	// console.log("wh", +windowHeight);
 	// console.log("Tr", +translate);
 	// console.log("currentY", +currentY);
-	console.log(sliderDown);
+	// console.log(sliderDown);
 
 	const panelRef = useRef(null);
 	const headerRef = useRef(null);
