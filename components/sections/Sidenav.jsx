@@ -1,0 +1,140 @@
+import Link from "next/link";
+import Image from "next/image";
+import { Drawer } from "@mui/material";
+import styles from "./Header.module.css";
+import {
+	peopleOutline,
+	informationCircleOutline,
+	helpCircleOutline,
+	heartOutline,
+	shareSocialOutline,
+} from "ionicons/icons";
+import {
+	homeOutline,
+	musicalNoteOutline,
+	starOutline,
+	musicalNote,
+	settingsOutline,
+	share,
+	shareOutline,
+} from "@/icons";
+import { IonIcon } from "@ionic/react";
+import Share from "../actions/share";
+import ShareIcon from "@mui/icons-material/Share";
+import classNames from "classnames";
+
+export default function SideNav(props) {
+	return (
+		<Drawer
+			anchor="left"
+			open={props.navOpen}
+			onClose={() => props.navControl(false)}
+			className="mobile-menu-root">
+			<div className={styles.mobileMenu}>
+				<div className={styles.m_menu_wrap}>
+					<div className={styles.m_menu_ctn}>
+						<div className={styles.m_menu_top}>
+							<Link href="/">
+								<div
+									onClick={(e) => props.navControl(false)}
+									className={styles.m_menu_logo}>
+									<Image
+										src={`/img/logo/logo.png`}
+										alt=""
+										width={150}
+										height={100}
+										style={{
+											objectFit: "contain",
+											objectPosition: "left center",
+										}}
+										loading="eager"
+										unoptimized
+									/>
+								</div>
+							</Link>
+						</div>
+
+						<ul className={styles.m_menu}>
+							<li onClick={(e) => props.navControl(false)}>
+								<Link href="/" className={styles.m_menu_item}>
+									<IonIcon
+										icon={homeOutline}
+										slot="start"
+										class={styles.sidenav_icon}
+									/>
+									Home
+								</Link>
+							</li>
+							<li onClick={(e) => props.navControl(false)}>
+								<Link href="/reciters" className={styles.m_menu_item}>
+									<IonIcon
+										icon={peopleOutline}
+										slot="start"
+										class={styles.sidenav_icon}
+									/>
+									Reciters
+								</Link>
+							</li>
+							<li onClick={(e) => props.navControl(false)}>
+								<Link href="/chapters" className={styles.m_menu_item}>
+									<IonIcon
+										icon={musicalNoteOutline}
+										slot="start"
+										class={styles.sidenav_icon}
+									/>
+									Chapters
+								</Link>
+							</li>
+							<li onClick={(e) => props.navControl(false)}>
+								<Link href="/live-radio" className={styles.m_menu_item}>
+									<IonIcon
+										icon={musicalNote}
+										slot="start"
+										class={styles.sidenav_icon}
+									/>
+									Live Radios
+								</Link>
+							</li>
+							<li onClick={(e) => props.navControl(false)}>
+								<Link href="/favorites" className={styles.m_menu_item}>
+									<IonIcon
+										icon={heartOutline}
+										slot="start"
+										class={styles.sidenav_icon}
+									/>
+									Favorites
+								</Link>
+							</li>
+							<li onClick={(e) => props.navControl(false)}>
+								<Link href="/recent" className={styles.m_menu_item}>
+									<IonIcon
+										icon={musicalNote}
+										slot="start"
+										class={styles.sidenav_icon}
+									/>
+									Recents
+								</Link>
+							</li>
+							<li onClick={(e) => props.openShare()}>
+								<div className={styles.m_menu_item}>
+									<IonIcon
+										icon={shareSocialOutline}
+										slot="start"
+										class={styles.sidenav_icon}
+									/>
+									Share
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div className={classNames(styles.footer, "p-4 text-base")}>
+						<span>Powered by - </span>
+						<a target="_blank" href="https://www.deeniinfotech.com/">
+							Deeni Info Tech
+						</a>
+					</div>
+				</div>
+			</div>
+		</Drawer>
+	);
+}

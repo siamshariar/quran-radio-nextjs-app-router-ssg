@@ -4,6 +4,7 @@ import {
 	peopleOutline,
 	informationCircleOutline,
 	helpCircleOutline,
+	heartOutline,
 } from "ionicons/icons";
 import {
 	homeOutline,
@@ -31,6 +32,7 @@ import {
 	IonMenuToggle,
 } from "@ionic/react";
 import Share from "../actions/share";
+import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 
 const menus = [
 	{
@@ -55,7 +57,7 @@ const menus = [
 	},
 	{
 		title: "Favorites",
-		icon: starOutline,
+		icon: heartOutline,
 		url: "/favorites",
 	},
 	{
@@ -85,6 +87,7 @@ const menus = [
 
 const Menu = () => {
 	const reciterId = PlayerStore.useState((s) => s.reciterId);
+
 	return (
 		<IonMenu
 			side="start"
@@ -106,7 +109,13 @@ const Menu = () => {
 						m.title === "share" ? (
 							<IonMenuToggle auto-hide={false} key={k}>
 								<IonItem detail={false} lines="none" class={styles.item}>
-									<Share key={k} url="/" title="Quran Radio" />
+									<Share
+										key={k}
+										Icon={ShareOutlinedIcon}
+										shareText="Share"
+										url="/"
+										title="Quran Radio"
+									/>
 								</IonItem>
 							</IonMenuToggle>
 						) : (
@@ -132,7 +141,9 @@ const Menu = () => {
 			<div className={classNames(styles.footer, "p-4 text-base")}>
 				<span>Powered by - </span>
 				<IonMenuToggle auto-hide={false} class="md">
-					<a href="https://www.deeniinfotech.com/">Deeni Info Tech</a>
+					<a target="_blank" href="https://www.deeniinfotech.com/">
+						Deeni Info Tech
+					</a>
 				</IonMenuToggle>
 			</div>
 		</IonMenu>

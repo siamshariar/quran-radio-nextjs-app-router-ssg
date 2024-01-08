@@ -16,6 +16,7 @@ import { AudioStore, setCurrentTime, setDur } from "@/store/audio";
 import styles from "./index.module.css";
 import classNames from "classnames";
 import { useLiveRecentStorage } from "@/hooks/useLiveRecentStorage";
+import { useRouter } from "next/router";
 
 const AudioTag = () => {
 	const audioRef = useRef(null);
@@ -101,7 +102,7 @@ const AudioTag = () => {
 			}
 		}
 	};
-
+	const router = useRouter();
 	useEffect(() => {
 		const randomReciterIndex = Math.floor(Math.random() * reciters.length);
 		const randomReciter = reciters[randomReciterIndex];
@@ -111,14 +112,18 @@ const AudioTag = () => {
 			Math.random() * randomChapterList.length
 		);
 
-		setReciter(randomReciterId);
-		setChapterList(randomReciterId);
-		setChapter(randomChapterList, randomChapterIndex);
+		if (router.pathname !== "/reciters/[id]/chapters/[chapId]") {
+			setReciter(randomReciterId);
+			setChapterList(randomReciterId);
+			setChapter(randomChapterList, randomChapterIndex);
+		}
 	}, []);
 
 	useEffect(() => {
-		const randomLiveIndex = Math.floor(Math.random() * liveRadios.length);
-		setLiveRadio(randomLiveIndex);
+		if (router.pathname !== "/live-radios/[id]") {
+			const randomLiveIndex = Math.floor(Math.random() * liveRadios.length);
+			setLiveRadio(randomLiveIndex);
+		}
 	}, []);
 
 	useEffect(() => {

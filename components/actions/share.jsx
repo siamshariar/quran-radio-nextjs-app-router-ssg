@@ -1,11 +1,11 @@
 import { server } from "@/lib/config";
 import { useState } from "react";
-import ShareIcon from "@mui/icons-material/Share";
+// import ShareIcon from "@mui/icons-material/Share";
 import styles from "./share.module.scss";
 import ShareModal from "./share-modal";
 import { LocalStore } from "@/store/local";
 
-export default function Share({ url, title }) {
+export default function Share({ Icon, shareText, url, title }) {
 	const [shareOpen, setShareOpen] = useState(false);
 	const [shareUrl, setShareUrl] = useState("");
 	const [shareTitle, setShareTitle] = useState("");
@@ -34,7 +34,7 @@ export default function Share({ url, title }) {
 				<button
 					onClick={handleShare}
 					className={`${styles.btn} ${styles.btn_web}`}>
-					<ShareIcon /> Share
+					{Icon && <Icon />} {shareText && shareText}
 				</button>
 			</div>
 

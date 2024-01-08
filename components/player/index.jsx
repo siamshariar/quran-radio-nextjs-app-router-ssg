@@ -12,6 +12,9 @@ import AudioMini from "./AudioMini";
 import AudioTag from "./Audio";
 import HomeContent from "@/components/ui/HomeContent";
 import styles from "./index.module.css";
+import Image from "next/image";
+import GraphicEqIcon from "@mui/icons-material/GraphicEq";
+import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 
 const Player = () => {
 	const [windowHeight, setWindowHeight] = useState(0);
@@ -137,9 +140,25 @@ const Player = () => {
 		<>
 			<div className={classNames(styles.dialog, dialogOpen ? styles.open : "")}>
 				<div className={styles.dialog_content}>
-					<div className={styles.dialog_text}>Start listening</div>
+					<Image
+						src="/img/logo/logo.png"
+						alt=""
+						width={150}
+						height={150}
+						style={{ objectFit: "contain", objectPosition: "center" }}
+						loading="eager"
+						unoptimized
+					/>
+					<p className={styles.dialog_title}>Quran Live and Audio</p>
+					<div className={styles.dialog_text}>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+						eiusmod
+					</div>
 					<div className={styles.dialog_btn}>
-						<button onClick={() => handleDialog()}>Start</button>
+						<button onClick={() => handleDialog()}>
+							Start Listening
+							<PlayCircleOutlineIcon />
+						</button>
 					</div>
 				</div>
 			</div>

@@ -12,7 +12,8 @@
 	left: 0;
 	height: 100%;
 	z-index: 11;
-	background: linear-gradient(90deg, #cedfe5 0%, #797b88 100%);
+	/* background: linear-gradient(90deg, #cedfe5 0%, #797b88 100%); */
+	background: linear-gradient(180deg, #797b88, #cedfe5);
 	padding-left: 30px;
 	padding-right: 30px;
 }

@@ -31,7 +31,11 @@
 	display: flex;
 	align-items: center;
 }
-
+.right {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 .link {
 }
 .menu_btn {
@@ -77,11 +81,11 @@
 	width: 20px;
 	height: 20px;
 }
-.menu .footer {
+.footer {
+	border-top: 1px solid #ddd;
 	font-size: 14px;
-	cursor: unset;
 }
-.menu .footer a {
+.footer a {
 	text-decoration: underline;
 }
 .ion_btn {
@@ -98,7 +102,9 @@
   height: 32px; */
 	cursor: pointer;
 }
-.logo {
+.logo img {
+	height: 66px;
+	width: auto;
 }
 .title {
 	color: #262550;
@@ -109,10 +115,83 @@
 	opacity: 1;
 	font-family: Roboto;
 }
+.mobileMenu {
+	width: 300px;
+	max-width: 85vw;
+	height: 100vh;
+	padding: 0;
+	margin: 0;
+	background: #fff;
+}
+.m_menu_wrap {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	min-height: 100vh;
+	justify-content: space-between;
+	overflow-y: auto;
+}
+.m_menu_ctn {
+	width: 100%;
+	margin-bottom: 1.5rem;
+}
+.m_menu_top {
+	padding: 4px 20px;
+	display: flex;
+	border-bottom: 1px solid #ddd;
+}
+.m_menu_logo {
+	max-width: 130px;
+	/* height: 86px; */
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	width: 100%;
+}
+ul.m_menu,
+ul.m_menu li {
+	display: block;
+}
+ul.m_menu li {
+	line-height: unset;
+}
+ul.m_menu li .m_menu_item {
+	color: var(--txt11);
+	line-height: 3rem;
+	height: unset;
+	padding: 0 32px;
+	font-size: 1.15rem;
+	display: -moz-box;
+	display: flex;
+	-moz-box-pack: start;
+	justify-content: flex-start;
+	-moz-box-align: center;
+	align-items: center;
+	-webkit-transition: all 0.25s ease;
+	-moz-transition: all 0.25s ease;
+	transition: all 0.25s ease;
+}
+.sidenav_icon {
+	font-size: 20px;
+	margin-right: 12px;
+	color: #444;
+}
+.m_menu_bottom {
+	width: 100%;
+	padding: 1rem 0 0.8rem;
+	background: #fff;
+	z-index: 9;
+}
+hr.m_menu_hr {
+	background: none;
+	margin: 1rem auto;
+	border: none;
+	border-top: 1px solid #e2e8f0;
+}
 
 @media (orientation: landscape) {
 	.wrapper {
-		height: 52px;
+		height: 56px;
 	}
 }
 
@@ -121,15 +200,15 @@
 		height: 75px;
 	}
 }
+
 @media screen and (max-height: 560px) {
 	.logo {
 		scale: 0.8;
 	}
 }
-@media screen and (min-width: 769px) {
-	.right {
-		display: flex;
-		justify-content: center;
-		align-items: center;
+
+@media screen and (max-height: 420px) {
+	.wrapper {
+		overflow: auto;
 	}
 }

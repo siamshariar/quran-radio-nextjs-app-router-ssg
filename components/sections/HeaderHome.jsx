@@ -1,5 +1,4 @@
 import Link from "next/link";
-// import { hamburger } from "../../icons";
 import styles from "./Header.module.css";
 import { IonIcon, IonMenuToggle } from "@ionic/react";
 import { LocalStore } from "@/store/local";
@@ -8,21 +7,11 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import Popover from "@mui/material/Popover";
 import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
-import { Divider, IconButton, createSvgIcon } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { useState } from "react";
 import { PlayerStore, setSliderDown } from "@/store";
-import classNames from "classnames";
-import ShareIcon from "@mui/icons-material/Share";
 import ShareModal from "../actions/share-modal";
 import { server } from "@/lib/config";
-// import Hamburger from "@/icons/component/Hamburger";
-// import HomeOutline from "@/icons/component/HomeOutline";
-// import PeopleOutline from "@/icons/component/PeopleOutline";
-// import MusicalNoteOutline from "@/icons/component/MusicalOutline";
-// import MusicalNote from "@/icons/component/MusicalNote";
-// import StarOutline from "@/icons/component/StarOutline";
-// import InformationCircleOutline from "@/icons/component/InformationCircleOutline";
-// import HelpCircleOutline from "@/icons/component/HelpCircleOutline";
 import {
 	hamburger,
 	homeOutline,
@@ -34,7 +23,9 @@ import {
 	peopleOutline,
 	informationCircleOutline,
 	helpCircleOutline,
+	heartOutline,
 } from "ionicons/icons";
+import SideNav from "./Sidenav";
 
 const HeaderHome = () => {
 	const isTab = LocalStore.useState((s) => s.isTab);
@@ -64,184 +55,107 @@ const HeaderHome = () => {
 
 	const handleShareOpen = () => {
 		setShareOpen(true);
-		setAnchorEl(null);
+		setMobileNavOpen(false);
+	};
+
+	const [sideNavOpen, setMobileNavOpen] = useState(false);
+	console.log(sideNavOpen);
+	const toggleMobileNav = (open) => {
+		setMobileNavOpen(open);
 	};
 
 	return (
 		<div className="page_width">
 			<div className={styles.wrapper}>
 				<div className={styles.content}>
-					{isTab ? (
-						<>
-							<div className={styles.left}>
-								<IonMenuToggle>
-									<div className={styles.menu_btn}>
-										<IonIcon
-											icon={hamburger}
-											slot="start"
-											class={styles.icon}
-										/>
-										{/* <IconButton>
+					<div className={styles.left}>
+						{isTab ? (
+							<IonMenuToggle>
+								<div className={styles.menu_btn}>
+									<IonIcon icon={hamburger} slot="start" class={styles.icon} />
+									{/* <IconButton>
 											<Hamburger />
 										</IconButton> */}
-									</div>
-								</IonMenuToggle>
-							</div>
-							<div className={styles.logo}>
-								<div className={styles.title}>
-									<Link href="/">
-										<img src="/img/logo/logo.png" alt="" />
-									</Link>
 								</div>
+							</IonMenuToggle>
+						) : (
+							<div
+								className={styles.menu_btn}
+								onClick={() => setMobileNavOpen(true)}>
+								<IonIcon icon={hamburger} slot="start" class={styles.icon} />
 							</div>
-							<div className={styles.right}>
-								<div className={`${styles.btn} invisible`}>
-									{/* <IonIcon icon={settings} slot="start" class={styles.icon} /> */}
-									<Link href="/settings">
-										<IconButton>
-											<SettingsIcon />
-										</IconButton>
-									</Link>
-								</div>
-							</div>
-						</>
-					) : (
-						<>
-							<div className={styles.logo}>
-								<div className={styles.title}>
-									<Link href="/">
-										<img src="/img/logo/logo.png" alt="" />
-									</Link>
-								</div>
-							</div>
-							<div className={styles.right}>
-								{/* <div className={styles.btn}>
-									<Link href="/settings">
-										<IconButton>
-											<SettingsIcon />
-										</IconButton>
-									</Link>
-								</div> */}
-								<div className={styles.btn}>
-									<IconButton onClick={handleClick}>
-										<MoreVert />
-									</IconButton>
-								</div>
-							</div>
+						)}
+					</div>
+					<div className={styles.logo}>
+						<div className={styles.title}>
+							<Link href="/">
+								<img src="/img/logo/logo.png" alt="" />
+							</Link>
+						</div>
+					</div>
+					<div className={styles.right}>
+						<div
+							className={isTab ? `${styles.btn} invisible` : `${styles.btn}`}>
+							<IconButton onClick={handleClick}>
+								<MoreVert />
+							</IconButton>
+						</div>
+					</div>
 
-							<Popover
-								open={open}
-								anchorEl={anchorEl}
-								onClose={handleClose}
-								anchorOrigin={{
-									vertical: "bottom",
-									horizontal: "right",
-								}}
-								transformOrigin={{
-									vertical: "top",
-									horizontal: "right",
-								}}
-								disableScrollLock={true}>
-								<MenuList className={styles.menu}>
-									<Link href="/">
-										<MenuItem onClick={handleMenuClick}>
-											<span className={styles.icon}>
-												{/* <HomeOutline /> */}
-												<IonIcon icon={homeOutline} slot="start" />
-											</span>
-											<span className={styles.text}>Home</span>
-										</MenuItem>
-									</Link>
-									<Link href="/reciters">
-										<MenuItem onClick={handleMenuClick}>
-											<span className={styles.icon}>
-												<IonIcon icon={peopleOutline} slot="start" />
-											</span>
-											<span className={styles.text}>Reciters</span>
-										</MenuItem>
-									</Link>
-									<Link href={`/reciters/${reciterId}`}>
-										<MenuItem onClick={handleMenuClick}>
-											<span className={styles.icon}>
-												<IonIcon icon={musicalNoteOutline} slot="start" />
-											</span>
-											<span className={styles.text}>Chapters</span>
-										</MenuItem>
-									</Link>
-									<Link href="/live-radio">
-										<MenuItem onClick={handleMenuClick}>
-											<span className={styles.icon}>
-												<IonIcon icon={musicalNote} slot="start" />
-											</span>
-											<span className={styles.text}>Live Radios</span>
-										</MenuItem>
-									</Link>
-									<Link href="/favorites">
-										<MenuItem onClick={handleMenuClick}>
-											<span className={styles.icon}>
-												<IonIcon icon={starOutline} slot="start" />
-											</span>
-											<span className={styles.text}>Favorites</span>
-										</MenuItem>
-									</Link>
-									<Link href="/recent">
-										<MenuItem onClick={handleMenuClick}>
-											<span className={styles.icon}>
-												<IonIcon icon={musicalNote} slot="start" />
-											</span>
-											<span className={styles.text}>Recents</span>
-										</MenuItem>
-									</Link>
-									<Link href="/about">
-										<MenuItem onClick={handleMenuClick}>
-											<span className={styles.icon}>
-												<IonIcon icon={informationCircleOutline} slot="start" />
-											</span>
-											<span className={styles.text}>About</span>
-										</MenuItem>
-									</Link>
-									<Link href="/support">
-										<MenuItem onClick={handleMenuClick}>
-											<span className={styles.icon}>
-												<IonIcon icon={helpCircleOutline} slot="start" />
-											</span>
-											<span className={styles.text}>Support</span>
-										</MenuItem>
-									</Link>
-									{/* <Link href="/settings">
-										<MenuItem onClick={handleMenuClick}>
-											<span className={styles.icon}>
-												<HomeOutlinedIcon />
-											</span>
-											<span className={styles.text}>Settings</span>
-										</MenuItem>
-									</Link> */}
-									<MenuItem onClick={handleShareOpen}>
-										<span className={styles.icon}>
-											<ShareIcon />
-										</span>
-										<span className={styles.text}>Share</span>
-									</MenuItem>
-									<Divider />
-									<MenuItem onClick={handleMenuClick} className={styles.footer}>
-										<div>
-											<span>Powered by - </span>
-											<a href="https://www.deeniinfotech.com/" target="_blank">
-												Deeni Info Tech
-											</a>
-										</div>
-									</MenuItem>
-								</MenuList>
-							</Popover>
+					<Popover
+						open={open}
+						anchorEl={anchorEl}
+						onClose={handleClose}
+						anchorOrigin={{
+							vertical: "bottom",
+							horizontal: "right",
+						}}
+						transformOrigin={{
+							vertical: "top",
+							horizontal: "right",
+						}}
+						disableScrollLock={true}>
+						<MenuList className={styles.menu}>
+							<Link href="/about">
+								<MenuItem onClick={handleMenuClick}>
+									<span className={styles.icon}>
+										<IonIcon icon={informationCircleOutline} slot="start" />
+									</span>
+									<span className={styles.text}>About</span>
+								</MenuItem>
+							</Link>
+							<Link href="/support">
+								<MenuItem onClick={handleMenuClick}>
+									<span className={styles.icon}>
+										<IonIcon icon={helpCircleOutline} slot="start" />
+									</span>
+									<span className={styles.text}>Support</span>
+								</MenuItem>
+							</Link>
 
-							<ShareModal
-								openModal={shareOpen}
-								closer={handleShareClose}
-								url={`${server}`}
-								title="Quran Radio"
-							/>
-						</>
-					)}
+							{/* <Divider />
+							<MenuItem onClick={handleMenuClick} className={styles.footer}>
+								<div>
+									<span>Powered by - </span>
+									<a href="https://www.deeniinfotech.com/" target="_blank">
+										Deeni Info Tech
+									</a>
+								</div>
+							</MenuItem> */}
+						</MenuList>
+					</Popover>
+
+					<ShareModal
+						openModal={shareOpen}
+						closer={handleShareClose}
+						url={`${server}`}
+						title="Quran Radio"
+					/>
+					<SideNav
+						navOpen={sideNavOpen}
+						navControl={toggleMobileNav}
+						openShare={handleShareOpen}
+					/>
 				</div>
 			</div>
 		</div>

@@ -16,7 +16,7 @@ const PlaybackMode = ({ classes, icon }) => {
 		<div className={classes.root}>
 			{mode && mode === "normal" && (
 				<div
-					className={classes.btn} //
+					className={classes.btn}
 					onClick={(e) => setPlaybackMode(e, "live")}>
 					<IonIcon icon={icon.normal} slot="start" class={classes.icon} />
 				</div>

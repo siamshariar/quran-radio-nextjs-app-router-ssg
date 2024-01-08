@@ -92,6 +92,12 @@ export const setChapterList = (reciterId) => {
 	});
 };
 
+export const setChapterListByList = (chpaterList) => {
+	PlayerStore.update((s) => {
+		s.chapterList = chpaterList;
+	});
+};
+
 export const setChapter = (currentChapters, index) => {
 	const chapterNo = currentChapters[index];
 	const chapter = chapters[chapterNo - 1]; // base chapter

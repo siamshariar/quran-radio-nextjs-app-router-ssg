@@ -16,9 +16,7 @@ const PlaybackRate = ({ classes, icon }) => {
 	return (
 		<>
 			<div className={classes.root}>
-				<div
-					className={classes.btn} //
-					onClick={(e) => handleModal(e, true)}>
+				<div className={classes.btn} onClick={(e) => handleModal(e, true)}>
 					<IonIcon icon={icon} slot="start" class={classes.icon} />
 				</div>
 			</div>
