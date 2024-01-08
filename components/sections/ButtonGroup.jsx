@@ -49,8 +49,8 @@ const Buttons = () => {
 				Icon={ShareIcon}
 				url={
 					mode === "normal"
-						? `${server}/reciters/${reciterId}/chapters/${chapterNo}`
-						: `${server}/live-radios/${currLive.id}`
+						? `/reciters/${reciterId}/chapters/${chapterNo}`
+						: `/live-radios/${currLive.id}`
 				}
 				title="Quran Radio"
 			/>
