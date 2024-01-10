@@ -13,7 +13,7 @@ const PlaybackMode = ({ classes, icon }) => {
 	};
 
 	return (
-		<div className={classes.root}>
+		<div className={`${classes.root}, ${classes.mode}`}>
 			{mode && mode === "normal" && (
 				<div
 					className={classes.btn}
@@ -29,6 +29,7 @@ const PlaybackMode = ({ classes, icon }) => {
 					<IonIcon icon={icon.live} slot="start" class={classes.icon} />
 				</div>
 			)}
+			<div className={classes.mode_txt}>Mode</div>
 		</div>
 	);
 };

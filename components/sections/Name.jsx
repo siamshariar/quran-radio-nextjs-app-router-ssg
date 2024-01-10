@@ -32,12 +32,17 @@ const NameSection = () => {
 
 			{mode === "live" && (
 				<>
-					<h1>LIVE RADIO</h1>
-					<h2>
-						<Link href="/live-radio" legacyBehavior>
-							<a>{currLive.name}</a>
-						</Link>
-					</h2>
+					<div className={styles.chapter}>
+						<h2>
+							<Link href="/reciters" legacyBehavior>
+								<a>Live Radio</a>
+							</Link>
+						</h2>
+					</div>
+
+					<div className={styles.reciter}>
+						<span>{currLive.name}</span>
+					</div>
 				</>
 			)}
 		</div>

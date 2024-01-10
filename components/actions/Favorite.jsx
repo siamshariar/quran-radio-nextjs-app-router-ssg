@@ -75,7 +75,9 @@ const Favorite = ({ reciterId, chapterNo, classes, icon }) => {
 	return mode === "normal" ? (
 		<div className={classes.root}>
 			{isFavorite ? (
-				<div className={classes.btn} onClick={() => handleRemoveFavorite()}>
+				<div
+					className={`${classes.btn} ${classes.fav_added}`}
+					onClick={() => handleRemoveFavorite()}>
 					<IonIcon icon={icon.added} slot="start" class={classes.icon} />
 				</div>
 			) : (
@@ -87,7 +89,9 @@ const Favorite = ({ reciterId, chapterNo, classes, icon }) => {
 	) : (
 		<div className={classes.root}>
 			{isLiveFavorite ? (
-				<div className={classes.btn} onClick={() => handleRemoveLiveFavorite()}>
+				<div
+					className={`${classes.btn} ${classes.fav_added}`}
+					onClick={() => handleRemoveLiveFavorite()}>
 					<IonIcon icon={icon.added} slot="start" class={classes.icon} />
 				</div>
 			) : (

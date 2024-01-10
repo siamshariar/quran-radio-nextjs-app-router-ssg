@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import CommonHeader from "@/components/sections/CommonHeader";
 import LiveRadioList from "@/components/pages/LiveRadio";
 import styles from "@/components/pages/Pages.module.css";
+import HeaderHome from "@/components/sections/HeaderHome";
 
 const LiveRadio = () => {
 	const isBack = LocalStore.useState((s) => s.isBack);
@@ -52,6 +53,7 @@ const LiveRadio = () => {
 		<div className={styles.panel_content}>
 			<div className={styles.wrapper}>
 				<div className="page_width">
+					<HeaderHome />
 					<CommonHeader title="Reciters" />
 					<LiveRadioList />
 				</div>

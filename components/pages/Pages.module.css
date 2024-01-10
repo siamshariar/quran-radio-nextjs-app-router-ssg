@@ -2,17 +2,17 @@
 	height: 100%;
 }
 .wrapper {
-	background: linear-gradient(90deg, #cdd8e0 0%, #8b959e 100%);
+	background: linear-gradient(90deg, #8b959e, #cdd8e0);
 	padding-left: 30px;
 	padding-right: 30px;
-	padding-top: 16px;
+	/* padding-top: 16px; */
 	min-height: 100%;
 }
 
 .header {
 	color: #3d3d3f;
-	padding: 10px 30px 10px 30px;
-	background: linear-gradient(90deg, #cdd8e0 0%, #8b959e 100%);
+	padding: 16px 0;
+	/* background: linear-gradient(90deg, #8b959e, #cdd8e0); */
 }
 .header_content {
 	display: flex;
@@ -134,16 +134,16 @@
 }
 @media screen and (min-width: 769px) {
 	.header {
-		padding-left: 30px;
-		padding-right: 30px;
-		position: fixed;
-		width: 100%;
-		top: 0;
-		left: 0;
-		z-index: 9;
+		/* padding-left: 30px; */
+		/* padding-right: 30px; */
+		/* position: fixed; */
+		/* width: 100%; */
+		/* top: 0; */
+		/* left: 0; */
+		/* z-index: 9; */
 	}
 	.wrapper {
-		padding-top: 72px;
+		padding-top: 66px;
 		padding-bottom: 77px;
 		min-height: 100vh;
 	}
@@ -152,6 +152,10 @@
 	}
 }
 @media screen and (max-width: 768px) {
+	.header {
+		padding: 10px 30px;
+		background: linear-gradient(90deg, #8b959e, #cdd8e0);
+	}
 }
 @media screen and (max-width: 420px) {
 	.header,

@@ -140,15 +140,17 @@ const Player = () => {
 		<>
 			<div className={classNames(styles.dialog, dialogOpen ? styles.open : "")}>
 				<div className={styles.dialog_content}>
-					<Image
-						src="/img/logo/logo.png"
-						alt=""
-						width={150}
-						height={150}
-						style={{ objectFit: "contain", objectPosition: "center" }}
-						loading="eager"
-						unoptimized
-					/>
+					<div className={styles.popup_logo}>
+						<Image
+							src="/img/logo/logo.png"
+							alt=""
+							width={150}
+							height={80}
+							style={{ objectFit: "contain", objectPosition: "center" }}
+							loading="eager"
+							unoptimized
+						/>
+					</div>
 					<p className={styles.dialog_title}>Quran Live and Audio</p>
 					<div className={styles.dialog_text}>
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do

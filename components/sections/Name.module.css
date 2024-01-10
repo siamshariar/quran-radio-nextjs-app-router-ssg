@@ -6,6 +6,7 @@
 	margin: 0 auto 60px auto;
 	position: relative;
 	height: 48px;
+	margin-top: 60px;
 }
 .chapter {
 	padding-top: 0;
@@ -40,16 +41,19 @@
 @media screen and (max-height: 800px) {
 	.wrapper {
 		margin: 0 auto 5.775vh auto;
+		margin-top: 5.775vh;
 	}
 }
 @media screen and (max-height: 640px) {
 	.wrapper {
 		margin: 0 auto 3.375vh auto;
+		margin-top: 2.5vh;
 	}
 }
 @media screen and (max-height: 560px) {
 	.wrapper {
 		margin: 0;
+		margin-top: 1vh;
 	}
 	.chapter h2 {
 		margin-bottom: 5px;

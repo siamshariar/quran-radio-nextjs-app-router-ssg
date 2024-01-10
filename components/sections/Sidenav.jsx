@@ -22,10 +22,14 @@ import { IonIcon } from "@ionic/react";
 import Share from "../actions/share";
 import ShareIcon from "@mui/icons-material/Share";
 import classNames from "classnames";
+import { PlayerStore } from "@/store";
 
 export default function SideNav(props) {
+	const reciterId = PlayerStore.useState((s) => s.reciterId);
+
 	return (
 		<Drawer
+			transitionDuration={{ enter: 300, exit: 300 }}
 			anchor="left"
 			open={props.navOpen}
 			onClose={() => props.navControl(false)}
@@ -76,7 +80,9 @@ export default function SideNav(props) {
 								</Link>
 							</li>
 							<li onClick={(e) => props.navControl(false)}>
-								<Link href="/chapters" className={styles.m_menu_item}>
+								<Link
+									href={`/reciters/${reciterId}`}
+									className={styles.m_menu_item}>
 									<IonIcon
 										icon={musicalNoteOutline}
 										slot="start"

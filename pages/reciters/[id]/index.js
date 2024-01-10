@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import CommonHeader from "@/components/sections/CommonHeader";
 import styles from "@/components/pages/Pages.module.css";
+import HeaderHome from "@/components/sections/HeaderHome";
 
 export default function Home({ reciter, chapterList }) {
 	const isTab = LocalStore.useState((s) => s.isTab);
@@ -51,6 +52,7 @@ export default function Home({ reciter, chapterList }) {
 	) : (
 		<div className={styles.panel_content}>
 			<div className={styles.wrapper}>
+				<HeaderHome />
 				<CommonHeader title="Chapters" prev_page="/reciters" />
 				<Chapters reciter={reciter} chapterList={chapterList} />
 			</div>

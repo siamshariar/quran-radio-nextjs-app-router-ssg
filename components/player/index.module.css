@@ -50,7 +50,7 @@
 }
 
 .panel_header {
-	padding: 15px 12px;
+	padding: 15px 14px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -146,6 +146,10 @@
 	font-size: 14px;
 	text-align: center;
 	color: #6a6a6a;
+}
+.popup_logo {
+	width: 150px;
+	height: 80px;
 }
 .dialog_btn {
 	/* width: 100%;

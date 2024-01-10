@@ -5,6 +5,7 @@ import { LocalStore, setIsBack, setScrollPosition } from "@/store/local";
 import { IonContent } from "@ionic/react";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
+import HeaderHome from "@/components/sections/HeaderHome";
 
 export default function Recents() {
 	const isBack = LocalStore.useState((s) => s.isBack);
@@ -52,6 +53,7 @@ export default function Recents() {
 		<div className={styles.panel_content}>
 			<div className={styles.wrapper}>
 				<div className="page_width">
+					<HeaderHome />
 					<CommonHeader title="Recents" />
 					<RecentContent />
 				</div>

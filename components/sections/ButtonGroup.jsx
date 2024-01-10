@@ -39,6 +39,7 @@ const Buttons = () => {
 					root: styles.item,
 					btn: styles.btn,
 					icon: styles.icon,
+					fav_added: styles.fav_added,
 				}}
 				icon={{
 					added: heart,

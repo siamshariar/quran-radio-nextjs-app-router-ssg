@@ -13,9 +13,8 @@ const HomeContent = () => {
 	return (
 		<div className={styles.panel_content}>
 			<div className={styles.wrapper}>
-				<div className={styles.header}>
-					<HeaderHome />
-				</div>
+				<HeaderHome />
+
 				<div className={styles.name}>
 					<Name />
 				</div>
@@ -27,6 +26,8 @@ const HomeContent = () => {
 							root: styles.item,
 							btn: styles.btn,
 							icon: styles.icon,
+							mode: styles.mode,
+							mode_txt: styles.mode_txt,
 						}}
 						icon={{
 							normal: musicalNote,

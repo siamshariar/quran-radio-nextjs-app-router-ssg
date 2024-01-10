@@ -5,6 +5,7 @@ import { IonContent } from "@ionic/react";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import styles from "@/components/pages/Pages.module.css";
+import HeaderHome from "@/components/sections/HeaderHome";
 
 export default function Home() {
 	const isTab = LocalStore.useState((s) => s.isTab);
@@ -51,6 +52,7 @@ export default function Home() {
 	) : (
 		<div className={styles.panel_content}>
 			<div className={styles.wrapper}>
+				<HeaderHome />
 				<CommonHeader title="Reciters" />
 				<div className="page_width">
 					<Reciters />
