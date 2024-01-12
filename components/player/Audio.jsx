@@ -32,6 +32,7 @@ const AudioTag = () => {
 	const loading = PlayerStore.useState((s) => s.loading);
 	const chapterList = PlayerStore.useState((s) => s.chapterList);
 	const loop = PlayerStore.useState((s) => s.loop);
+	const shuffle = PlayerStore.useState((s) => s.shuffle);
 	const mode = LocalStore.useState((s) => s.settings.mode);
 	const currentTime = AudioStore.useState((s) => s.currentTime);
 	const isProgress = AudioStore.useState((s) => s.isProgress);
@@ -86,13 +87,16 @@ const AudioTag = () => {
 				audioRef.current.play();
 				return;
 				// index = chapterIndex;
+			} else if (shuffle) {
+				index = Math.floor(Math.random() * chapterList.length);
 			} else {
 				index = chapterIndex + 1;
 			}
+
 			if (index >= chapterList.length) {
-				setPlaying(false);
 				setChapter(chapterList, 0);
 				setSrc(chapterList, reciterId, 0);
+				setPlaying(true);
 				return;
 			} else {
 				setChapter(chapterList, index);

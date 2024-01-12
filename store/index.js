@@ -47,6 +47,7 @@ export const PlayerStore = new Store({
 	loading: false,
 	playing: false,
 	loop: false,
+	shuffle: false,
 	playbackRate: 1,
 
 	timer: {
@@ -149,6 +150,12 @@ export const setPlaying = (isPlaying) => {
 export const setLoop = (isLoop) => {
 	PlayerStore.update((s) => {
 		s.loop = isLoop;
+	});
+};
+
+export const setShuffle = (v) => {
+	PlayerStore.update((s) => {
+		s.shuffle = v;
 	});
 };
 

@@ -13,7 +13,7 @@
 	content: "";
 	position: absolute;
 	bottom: 4px;
-	left: 76px;
+	left: 56px;
 	right: 0;
 	height: 0.7px;
 	background: linear-gradient(
@@ -21,6 +21,12 @@
 		rgba(61, 61, 63, 0.7) 1.01%,
 		rgba(142, 152, 161, 0.7) 100.67%
 	);
+}
+.reciters.card::after {
+	left: 75px;
+}
+.fav_card.card::after {
+	left: 72px;
 }
 .card:last-child::after {
 	display: none;
@@ -32,17 +38,28 @@
 .wrapper {
 	width: 100%;
 	display: flex;
-	justify-content: flex-start;
+	justify-content: space-between;
 	align-items: center;
 	padding-bottom: 7px;
 }
 .left {
-	width: 72px;
+	width: 40px;
 	height: 64px;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+}
+.reciters .left,
+.fav_card .left {
+	width: 56px;
 }
 .middle {
 	width: calc(100% - 104px);
 	display: block;
+}
+.reciters .middle,
+.fav_card .middle {
+	width: calc(100% - 128px);
 }
 .right {
 	width: 32px;
@@ -56,13 +73,13 @@
 .image {
 	/* width: 64px;
 	height: 64px; */
-	width: 60px;
-	height: 60px;
+	/* width: 56px; */
+	/* height: 56px; */
 	border-radius: 50%;
 	overflow: hidden;
-	display: flex;
-	justify-content: flex-start;
-	align-items: center;
+	/* display: flex; */
+	/* justify-content: flex-start; */
+	/* align-items: center; */
 }
 .image img {
 	width: 100%;
@@ -107,22 +124,22 @@
 
 /* chapter card */
 .number {
-	width: 52px;
-	height: 52px;
+	width: 36px;
+	height: 36px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: #99a3ac;
+	background-color: #b8bfc4;
 	border-radius: 50%;
 	font-family: "SFProDisplay";
-	font-size: 18px;
+	font-size: 15px;
 	color: #58585d;
 	font-weight: 400;
 }
 
 /* favorite card */
 .fav_card .middle {
-	width: calc(100% - 72px - 64px);
+	width: calc(100% - 72px - 82px);
 }
 .fav_card .right.btns {
 	width: 64px;

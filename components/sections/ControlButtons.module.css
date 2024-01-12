@@ -55,9 +55,16 @@
 	width: 14px;
 	height: 14px;
 	fill: #505054;
+	color: #505054;
 }
-.loop .icon {
-	fill: red;
+.loop .icon,
+.shuffle .icon {
+	fill: #df1a1a;
+	color: #df1a1a;
+}
+.icon.repeat {
+	height: 18px;
+	width: 18px;
 }
 
 .btn.shadow .icon {

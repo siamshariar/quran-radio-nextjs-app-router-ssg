@@ -8,7 +8,12 @@ import {
 } from "ionicons/icons";
 
 import { PlayerStore } from "@/store";
-import { starOutline, shareOutline, clockOutline } from "../../icons";
+import {
+	starOutline,
+	shareOutline,
+	clockOutline,
+	ellipsisVertical,
+} from "../../icons";
 
 import styles from "./ButtonGroup.module.css";
 import Favorite from "../actions/Favorite";
@@ -72,7 +77,7 @@ const Buttons = () => {
 					btn: styles.btn,
 					icon: styles.icon,
 				}}
-				icon={clockOutline}
+				icon={ellipsisVertical}
 			/>
 		</div>
 	);

@@ -5,6 +5,8 @@ import {
 	informationCircleOutline,
 	helpCircleOutline,
 	heartOutline,
+	fileTrayFullOutline,
+	radioOutline,
 } from "ionicons/icons";
 import {
 	homeOutline,
@@ -52,7 +54,7 @@ const menus = [
 	},
 	{
 		title: "Live Radios",
-		icon: musicalNote,
+		icon: radioOutline,
 		url: "/live-radio",
 	},
 	{
@@ -62,7 +64,7 @@ const menus = [
 	},
 	{
 		title: "Recents",
-		icon: musicalNote,
+		icon: fileTrayFullOutline,
 		url: "/recent",
 	},
 	{

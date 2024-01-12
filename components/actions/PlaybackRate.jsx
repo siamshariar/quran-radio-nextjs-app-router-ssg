@@ -4,6 +4,7 @@ import { LocalStore } from "@/store/local";
 import { useSettingStorage } from "@/hooks/useSettingStorage";
 import styles from "./PlaybackRate.module.css";
 import { IonIcon } from "@ionic/react";
+import { MoreVert } from "@mui/icons-material";
 
 const PlaybackRate = ({ classes, icon }) => {
 	const [modalOpen, setModalOpen] = useState(false);
@@ -17,7 +18,8 @@ const PlaybackRate = ({ classes, icon }) => {
 		<>
 			<div className={classes.root}>
 				<div className={classes.btn} onClick={(e) => handleModal(e, true)}>
-					<IonIcon icon={icon} slot="start" class={classes.icon} />
+					{/* <IonIcon icon={icon} slot="start" class={classes.icon} /> */}
+					<MoreVert />
 				</div>
 			</div>
 			<PlaybackRateModal open={modalOpen} handler={handleModal} />

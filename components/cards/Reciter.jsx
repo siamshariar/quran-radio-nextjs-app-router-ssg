@@ -56,7 +56,8 @@ const Reciter = ({ reciter }) => {
 		<div
 			className={classNames(
 				styles.card,
-				reciterId === reciter.id ? styles.active : ""
+				reciterId === reciter.id ? styles.active : "",
+				styles.reciters
 			)}>
 			<div className={styles.wrapper}>
 				<div className={styles.left}>

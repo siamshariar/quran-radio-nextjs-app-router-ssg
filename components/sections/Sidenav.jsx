@@ -8,6 +8,8 @@ import {
 	helpCircleOutline,
 	heartOutline,
 	shareSocialOutline,
+	fileTrayFullOutline,
+	radioOutline,
 } from "ionicons/icons";
 import {
 	homeOutline,
@@ -94,7 +96,7 @@ export default function SideNav(props) {
 							<li onClick={(e) => props.navControl(false)}>
 								<Link href="/live-radio" className={styles.m_menu_item}>
 									<IonIcon
-										icon={musicalNote}
+										icon={radioOutline}
 										slot="start"
 										class={styles.sidenav_icon}
 									/>
@@ -114,7 +116,7 @@ export default function SideNav(props) {
 							<li onClick={(e) => props.navControl(false)}>
 								<Link href="/recent" className={styles.m_menu_item}>
 									<IonIcon
-										icon={musicalNote}
+										icon={fileTrayFullOutline}
 										slot="start"
 										class={styles.sidenav_icon}
 									/>

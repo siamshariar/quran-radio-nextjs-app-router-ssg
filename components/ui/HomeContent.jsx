@@ -8,6 +8,7 @@ import Visualizer from "../sections/Visualizer";
 import ControlButtons from "../sections/ControlButtons";
 import PlaybackMode from "../actions/PlaybackMode";
 import styles from "./HomeContent.module.css";
+import { radioOutline } from "ionicons/icons";
 
 const HomeContent = () => {
 	return (
@@ -30,8 +31,8 @@ const HomeContent = () => {
 							mode_txt: styles.mode_txt,
 						}}
 						icon={{
-							normal: musicalNote,
-							live: musicalNoteOutline,
+							live: radioOutline,
+							normal: musicalNoteOutline,
 						}}
 					/>
 				</div>

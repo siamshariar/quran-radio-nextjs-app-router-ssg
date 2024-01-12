@@ -15,12 +15,14 @@ import {
 	setLoop,
 	setLiveRadio,
 	setLiveSrc,
+	setShuffle,
 } from "@/store";
 import Loader from "../utils/Loader";
 import styles from "./ControlButtons.module.css";
 import { IonIcon } from "@ionic/react";
 import { liveRadios } from "@/data/liveRadios";
 import { LocalStore } from "@/store/local";
+import { repeat, repeatSharp } from "ionicons/icons";
 
 const ControlButtons = () => {
 	const playing = PlayerStore.useState((s) => s.playing);
@@ -30,6 +32,7 @@ const ControlButtons = () => {
 	const reciterId = PlayerStore.useState((s) => s.reciterId);
 	const loading = PlayerStore.useState((s) => s.loading);
 	const loop = PlayerStore.useState((s) => s.loop);
+	const shuffle = PlayerStore.useState((s) => s.shuffle);
 	const mode = LocalStore.useState((s) => s.settings.mode);
 
 	const play = () => {
@@ -80,7 +83,7 @@ const ControlButtons = () => {
 	};
 
 	const handleShuffle = () => {
-		return;
+		setShuffle(!shuffle);
 	};
 
 	return (
@@ -93,7 +96,11 @@ const ControlButtons = () => {
 						loop ? styles.loop : ""
 					)}
 					onClick={handleRepeat}>
-					<IonIcon icon={repeatIcon} slot="start" class={styles.icon} />
+					<IonIcon
+						icon={repeat}
+						slot="start"
+						class={`${styles.icon} ${styles.repeat}`}
+					/>
 				</div>
 
 				<div
@@ -141,7 +148,11 @@ const ControlButtons = () => {
 				</div>
 
 				<div
-					className={classNames(styles.btn, styles.small)}
+					className={classNames(
+						styles.btn,
+						styles.small,
+						shuffle && styles.shuffle
+					)}
 					onClick={handleShuffle}>
 					<IonIcon icon={shuffleIcon} slot="start" class={styles.icon} />
 				</div>

@@ -37,12 +37,13 @@ const LiveFavRecent = ({ item, handleRemoveLiveFavorite, noRemoveIcon }) => {
 			<div className={styles.wrapper}>
 				<div className={styles.left}>
 					<div className={styles.image}>
-						<img src={item.logo} alt="" />
+						<div className={styles.number}>{item.id}</div>
 					</div>
 				</div>
 
 				<div className={styles.middle}>
 					<div className={styles.name}>{item.name}</div>
+					<div className={styles.meaning}>{item.place}</div>
 				</div>
 
 				<div className={classNames(styles.right, styles.btns)}>

@@ -87,6 +87,7 @@ const HeaderHome = () => {
 									className={styles.menu_btn}
 									onClick={() => setSidenavOpen(true)}>
 									<IonIcon icon={hamburger} slot="start" class={styles.icon} />
+									<span>Menu</span>
 								</div>
 							)}
 						</div>

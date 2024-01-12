@@ -39,12 +39,13 @@ const LiveRadioCard = ({ liveRadio, index }) => {
 			<div className={styles.wrapper}>
 				<div className={styles.left}>
 					<div className={styles.image}>
-						<img src={liveRadio.logo} alt="" />
+						<div className={styles.number}>{liveRadio.id}</div>
 					</div>
 				</div>
 
 				<div className={styles.middle}>
 					<div className={styles.name}>{liveRadio.name}</div>
+					<div className={styles.meaning}>{liveRadio.place}</div>
 				</div>
 
 				<div className={styles.right}>

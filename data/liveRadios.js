@@ -1,44 +1,48 @@
 export const liveRadios = [
 	{
 		id: 1,
-		name: "Radio 1",
-		liveUrl: "https://qurango.net/radio/tarateel",
-		logo: "/img/live-radio/live-radio-1.jpg",
+		name: "The Holy Quran",
+		place: "Ramallah, Palestine",
+		liveUrl: "https://sawtelghad.org/8888/stream",
 	},
 	{
 		id: 2,
-		name: "Radio 2",
-		liveUrl: "https://radio.radioquraan.com/9994/stream",
-		logo: "/img/live-radio/live-radio-1.jpg",
+		name: "Zuwara Quran 103.7fm",
+		place: "Zuwara, Libya",
+		liveUrl:
+			"https://stream-156.zeno.fm/snczwewpsg0uv?zs=gqN2ZZn8RkG040A1zOKw1A",
 	},
 	{
 		id: 3,
-		name: "Wrong URL",
-		liveUrl: "https://radio.radioquraan.com/9994  stream",
-		logo: "/img/live-radio/live-radio-1.jpg",
+		name: "Quran FM 98.2 إذاعة القرآن الكريم",
+		place: "Cairo, Egypt",
+		liveUrl:
+			"https://n12.radiojar.com/8s5u5tpdtwzuv?rj-ttl=5&rj-tok=AAABjPXq8a4Ak8YSU1uoBEdDww",
 	},
 	{
 		id: 4,
-		name: "Radio 3",
-		liveUrl: "https://qurango.net/radio/tarateel",
-		logo: "/img/live-radio/live-radio-1.jpg",
+		name: "The Holy Quran Radio FM 93.2",
+		place: "Muscat, Oman",
+		liveUrl: "https://partrdo.mangomolo.com/quranrdo.mp3",
 	},
 	{
 		id: 5,
-		name: "Radio 4",
-		liveUrl: "https://radio.radioquraan.com/9994/stream",
-		logo: "/img/live-radio/live-radio-1.jpg",
+		name: "Saut-ul-Quran 93.4 FM",
+		place: "Islamabad, Pakistan",
+		liveUrl: "https://whmsonic.radio.gov.pk:7002/stream",
 	},
 	{
 		id: 6,
-		name: "Radio 5",
-		liveUrl: "https://qurango.net/radio/tarateel",
-		logo: "/img/live-radio/live-radio-1.jpg",
+		name: "Sharjah Quran Radio",
+		place: "Sharjah, United Arab Emirates",
+		liveUrl:
+			"https://l3.itworkscdn.net/smcquranlive/quranradiolive/icecast.audio",
 	},
 	{
 		id: 7,
-		name: "Radio 6",
-		liveUrl: "https://radio.radioquraan.com/9994/stream",
-		logo: "/img/live-radio/live-radio-1.jpg",
+		name: "Noor Dubai",
+		place: "Dubai, United Arab Emirates",
+		liveUrl:
+			"https://radio.garden/api/ara/content/listen/24DYFFOp/channel.mp3?r=1&1704932684586",
 	},
 ];
