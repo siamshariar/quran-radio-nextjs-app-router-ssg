@@ -7,6 +7,7 @@ import { useEffect, useRef } from "react";
 import CommonHeader from "@/components/sections/CommonHeader";
 import styles from "@/components/pages/Pages.module.css";
 import HeaderHome from "@/components/sections/HeaderHome";
+import { getReciterById } from "@/lib/fetch";
 
 export default function Home({ reciter, chapterList }) {
 	const isTab = LocalStore.useState((s) => s.isTab);
@@ -63,7 +64,9 @@ export default function Home({ reciter, chapterList }) {
 export async function getStaticProps(context) {
 	const id = encodeURI(context.params.id);
 	const reciterId = parseInt(id);
-	const reciter = reciters.find((obj) => obj.id === reciterId);
+
+	// const reciter = reciters.find((obj) => obj.id === reciterId);
+	const reciter = await getReciterById(reciterId);
 	const chapterList = reciter.moshaf[0].surah_list.split(",");
 
 	if (!chapterList) {
@@ -76,7 +79,7 @@ export async function getStaticProps(context) {
 		props: {
 			reciter,
 			chapterList,
-			key: id,
+			// key: id,
 		},
 		revalidate: 60,
 	};

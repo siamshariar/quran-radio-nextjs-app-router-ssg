@@ -33,9 +33,9 @@ export const useRecentStorage = () => {
 		const newRecentItem = {
 			// id: "" + new Date().getTime(),
 			reciterId: reciterId,
-			reciterSlug: "",
+			// reciterSlug: "",
 			reciterName: reciter.name,
-			reciterImage: "",
+			reciterImage: reciter.imgUrl,
 			chapterIndex: chapterIndex,
 			chapterList: chapterList,
 			chapterNo: chapterNo,

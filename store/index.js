@@ -2,6 +2,7 @@ import { Store } from "pullstate";
 import { chapters } from "../data/chapters";
 import { reciters } from "../data/reciters";
 import { liveRadios } from "@/data/liveRadios";
+import { defaultLiveRadios } from "@/data/defaultLiveRadios";
 
 const getReciterById = (reciterId) => {
 	const reciter = reciters.find((obj) => obj.id === reciterId);
@@ -17,7 +18,7 @@ const getChapterList = (reciterId) => {
 export const PlayerStore = new Store({
 	chapters, // all chapters info
 	reciters, // all reciters
-	liveRadios, // all live radios
+	// liveRadios, // all live radios
 
 	open: true,
 	mini: false,
@@ -26,10 +27,10 @@ export const PlayerStore = new Store({
 	// current reciter
 	reciter: getReciterById(10), // reciter object
 	reciterId: 10, // reciter id
-	reciterLetter: null,
+	// reciterLetter: null,
 	reciterName: null,
 	reciterImage: null,
-	reciterSlug: null,
+	// reciterSlug: null,
 
 	// current chapter
 	chapterList: getChapterList(10),
@@ -81,9 +82,17 @@ export const setReciter = (reciterId) => {
 		s.reciter = reciter;
 		s.reciterId = reciter.id;
 		s.reciterName = reciter.name;
-		s.reciterLetter = reciter.letter;
-		s.reciterSlug = "";
-		s.reciterImage = "mishary-rashid-alafasy-profile.webp";
+		s.reciterImage = reciter.imgUrl;
+	});
+};
+
+export const setReciterByReciter = (reciter) => {
+	console.log(reciter);
+	PlayerStore.update((s) => {
+		s.reciter = reciter;
+		s.reciterId = reciter.id;
+		s.reciterName = reciter.name;
+		s.reciterImage = reciter.imgUrl;
 	});
 };
 
@@ -116,13 +125,27 @@ export const setLiveRadio = (index) => {
 	});
 };
 
+export const setDefaultLiveRadio = (index) => {
+	PlayerStore.update((s) => {
+		s.liveIndex = index;
+		s.currLive = defaultLiveRadios[index];
+	});
+};
+
 export const setSrc = (currentChapters, reciterId, chapterIndex) => {
 	let chapterNo = currentChapters[chapterIndex];
 	let str = "0000" + chapterNo;
 	str = str.slice(-3);
 
 	const reciter = getReciterById(reciterId);
-	const src = reciter.moshaf[0].server + str + ".mp3";
+
+	// set default moshaf for src
+	let moshaf = [];
+	moshaf = reciter.moshaf.filter((i) => i.id == reciter.defaultMoshafId);
+
+	const src = moshaf.length
+		? moshaf[0].server + str + ".mp3"
+		: reciter.moshaf[0] + str + ".mp3";
 
 	PlayerStore.update((s) => {
 		s.src = src;

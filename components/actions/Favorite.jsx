@@ -12,7 +12,9 @@ const Favorite = ({ reciterId, chapterNo, classes, icon }) => {
 	const currLive = PlayerStore.useState((s) => s.currLive);
 	const chapterIndex = PlayerStore.useState((s) => s.chapterIndex);
 	const liveIndex = PlayerStore.useState((s) => s.liveIndex);
+	const reciter = PlayerStore.useState((s) => s.reciter);
 	const mode = LocalStore.useState((s) => s.settings.mode);
+	// console.log(reciter);
 
 	const { addFavorite, removeFavorite } = useFavoriteStorage();
 	const { addLiveFavorite, removeLiveFavorite } = useLiveFavoriteStorage();

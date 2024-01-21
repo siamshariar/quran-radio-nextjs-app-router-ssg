@@ -5,8 +5,8 @@ import ReciterCard from "@/components/cards/Reciter";
 import styles from "./Pages.module.css";
 import { IonIcon } from "@ionic/react";
 
-const Reciters = () => {
-	const reciters = PlayerStore.useState((s) => s.reciters);
+const Reciters = ({ reciters }) => {
+	// const reciters = PlayerStore.useState((s) => s.reciters);
 	const [filter, setFilter] = useState("");
 
 	const filteredReciters = reciters.filter((item) =>

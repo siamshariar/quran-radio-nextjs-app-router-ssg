@@ -13,6 +13,7 @@ import { playCircle, pauseCircle } from "@/icons";
 import styles from "./Card.module.css";
 import { IonIcon } from "@ionic/react";
 import { useSettingStorage } from "@/hooks/useSettingStorage";
+import Image from "next/image";
 
 const FavRecentList = ({ item, handleRemoveFavorite, noRemoveIcon }) => {
 	const playing = PlayerStore.useState((s) => s.playing);
@@ -55,9 +56,17 @@ const FavRecentList = ({ item, handleRemoveFavorite, noRemoveIcon }) => {
 			<div className={styles.wrapper}>
 				<div className={styles.left}>
 					<div className={styles.image}>
-						<img
+						{/* <img
 							src="/img/reciters/mishary-rashid-alafasy-profile.webp"
 							alt=""
+						/> */}
+						<Image
+							src={item.reciterImage}
+							alt=""
+							width={100}
+							height={100}
+							loading="eager"
+							unoptimized
 						/>
 					</div>
 				</div>

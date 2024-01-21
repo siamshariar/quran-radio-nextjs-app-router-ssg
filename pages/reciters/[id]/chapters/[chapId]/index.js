@@ -1,6 +1,7 @@
 import HomeContent from "@/components/pages/Home";
 import { reciters } from "@/data/reciters";
 import { useSettingStorage } from "@/hooks/useSettingStorage";
+import { getReciterById } from "@/lib/fetch";
 import { setChapter, setChapterListByList, setReciter, setSrc } from "@/store";
 import { LocalStore } from "@/store/local";
 import { useEffect } from "react";
@@ -31,7 +32,7 @@ export async function getStaticProps({ params }) {
 	const reciterId = parseInt(params.id);
 	const chapId = params.chapId;
 
-	const reciter = reciters.find((obj) => obj.id === reciterId);
+	const reciter = await getReciterById(reciterId);
 	const chapterList = reciter.moshaf[0].surah_list.split(",");
 	const chapterIndex = chapterList.indexOf(chapId);
 

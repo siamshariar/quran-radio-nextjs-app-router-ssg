@@ -10,21 +10,21 @@ export const useFavoriteStorage = () => {
 	const chapterList = PlayerStore.useState((s) => s.chapterList);
 
 	const addFavorite = async (reciterId, chapterNo, chapterIndex) => {
-		const reciter = reciters.find((obj) => obj.id === reciterId);
-		console.log(reciterId, chapterNo);
+		const reciter = reciters.find((obj) => obj.id == reciterId);
+		// console.log(reciterId, chapterNo);
 
 		const newFavorite = {
 			// id: "" + new Date().getTime(),
 			reciterId: reciterId,
-			reciterSlug: "",
+			// reciterSlug: "",
 			reciterName: reciter.name,
-			reciterImage: "",
+			reciterImage: reciter.imgUrl,
 			chapterIndex: chapterIndex,
 			chapterList: chapterList,
 			chapterNo: chapterNo,
 			chapterName: chapters[chapterNo - 1].name,
 			createdAt: new Date().getTime(),
-			status: 1,
+			// status: 1,
 		};
 
 		const updatedFavorites = [...favorites, newFavorite];

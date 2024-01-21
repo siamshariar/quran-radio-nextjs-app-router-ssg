@@ -45,4 +45,71 @@ export const liveRadios = [
 		liveUrl:
 			"https://radio.garden/api/ara/content/listen/24DYFFOp/channel.mp3?r=1&1704932684586",
 	},
+	{
+		id: 8,
+		name: "Live Quran Radio (English tranlation)",
+		place: "Australia",
+		liveUrl: "http://104.167.2.55:8000/",
+	},
+	{
+		id: 9,
+		name: "Saudi Quran",
+		place: "Saudi Arabia",
+		liveUrl: "https://n13.radiojar.com/4wqre23fytzuv",
+	},
+	{
+		id: 10,
+		name: "Al-Quran Live",
+		place: "Arabic",
+		liveUrl: "https://n11.radiojar.com/0tpy1h0kxtzuv",
+	},
+	{
+		id: 11,
+		name: "Quran Reciter in French live",
+		place: "France",
+		liveUrl: "https://stream-150.zeno.fm/s78bfahr36duv",
+	},
+	{
+		id: 12,
+		name: "Bangla Al-Quran",
+		place: "Bangladesh",
+		liveUrl: "https://radio.radioquraan.com:9994/",
+	},
+	{
+		id: 13,
+		name: "Islam Radio Deutschland",
+		place: "Germany, Berlin",
+		liveUrl:
+			"https://islam-radio-deutschland.stream.laut.fm/islam-radio-deutschland",
+	},
+	{
+		id: 14,
+		name: "Quran Radio",
+		place: "Palestine",
+		liveUrl: "http://www.quran-radio.org:8080/;stream.mp3",
+	},
+	{
+		id: 15,
+		name: "Qur'an Radio Quran in Arabic by Sheikh Yasser Al-Dosari",
+		place: "Kuwait",
+		liveUrl: "http://quraan.us:9884/;*.mp3",
+	},
+	{
+		id: 16,
+		name: "YO Quran",
+		place: "Morocco",
+		liveUrl: "http://radio.aljamaa-tv.com:8000/quran",
+	},
+	{
+		id: 17,
+		name: "Radio Quran",
+		place: "",
+		liveUrl: "http://5.135.194.225:8000/live",
+	},
+	{
+		id: 18,
+		name: "Quran er Alo",
+		place: "Bangladesh",
+		liveUrl: "http://66.45.232.131:9994/;stream.mp3",
+	},
 ];

@@ -1,6 +1,7 @@
 import HomeContent from "@/components/pages/Home";
 import { liveRadios } from "@/data/liveRadios";
 import { useSettingStorage } from "@/hooks/useSettingStorage";
+import { getLiveIndexById } from "@/lib/fetch";
 import { setLiveRadio, setLiveSrc } from "@/store";
 import { LocalStore } from "@/store/local";
 import { useEffect } from "react";
@@ -27,7 +28,8 @@ export default function HomePlay({ liveIndex }) {
 
 export async function getStaticProps({ params }) {
 	const liveId = parseInt(params.id);
-	let liveIndex = liveRadios.findIndex((obj) => obj.id === liveId);
+
+	let liveIndex = await getLiveIndexById(liveId);
 
 	return {
 		props: {

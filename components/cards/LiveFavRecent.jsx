@@ -33,7 +33,7 @@ const LiveFavRecent = ({ item, handleRemoveLiveFavorite, noRemoveIcon }) => {
 	};
 
 	return (
-		<div className={classNames(styles.card, styles.fav_card)}>
+		<div className={classNames(styles.card, styles.liveFavCard)}>
 			<div className={styles.wrapper}>
 				<div className={styles.left}>
 					<div className={styles.image}>

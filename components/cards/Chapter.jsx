@@ -6,6 +6,7 @@ import {
 	setChapter,
 	setChapterList,
 	setSrc,
+	setReciterByReciter,
 } from "@/store";
 import { playCircle, pauseCircle } from "@/icons";
 import styles from "./Card.module.css";
@@ -26,7 +27,10 @@ const Chapter = ({ index, reciter, chapterNo }) => {
 		if (mode === "live") {
 			setMode("normal");
 		}
-		setReciter(reciter.id);
+		// update reciter from json
+		// setReciter(reciterId);
+		// update reciter from pages props reciter
+		setReciterByReciter(reciter);
 		setChapterList(reciter.id);
 		setChapter(reciter.moshaf[0].surah_list.split(","), index);
 		setSrc(reciter.moshaf[0].surah_list.split(","), reciter.id, index);

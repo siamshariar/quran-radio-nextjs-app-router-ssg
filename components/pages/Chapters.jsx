@@ -11,7 +11,7 @@ const ChapterListPage = ({ reciter, chapterList }) => {
 					<span>{reciter.name}</span>
 				</div>
 				<div className={styles.image}>
-					<img src="/img/reciters/Abdul-Basit-Abdus-Samad.jpg" alt="reciter" />
+					<img src={reciter.imgUrl} alt="reciter" />
 				</div>
 			</div>
 

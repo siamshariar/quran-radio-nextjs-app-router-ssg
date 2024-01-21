@@ -7,12 +7,14 @@ import {
 	setChapterList,
 	setPlaying,
 	setSrc,
+	setReciterByReciter,
 } from "@/store";
 import { playCircle, pauseCircle } from "@/icons";
 import styles from "./Card.module.css";
 import { IonIcon } from "@ionic/react";
 import { useSettingStorage } from "@/hooks/useSettingStorage";
 import { LocalStore } from "@/store/local";
+import Image from "next/image";
 
 const Reciter = ({ reciter }) => {
 	const playing = PlayerStore.useState((s) => s.playing);
@@ -34,7 +36,11 @@ const Reciter = ({ reciter }) => {
 		const reciterId = reciter.id;
 		const chapterList = reciter.moshaf[0].surah_list.split(",");
 		const randomChapterIndex = Math.floor(Math.random() * chapterList.length);
-		setReciter(reciterId);
+
+		// update reciter from json
+		// setReciter(reciterId);
+		// update reciter from pages props reciter
+		setReciterByReciter(reciter);
 		setChapter(chapterList, randomChapterIndex);
 		setChapterList(reciterId);
 		setSrc(chapterList, reciterId, randomChapterIndex);
@@ -58,14 +64,19 @@ const Reciter = ({ reciter }) => {
 				styles.card,
 				reciterId === reciter.id ? styles.active : "",
 				styles.reciters
-			)}>
+			)}
+			id={reciter.id}>
 			<div className={styles.wrapper}>
 				<div className={styles.left}>
 					<div className={styles.image}>
 						{/* <img src={`/img/reciters/${reciter.reciter_image}`} alt="" /> */}
-						<img
-							src="/img/reciters/mishary-rashid-alafasy-profile.webp"
+						<Image
+							src={reciter.imgUrl}
 							alt=""
+							width={100}
+							height={100}
+							loading="eager"
+							unoptimized
 						/>
 					</div>
 				</div>

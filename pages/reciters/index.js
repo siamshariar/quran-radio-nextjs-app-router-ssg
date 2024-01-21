@@ -6,8 +6,9 @@ import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import styles from "@/components/pages/Pages.module.css";
 import HeaderHome from "@/components/sections/HeaderHome";
+import { getAllReciters } from "@/lib/fetch";
 
-export default function Home() {
+export default function Home({ reciters }) {
 	const isTab = LocalStore.useState((s) => s.isTab);
 	const isBack = LocalStore.useState((s) => s.isBack);
 	const yp = LocalStore.useState((s) => s.yp);
@@ -43,7 +44,7 @@ export default function Home() {
 				<div className={styles.panel_content}>
 					<div className={styles.wrapper}>
 						<div className="page_width">
-							<Reciters />
+							<Reciters reciters={reciters} />
 						</div>
 					</div>
 				</div>
@@ -55,9 +56,19 @@ export default function Home() {
 				<HeaderHome />
 				<CommonHeader title="Reciters" />
 				<div className="page_width">
-					<Reciters />
+					<Reciters reciters={reciters} />
 				</div>
 			</div>
 		</div>
 	);
+}
+
+export async function getStaticProps() {
+	const reciters = await getAllReciters();
+
+	return {
+		props: {
+			reciters,
+		},
+	};
 }

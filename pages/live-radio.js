@@ -6,8 +6,9 @@ import CommonHeader from "@/components/sections/CommonHeader";
 import LiveRadioList from "@/components/pages/LiveRadio";
 import styles from "@/components/pages/Pages.module.css";
 import HeaderHome from "@/components/sections/HeaderHome";
+import { getAllLiveRadios } from "@/lib/fetch";
 
-const LiveRadio = () => {
+const LiveRadio = ({ liveRadios }) => {
 	const isBack = LocalStore.useState((s) => s.isBack);
 	const yp = LocalStore.useState((s) => s.yp);
 	const isTab = LocalStore.useState((s) => s.isTab);
@@ -43,7 +44,7 @@ const LiveRadio = () => {
 				<div className={styles.panel_content}>
 					<div className={styles.wrapper}>
 						<div className="page_width">
-							<LiveRadioList />
+							<LiveRadioList liveRadios={liveRadios} />
 						</div>
 					</div>
 				</div>
@@ -54,8 +55,8 @@ const LiveRadio = () => {
 			<div className={styles.wrapper}>
 				<div className="page_width">
 					<HeaderHome />
-					<CommonHeader title="Reciters" />
-					<LiveRadioList />
+					<CommonHeader title="Live Radios" />
+					<LiveRadioList liveRadios={liveRadios} />
 				</div>
 			</div>
 		</div>
@@ -63,3 +64,13 @@ const LiveRadio = () => {
 };
 
 export default LiveRadio;
+
+export async function getStaticProps() {
+	const liveRadios = await getAllLiveRadios();
+
+	return {
+		props: {
+			liveRadios,
+		},
+	};
+}

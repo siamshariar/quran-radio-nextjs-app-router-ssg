@@ -9,6 +9,7 @@ import {
 	setChapterList,
 	setLiveRadio,
 	setLiveSrc,
+	setDefaultLiveRadio,
 } from "@/store";
 import { LocalStore } from "@/store/local";
 import { useRecentStorage } from "@/hooks/useRecentStorage";
@@ -17,6 +18,7 @@ import styles from "./index.module.css";
 import classNames from "classnames";
 import { useLiveRecentStorage } from "@/hooks/useLiveRecentStorage";
 import { useRouter } from "next/router";
+import { defaultLiveRadios } from "@/data/defaultLiveRadios";
 
 const AudioTag = () => {
 	const audioRef = useRef(null);
@@ -106,11 +108,14 @@ const AudioTag = () => {
 			}
 		}
 	};
+
+	// first loading play random
 	const router = useRouter();
 	useEffect(() => {
 		const randomReciterIndex = Math.floor(Math.random() * reciters.length);
 		const randomReciter = reciters[randomReciterIndex];
 		const randomReciterId = randomReciter.id;
+
 		const randomChapterList = randomReciter.moshaf[0].surah_list.split(",");
 		const randomChapterIndex = Math.floor(
 			Math.random() * randomChapterList.length
@@ -125,8 +130,11 @@ const AudioTag = () => {
 
 	useEffect(() => {
 		if (router.pathname !== "/live-radios/[id]") {
-			const randomLiveIndex = Math.floor(Math.random() * liveRadios.length);
-			setLiveRadio(randomLiveIndex);
+			// only set Live radio from Default json
+			const randomLiveIndex = Math.floor(
+				Math.random() * defaultLiveRadios.length
+			);
+			setDefaultLiveRadio(randomLiveIndex);
 		}
 	}, []);
 
