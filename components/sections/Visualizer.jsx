@@ -34,10 +34,7 @@ const Visualizer = () => {
 
 			<div className={styles.progress}>
 				<div
-					className={classNames(
-						styles.label,
-						mode === "live" && styles.disabled
-					)}
+					className={classNames(styles.label)}
 					style={{
 						width: `${
 							dur && mode === "normal" ? (currentTime * 100) / dur : 100

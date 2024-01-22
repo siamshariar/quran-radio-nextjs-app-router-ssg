@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Head from "next/head";
 
 // Core CSS required for Ionic components to work properly
@@ -91,7 +91,7 @@ function MyApp({ Component, pageProps }) {
 	return (
 		<>
 			<NonSSRWrapper>
-				{isTab && <Menu />}
+				{/* {isTab && <Menu />} */}
 				<Player />
 			</NonSSRWrapper>
 

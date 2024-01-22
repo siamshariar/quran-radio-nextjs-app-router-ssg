@@ -93,7 +93,7 @@ const ControlButtons = () => {
 					className={classNames(
 						styles.btn,
 						styles.small,
-						loop ? styles.loop : ""
+						loop && mode === "normal" && styles.loop
 					)}
 					onClick={handleRepeat}>
 					<IonIcon
@@ -151,7 +151,7 @@ const ControlButtons = () => {
 					className={classNames(
 						styles.btn,
 						styles.small,
-						shuffle && styles.shuffle
+						shuffle && mode === "normal" && styles.shuffle
 					)}
 					onClick={handleShuffle}>
 					<IonIcon icon={shuffleIcon} slot="start" class={styles.icon} />

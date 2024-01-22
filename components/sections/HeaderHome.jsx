@@ -3,13 +3,13 @@ import styles from "./Header.module.css";
 import { IonIcon, IonMenuToggle } from "@ionic/react";
 import { LocalStore } from "@/store/local";
 import { MoreVert } from "@mui/icons-material";
-import SettingsIcon from "@mui/icons-material/Settings";
+// import SettingsIcon from "@mui/icons-material/Settings";
 import Popover from "@mui/material/Popover";
 import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
 import { IconButton } from "@mui/material";
 import { useState } from "react";
-import { PlayerStore, setSliderDown } from "@/store";
+import { setSliderDown } from "@/store";
 import ShareModal from "../actions/share-modal";
 import { server } from "@/lib/config";
 import {
@@ -29,10 +29,8 @@ import SideNav from "./Sidenav";
 
 const HeaderHome = () => {
 	const isTab = LocalStore.useState((s) => s.isTab);
-	const reciterId = PlayerStore.useState((s) => s.reciterId);
-	const [shareOpen, setShareOpen] = useState(false);
+	// const reciterId = PlayerStore.useState((s) => s.reciterId);
 	const [sideNavOpen, setSidenavOpen] = useState(false);
-
 	const [anchorEl, setAnchorEl] = useState(null);
 
 	const handleClick = (event) => {
@@ -50,13 +48,22 @@ const HeaderHome = () => {
 
 	const open = Boolean(anchorEl);
 
-	const handleShareClose = () => {
-		setShareOpen(false);
+	const [shareOpen, setShareOpen] = useState(false);
+
+	const handleShare = () => {
+		if (isTab && navigator.share) {
+			navigator.share({
+				title: "Quran Radio",
+				url: `${server}`,
+			});
+		} else {
+			setShareOpen(true);
+		}
+		setSidenavOpen(false);
 	};
 
-	const handleShareOpen = () => {
-		setShareOpen(true);
-		setSidenavOpen(false);
+	const handleShareClose = () => {
+		setShareOpen(false);
 	};
 
 	const toggleMobileNav = (open) => {
@@ -69,27 +76,12 @@ const HeaderHome = () => {
 				<div className={styles.wrapper}>
 					<div className={styles.content}>
 						<div className={styles.left}>
-							{isTab ? (
-								<IonMenuToggle>
-									<div className={styles.menu_btn}>
-										<IonIcon
-											icon={hamburger}
-											slot="start"
-											class={styles.icon}
-										/>
-										{/* <IconButton>
-											<Hamburger />
-										</IconButton> */}
-									</div>
-								</IonMenuToggle>
-							) : (
-								<div
-									className={styles.menu_btn}
-									onClick={() => setSidenavOpen(true)}>
-									<IonIcon icon={hamburger} slot="start" class={styles.icon} />
-									<span>Menu</span>
-								</div>
-							)}
+							<div
+								className={styles.menu_btn}
+								onClick={() => setSidenavOpen(true)}>
+								<IonIcon icon={hamburger} slot="start" class={styles.icon} />
+								{!isTab && <span>Menu</span>}
+							</div>
 						</div>
 						<div className={styles.logo}>
 							<div className={styles.title}>
@@ -159,7 +151,8 @@ const HeaderHome = () => {
 						<SideNav
 							navOpen={sideNavOpen}
 							navControl={toggleMobileNav}
-							openShare={handleShareOpen}
+							handleShare={handleShare}
+							isTab={isTab}
 						/>
 					</div>
 				</div>

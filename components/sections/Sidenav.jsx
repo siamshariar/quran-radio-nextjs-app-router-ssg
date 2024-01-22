@@ -21,8 +21,6 @@ import {
 	shareOutline,
 } from "@/icons";
 import { IonIcon } from "@ionic/react";
-import Share from "../actions/share";
-import ShareIcon from "@mui/icons-material/Share";
 import classNames from "classnames";
 import { PlayerStore } from "@/store";
 
@@ -31,7 +29,7 @@ export default function SideNav(props) {
 
 	return (
 		<Drawer
-			transitionDuration={{ enter: 300, exit: 300 }}
+			// transitionDuration={{ enter: 300, exit: 300 }}
 			anchor="left"
 			open={props.navOpen}
 			onClose={() => props.navControl(false)}
@@ -123,7 +121,31 @@ export default function SideNav(props) {
 									Recents
 								</Link>
 							</li>
-							<li onClick={(e) => props.openShare()}>
+							{props.isTab && (
+								<>
+									<li onClick={(e) => props.navControl(false)}>
+										<Link href="/about" className={styles.m_menu_item}>
+											<IonIcon
+												icon={informationCircleOutline}
+												slot="start"
+												class={styles.sidenav_icon}
+											/>
+											About
+										</Link>
+									</li>
+									<li onClick={(e) => props.navControl(false)}>
+										<Link href="/support" className={styles.m_menu_item}>
+											<IonIcon
+												icon={helpCircleOutline}
+												slot="start"
+												class={styles.sidenav_icon}
+											/>
+											Support
+										</Link>
+									</li>
+								</>
+							)}
+							<li onClick={(e) => props.handleShare()}>
 								<div className={styles.m_menu_item}>
 									<IonIcon
 										icon={shareSocialOutline}
