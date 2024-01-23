@@ -4,10 +4,10 @@ ion-footer::before {
 }
 .ion-page {
 	background: linear-gradient(90deg, #8b959e, #cdd8e0);
-	// background-color: #f9f9f9;
 }
 // hide scrollbar
 ion-content {
+	--background: linear-gradient(90deg, #8b959e, #cdd8e0);
 	// --offset-bottom: auto !important;
 	// --overflow: auto;
 	// overflow: auto;

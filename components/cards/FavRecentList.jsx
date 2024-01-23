@@ -61,7 +61,11 @@ const FavRecentList = ({ item, handleRemoveFavorite, noRemoveIcon }) => {
 							alt=""
 						/> */}
 						<Image
-							src={item.reciterImage}
+							src={
+								item.reciterImage
+									? item.reciterImage
+									: "/img/reciters/mishary-rashid-alafasy-profile.webp"
+							}
 							alt=""
 							width={100}
 							height={100}

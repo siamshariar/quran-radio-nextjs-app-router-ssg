@@ -7,7 +7,7 @@
 	top: 0;
 	padding-left: 30px;
 	padding-right: 30px;
-	background: linear-gradient(90deg, #8b959e, #cdd8e0);
+	/* background: linear-gradient(90deg, #8b959e, #cdd8e0); */
 	z-index: 99;
 }
 .wrapper {
@@ -238,5 +238,10 @@ hr.m_menu_hr {
 @media screen and (max-height: 420px) {
 	.wrapper {
 		overflow: auto;
+	}
+}
+@media screen and (min-width: 769px) {
+	.header {
+		background-color: #abb1b7;
 	}
 }
