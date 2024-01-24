@@ -1,7 +1,9 @@
+import Meta from "@/components/core/Meta";
 import FavoriteContent from "@/components/pages/Favorites";
 import styles from "@/components/pages/Pages.module.css";
 import CommonHeader from "@/components/sections/CommonHeader";
 import HeaderHome from "@/components/sections/HeaderHome";
+import { server } from "@/lib/config";
 import { LocalStore, setIsBack, setScrollPosition } from "@/store/local";
 import { IonContent } from "@ionic/react";
 import { useRouter } from "next/router";
@@ -33,31 +35,42 @@ export default function Favorites() {
 		}
 	}, []);
 
-	return isTab ? (
+	return (
 		<>
-			<CommonHeader title="Favorites" />
-			<IonContent
-				ref={contentRef}
-				scrollEvents={true}
-				onIonScroll={handleScroll}>
+			<Meta
+				title="Favorites"
+				description="Audio Quran and Live Radio"
+				url={`server/favorites`}
+				image={`${server}/img/logo/logo.png`}
+				type="website"
+			/>
+			{isTab ? (
+				<>
+					<CommonHeader title="Favorites" />
+					<IonContent
+						ref={contentRef}
+						scrollEvents={true}
+						onIonScroll={handleScroll}>
+						<div className={styles.panel_content}>
+							<div className={styles.wrapper}>
+								<div className="page_width">
+									<FavoriteContent />
+								</div>
+							</div>
+						</div>
+					</IonContent>
+				</>
+			) : (
 				<div className={styles.panel_content}>
 					<div className={styles.wrapper}>
 						<div className="page_width">
+							<HeaderHome />
+							<CommonHeader title="Favorites" />
 							<FavoriteContent />
 						</div>
 					</div>
 				</div>
-			</IonContent>
+			)}
 		</>
-	) : (
-		<div className={styles.panel_content}>
-			<div className={styles.wrapper}>
-				<div className="page_width">
-					<HeaderHome />
-					<CommonHeader title="Favorites" />
-					<FavoriteContent />
-				</div>
-			</div>
-		</div>
 	);
 }

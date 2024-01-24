@@ -7,6 +7,8 @@ import { useEffect, useRef } from "react";
 import styles from "@/components/pages/Pages.module.css";
 import HeaderHome from "@/components/sections/HeaderHome";
 import { getAllReciters } from "@/lib/fetch";
+import Meta from "@/components/core/Meta";
+import { server } from "@/lib/config";
 
 export default function Home({ reciters }) {
 	const isTab = LocalStore.useState((s) => s.isTab);
@@ -34,32 +36,43 @@ export default function Home({ reciters }) {
 		}
 	}, []);
 
-	return isTab ? (
+	return (
 		<>
-			<CommonHeader title="Reciters" />
-			<IonContent
-				ref={contentRef}
-				scrollEvents={true}
-				onIonScroll={handleScroll}>
+			<Meta
+				title="Reciters"
+				description="Audio Quran and Live Radio"
+				url={`server/reciters`}
+				image={`${server}/img/logo/logo.png`}
+				type="website"
+			/>
+			{isTab ? (
+				<>
+					<CommonHeader title="Reciters" />
+					<IonContent
+						ref={contentRef}
+						scrollEvents={true}
+						onIonScroll={handleScroll}>
+						<div className={styles.panel_content}>
+							<div className={styles.wrapper}>
+								<div className="page_width">
+									<Reciters reciters={reciters} />
+								</div>
+							</div>
+						</div>
+					</IonContent>
+				</>
+			) : (
 				<div className={styles.panel_content}>
 					<div className={styles.wrapper}>
+						<HeaderHome />
+						<CommonHeader title="Reciters" />
 						<div className="page_width">
 							<Reciters reciters={reciters} />
 						</div>
 					</div>
 				</div>
-			</IonContent>
+			)}
 		</>
-	) : (
-		<div className={styles.panel_content}>
-			<div className={styles.wrapper}>
-				<HeaderHome />
-				<CommonHeader title="Reciters" />
-				<div className="page_width">
-					<Reciters reciters={reciters} />
-				</div>
-			</div>
-		</div>
 	);
 }
 

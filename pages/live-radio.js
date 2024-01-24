@@ -7,6 +7,8 @@ import LiveRadioList from "@/components/pages/LiveRadio";
 import styles from "@/components/pages/Pages.module.css";
 import HeaderHome from "@/components/sections/HeaderHome";
 import { getAllLiveRadios } from "@/lib/fetch";
+import Meta from "@/components/core/Meta";
+import { server } from "@/lib/config";
 
 const LiveRadio = ({ liveRadios }) => {
 	const isBack = LocalStore.useState((s) => s.isBack);
@@ -34,32 +36,43 @@ const LiveRadio = ({ liveRadios }) => {
 		}
 	}, []);
 
-	return isTab ? (
+	return (
 		<>
-			<CommonHeader title="Live Radios" />
-			<IonContent
-				ref={contentRef}
-				scrollEvents={true}
-				onIonScroll={handleScroll}>
+			<Meta
+				title="Live Radios"
+				description="Audio Quran and Live Radio"
+				url={`server/live-radio`}
+				image={`${server}/img/logo/logo.png`}
+				type="website"
+			/>
+			{isTab ? (
+				<>
+					<CommonHeader title="Live Radios" />
+					<IonContent
+						ref={contentRef}
+						scrollEvents={true}
+						onIonScroll={handleScroll}>
+						<div className={styles.panel_content}>
+							<div className={styles.wrapper}>
+								<div className="page_width">
+									<LiveRadioList liveRadios={liveRadios} />
+								</div>
+							</div>
+						</div>
+					</IonContent>
+				</>
+			) : (
 				<div className={styles.panel_content}>
 					<div className={styles.wrapper}>
 						<div className="page_width">
+							<HeaderHome />
+							<CommonHeader title="Live Radios" />
 							<LiveRadioList liveRadios={liveRadios} />
 						</div>
 					</div>
 				</div>
-			</IonContent>
+			)}
 		</>
-	) : (
-		<div className={styles.panel_content}>
-			<div className={styles.wrapper}>
-				<div className="page_width">
-					<HeaderHome />
-					<CommonHeader title="Live Radios" />
-					<LiveRadioList liveRadios={liveRadios} />
-				</div>
-			</div>
-		</div>
 	);
 };
 

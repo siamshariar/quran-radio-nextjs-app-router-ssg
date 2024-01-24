@@ -6,6 +6,8 @@ import { IonContent } from "@ionic/react";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import HeaderHome from "@/components/sections/HeaderHome";
+import Meta from "@/components/core/Meta";
+import { server } from "@/lib/config";
 
 export default function Recents() {
 	const isBack = LocalStore.useState((s) => s.isBack);
@@ -33,31 +35,42 @@ export default function Recents() {
 		}
 	}, []);
 
-	return isTab ? (
+	return (
 		<>
-			<CommonHeader title="Recents" />
-			<IonContent
-				ref={contentRef}
-				scrollEvents={true}
-				onIonScroll={handleScroll}>
+			<Meta
+				title="Recents"
+				description="Audio Quran and Live Radio"
+				url={`server/recent`}
+				image={`${server}/img/logo/logo.png`}
+				type="website"
+			/>
+			{isTab ? (
+				<>
+					<CommonHeader title="Recents" />
+					<IonContent
+						ref={contentRef}
+						scrollEvents={true}
+						onIonScroll={handleScroll}>
+						<div className={styles.panel_content}>
+							<div className={styles.wrapper}>
+								<div className="page_width">
+									<RecentContent />
+								</div>
+							</div>
+						</div>
+					</IonContent>
+				</>
+			) : (
 				<div className={styles.panel_content}>
 					<div className={styles.wrapper}>
 						<div className="page_width">
+							<HeaderHome />
+							<CommonHeader title="Recents" />
 							<RecentContent />
 						</div>
 					</div>
 				</div>
-			</IonContent>
+			)}
 		</>
-	) : (
-		<div className={styles.panel_content}>
-			<div className={styles.wrapper}>
-				<div className="page_width">
-					<HeaderHome />
-					<CommonHeader title="Recents" />
-					<RecentContent />
-				</div>
-			</div>
-		</div>
 	);
 }

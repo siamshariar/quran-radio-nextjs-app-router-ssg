@@ -4,33 +4,46 @@ import CommonHeader from "@/components/sections/CommonHeader";
 import styles from "@/components/pages/Pages.module.css";
 import AboutContent from "@/components/pages/About";
 import HeaderHome from "@/components/sections/HeaderHome";
+import Meta from "@/components/core/Meta";
+import { server } from "@/lib/config";
 
 const About = () => {
 	const isTab = LocalStore.useState((s) => s.isTab);
 
-	return isTab ? (
+	return (
 		<>
-			<CommonHeader title="About" />
-			<IonContent>
+			<Meta
+				title="About"
+				description="Audio Quran and Live Radio"
+				url={`server/about`}
+				image={`${server}/img/logo/logo.png`}
+				type="website"
+			/>
+			{isTab ? (
+				<>
+					<CommonHeader title="About" />
+					<IonContent>
+						<div className={styles.panel_content}>
+							<div className={styles.wrapper}>
+								<div className="page_width">
+									<AboutContent />
+								</div>
+							</div>
+						</div>
+					</IonContent>
+				</>
+			) : (
 				<div className={styles.panel_content}>
 					<div className={styles.wrapper}>
 						<div className="page_width">
+							<HeaderHome />
+							<CommonHeader title="About" />
 							<AboutContent />
 						</div>
 					</div>
 				</div>
-			</IonContent>
+			)}
 		</>
-	) : (
-		<div className={styles.panel_content}>
-			<div className={styles.wrapper}>
-				<div className="page_width">
-					<HeaderHome />
-					<CommonHeader title="About" />
-					<AboutContent />
-				</div>
-			</div>
-		</div>
 	);
 };
 

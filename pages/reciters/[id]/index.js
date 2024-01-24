@@ -8,6 +8,8 @@ import CommonHeader from "@/components/sections/CommonHeader";
 import styles from "@/components/pages/Pages.module.css";
 import HeaderHome from "@/components/sections/HeaderHome";
 import { getReciterById } from "@/lib/fetch";
+import Meta from "@/components/core/Meta";
+import { server } from "@/lib/config";
 
 export default function Home({ reciter, chapterList }) {
 	const isTab = LocalStore.useState((s) => s.isTab);
@@ -36,28 +38,40 @@ export default function Home({ reciter, chapterList }) {
 		}
 	}, []);
 
-	return isTab ? (
+	return (
 		<>
-			<CommonHeader title="Chapters" prev_page="/reciters" />
-			<IonContent
-				ref={contentRef}
-				scrollEvents={true}
-				onIonScroll={handleScroll}>
+			<Meta
+				title="Chapters"
+				description="Audio Quran and Live Radio"
+				url={`server/reciters/${reciter.id}`}
+				image={`${server}/img/logo/logo.png`}
+				type="website"
+			/>
+
+			{isTab ? (
+				<>
+					<CommonHeader title="Chapters" prev_page="/reciters" />
+					<IonContent
+						ref={contentRef}
+						scrollEvents={true}
+						onIonScroll={handleScroll}>
+						<div className={styles.panel_content}>
+							<div className={styles.wrapper}>
+								<Chapters reciter={reciter} chapterList={chapterList} />
+							</div>
+						</div>
+					</IonContent>
+				</>
+			) : (
 				<div className={styles.panel_content}>
 					<div className={styles.wrapper}>
+						<HeaderHome />
+						<CommonHeader title="Chapters" prev_page="/reciters" />
 						<Chapters reciter={reciter} chapterList={chapterList} />
 					</div>
 				</div>
-			</IonContent>
+			)}
 		</>
-	) : (
-		<div className={styles.panel_content}>
-			<div className={styles.wrapper}>
-				<HeaderHome />
-				<CommonHeader title="Chapters" prev_page="/reciters" />
-				<Chapters reciter={reciter} chapterList={chapterList} />
-			</div>
-		</div>
 	);
 }
 
