@@ -73,7 +73,7 @@ const AudioTag = () => {
 					console.error(error);
 					setTimeout(() => {
 						c += 1;
-						if (c > 2) {
+						if (c > 5) {
 							c = 0;
 							setPlaying(false);
 							setLoading(false);
