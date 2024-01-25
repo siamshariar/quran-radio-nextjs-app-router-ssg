@@ -36,6 +36,7 @@ CustomTabPanel.propTypes = {
 function a11yProps(index) {
 	return {
 		id: `simple-tab-${index}`,
+		className: "tab-btn",
 		"aria-controls": `simple-tabpanel-${index}`,
 	};
 }
