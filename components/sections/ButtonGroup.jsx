@@ -78,6 +78,7 @@ const Buttons = () => {
 					icon: styles.icon,
 				}}
 				icon={ellipsisVertical}
+				mode={mode}
 			/>
 		</div>
 	);

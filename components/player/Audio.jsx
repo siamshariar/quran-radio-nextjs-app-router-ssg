@@ -19,6 +19,7 @@ import classNames from "classnames";
 import { useLiveRecentStorage } from "@/hooks/useLiveRecentStorage";
 import { useRouter } from "next/router";
 import { defaultLiveRadios } from "@/data/defaultLiveRadios";
+// import { useIonToast } from "@ionic/react";
 
 const AudioTag = () => {
 	const audioRef = useRef(null);
@@ -40,6 +41,16 @@ const AudioTag = () => {
 	const isProgress = AudioStore.useState((s) => s.isProgress);
 
 	const [isToast, setIsToast] = useState(false);
+	// const [presentToast, dismiss] = useIonToast();
+	// const showErrToast = () => {
+	// 	console.log("error");
+	// 	presentToast({
+	// 		message: "Something went wrong!",
+	// 		duration: 10000,
+	// 		position: "middle",
+	// 		cssClass: "error-toast",
+	// 	});
+	// };
 
 	// to prevent "the play request was interrupted by a call to pause / a new load request" error
 	let c = 0;
@@ -62,12 +73,13 @@ const AudioTag = () => {
 					console.error(error);
 					setTimeout(() => {
 						c += 1;
-						if (c > 5) {
+						if (c > 2) {
 							c = 0;
 							setPlaying(false);
 							setLoading(false);
 							//  show some toast
 							setIsToast(true);
+							// showErrToast();
 							return;
 						}
 						playAudio();
@@ -188,7 +200,9 @@ const AudioTag = () => {
 	return (
 		<>
 			<div className={classNames(styles.snackbar, isToast && styles.show)}>
-				<p>Something went wrong!</p>
+				<div>
+					<p>Something went wrong!</p>
+				</div>
 			</div>
 			<audio
 				style={{ visibility: "hidden" }}

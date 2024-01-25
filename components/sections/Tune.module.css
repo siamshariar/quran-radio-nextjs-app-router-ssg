@@ -28,6 +28,9 @@
 	justify-content: space-between;
 	align-items: flex-start;
 }
+.visualize {
+	transform: scale(1.4);
+}
 .spike {
 	width: 0;
 	position: relative;

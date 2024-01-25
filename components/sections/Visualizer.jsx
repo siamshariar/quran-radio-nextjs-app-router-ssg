@@ -7,10 +7,24 @@ const Visualizer = () => {
 	const currentTime = AudioStore.useState((s) => s.currentTime);
 	const mode = LocalStore.useState((s) => s.settings.mode);
 	const dur = AudioStore.useState((s) => s.dur);
-	// console.log(dur);
-	const formatDur = (s) => {
-		return (s - (s %= 60)) / 60 + (s < 10 ? ":0" : ":") + ~~s;
-	};
+
+	// const formatDur = (s) => {
+	// 	// let h = s - (s %= 360);
+	// 	return (s - (s %= 60)) / 60 + (s < 10 ? ":0" : ":") + ~~s;
+	// };
+
+	function formatDur(s) {
+		// ~~ => math.floor()
+		const h = ~~(s / 3600);
+		const m = ~~((s % 3600) / 60);
+		const rs = ~~(s % 60);
+
+		const formattedTime = `${
+			h > 0 ? String(h).padStart(2, "0").concat(":") : ""
+		}${String(m).padStart(2, "0")}:${String(rs).padStart(2, "0")}`;
+
+		return formattedTime;
+	}
 
 	const handleProgress = (progress) => {
 		setIsProgress(false);
@@ -23,15 +37,16 @@ const Visualizer = () => {
 
 	return (
 		<div className={styles.root}>
-			<div className={styles.duration}>
+			{/* <div className={styles.duration}>
 				<div className={styles.start}>{formatDur(currentTime)}</div>
 				{mode === "normal" ? (
 					<div className={styles.end}>{formatDur(dur)}</div>
 				) : (
 					<div className={styles.end}>Live</div>
 				)}
-			</div>
+			</div> */}
 
+			<div className={styles.start}>{formatDur(currentTime)}</div>
 			<div className={styles.progress}>
 				<div
 					className={classNames(styles.label)}
@@ -50,6 +65,11 @@ const Visualizer = () => {
 					name="progresBar"
 				/>
 			</div>
+			{mode === "normal" ? (
+				<div className={styles.end}>{formatDur(dur)}</div>
+			) : (
+				<div className={styles.end}>Live</div>
+			)}
 		</div>
 	);
 };

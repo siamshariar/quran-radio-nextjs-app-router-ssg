@@ -6,12 +6,14 @@ import styles from "./PlaybackRate.module.css";
 import { IonIcon } from "@ionic/react";
 import { MoreVert } from "@mui/icons-material";
 
-const PlaybackRate = ({ classes, icon }) => {
+const PlaybackRate = ({ classes, icon, mode }) => {
 	const [modalOpen, setModalOpen] = useState(false);
 
 	const handleModal = (e, open) => {
-		e.stopPropagation();
-		setModalOpen(open);
+		if (mode === "normal") {
+			e.stopPropagation();
+			setModalOpen(open);
+		}
 	};
 
 	return (
@@ -54,11 +56,7 @@ const PlaybackRateModal = ({ open, handler }) => {
 			// onClick={(e) => handler(e, false)}
 		>
 			<div className={styles.playback}>
-				<button
-					className={playbackRate === 0.25 ? styles.active : ""}
-					onClick={() => setPlaybackSpeed(0.25)}>
-					0.25
-				</button>
+				<div className={styles.header}>Playback Speed</div>
 				<button
 					className={playbackRate === 0.5 ? styles.active : ""}
 					onClick={() => setPlaybackSpeed(0.5)}>
@@ -83,16 +81,6 @@ const PlaybackRateModal = ({ open, handler }) => {
 					className={playbackRate === 1.5 ? styles.active : ""}
 					onClick={() => setPlaybackSpeed(1.5)}>
 					1.5
-				</button>
-				<button
-					className={playbackRate === 1.75 ? styles.active : ""}
-					onClick={() => setPlaybackSpeed(1.75)}>
-					1.75
-				</button>
-				<button
-					className={playbackRate === 2 ? styles.active : ""}
-					onClick={() => setPlaybackSpeed(2)}>
-					2
 				</button>
 			</div>
 		</div>

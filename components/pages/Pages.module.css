@@ -126,6 +126,9 @@
 	object-fit: cover;
 	object-position: center center;
 }
+.favRecent .css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
+	text-transform: none;
+}
 @media screen and (max-height: 560px) {
 	.header {
 		padding-top: 5px;

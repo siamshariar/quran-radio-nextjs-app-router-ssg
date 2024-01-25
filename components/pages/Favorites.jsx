@@ -62,7 +62,7 @@ const Favorites = () => {
 	};
 
 	return (
-		<>
+		<div className="favRecent">
 			<div className={styles.search}>
 				<IonIcon icon={search} slot="start" class={styles.s_icon} />
 				<input type="text" name="search" placeholder="Search" />
@@ -75,8 +75,8 @@ const Favorites = () => {
 						value={value}
 						onChange={handleChange}
 						aria-label="basic tabs">
-						<Tab label="Surah" {...a11yProps(0)} />
-						<Tab label="Live Radio" {...a11yProps(1)} />
+						<Tab label="Chapters" {...a11yProps(0)} />
+						<Tab label="Live Radios" {...a11yProps(1)} />
 					</Tabs>
 				</Box>
 
@@ -114,7 +114,7 @@ const Favorites = () => {
 					</div>
 				</CustomTabPanel>
 			</Box>
-		</>
+		</div>
 	);
 };
 

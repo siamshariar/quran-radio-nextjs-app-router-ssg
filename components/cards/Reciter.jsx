@@ -68,17 +68,19 @@ const Reciter = ({ reciter }) => {
 			id={reciter.id}>
 			<div className={styles.wrapper}>
 				<div className={styles.left}>
-					<div className={styles.image}>
-						{/* <img src={`/img/reciters/${reciter.reciter_image}`} alt="" /> */}
-						<Image
-							src={reciter.imgUrl}
-							alt=""
-							width={100}
-							height={100}
-							loading="eager"
-							unoptimized
-						/>
-					</div>
+					<Link href={`/reciters/${reciter.id}`}>
+						<div className={styles.image}>
+							{/* <img src={`/img/reciters/${reciter.reciter_image}`} alt="" /> */}
+							<Image
+								src={reciter.imgUrl}
+								alt=""
+								width={100}
+								height={100}
+								loading="eager"
+								unoptimized
+							/>
+						</div>
+					</Link>
 				</div>
 
 				<Link href={`/reciters/${reciter.id}`} className={styles.middle}>

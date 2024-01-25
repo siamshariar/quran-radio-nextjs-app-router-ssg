@@ -3,7 +3,7 @@ export const liveRadios = [
 		id: 1,
 		name: "The Holy Quran",
 		place: "Ramallah, Palestine",
-		liveUrl: "https://sawtelghad.org/8888/stream",
+		liveUrl: "https://s awtelghad.org/8888/stream",
 	},
 	{
 		id: 2,
