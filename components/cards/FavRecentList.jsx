@@ -64,7 +64,7 @@ const FavRecentList = ({ item, handleRemoveFavorite, noRemoveIcon }) => {
 							src={
 								item.reciterImage
 									? item.reciterImage
-									: "/img/reciters/mishary-rashid-alafasy-profile.webp"
+									: "/img/reciters/quran-reciting.jpg"
 							}
 							alt=""
 							width={100}
