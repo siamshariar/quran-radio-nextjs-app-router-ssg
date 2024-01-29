@@ -4,32 +4,50 @@ export default function AboutContent() {
 		<div>
 			<p className="text-center mb-2">Quran Radio</p>
 			<p>
-				Quran Radio is a collection of good quality Quran recitations on the
-				internet. Mp3s on this site may be downloaded and used for personal use
-				free of charge. However, you may not use these files for commercial
-				purposes as many of these files have rules and regulations that prevent
-				their sale except by the publishing companies.
+				Discover the beauty of Quranic recitations with Qurn.radio, a platform that provides a diverse range
+				of live radio and reciters. Immerse yourself in the authenticity of real-time broadcasts in the Live mode,
+				or enjoy the serenity of recorded recitations in the Reciters mode. Additionally, enjoy the convenience
+				of saving favorites and tracking your previous listening sessions. Explore the beauty of the Quran at
+				your fingertips.
 			</p>
 			<div className="mt-4">
-				<span>Powered by - </span>
+				<p>Developed and maintain by Deeni Info Tech - A non-profit Software Development organization to spread the message of Islam worldwide.</p>
+				<br/>
+				<p>
+					Deeni Info Tech working for the following three sets of goals:
+					{/*TODO: Improve design and content*/}
+					<ol style={{marginLeft: `35px`}}>
+						<li style={{listStyleType: `unset`, lineHeight: `1.8`}}>
+							Applications for Scholars & Da&apos;wah organizations
+						</li>
+						<li style={{listStyleType: `unset`, lineHeight: `1.8`}}>
+							Applications for Non-Muslim Countries
+						</li>
+						<li style={{listStyleType: `unset`, lineHeight: `1.8`}}>
+							Develop Islamic applications
+						</li>
+					</ol>
+				</p>
+
+				<br/>
+				<p>The primary goal of Deeni Info Tech is to create more promising Islamic applications. All our applications is/will be free of charge and entirely ad-free.</p>
+
+				<br/>
+				<span>Website: </span>
 				<a
 					className="underline"
 					href="https://www.deeniinfotech.com/"
 					target="_blank">
-					Deeni Info Tech.
+					www.DeeniInfoTech.com
 				</a>
-				<span>
-					{" "}
-					A non-profitable Islamic software development organization for Dawah.
-				</span>
 			</div>
 			<div className="mt-4">
 				<span>Email: </span>
 				<a
 					className="underline"
-					href="mailto:deeniinfotech@gmail.com"
+					href="mailto:info@deeniinfotech.com"
 					target="_blank">
-					deeniinfotech@gmail.com
+					info@deeniinfotech.com
 				</a>
 			</div>
 		</div>

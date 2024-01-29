@@ -14,9 +14,9 @@ const About = () => {
 		<>
 			<Meta
 				title="About"
-				description="Audio Quran and Live Radio"
+				description="Quran Live Radio and Audio"
 				url={`server/about`}
-				image={`${server}/img/logo/logo.png`}
+				image={`${server}/img/logo/quran-radio-social.png`}
 				type="website"
 			/>
 			{isTab ? (

@@ -42,9 +42,9 @@ export default function Home({ reciter, chapterList }) {
 		<>
 			<Meta
 				title="Chapters"
-				description="Audio Quran and Live Radio"
+				description="Quran Live Radio and Audio"
 				url={`server/reciters/${reciter.id}`}
-				image={`${server}/img/logo/logo.png`}
+				image={`${server}/img/logo/quran-radio-social.png`}
 				type="website"
 			/>
 

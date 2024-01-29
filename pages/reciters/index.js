@@ -40,9 +40,9 @@ export default function Home({ reciters }) {
 		<>
 			<Meta
 				title="Reciters"
-				description="Audio Quran and Live Radio"
+				description="Quran Live Radio and Audio"
 				url={`server/reciters`}
-				image={`${server}/img/logo/logo.png`}
+				image={`${server}/img/logo/quran-radio-social.png`}
 				type="website"
 			/>
 			{isTab ? (

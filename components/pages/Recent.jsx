@@ -49,10 +49,10 @@ const Recents = () => {
 
 	return (
 		<div className="favRecent">
-			<div className={styles.search}>
-				<IonIcon icon={search} slot="start" class={styles.s_icon} />
-				<input type="text" name="search" placeholder="Search" />
-			</div>
+			{/*<div className={styles.search}>*/}
+			{/*	<IonIcon icon={search} slot="start" class={styles.s_icon} />*/}
+			{/*	<input type="text" name="search" placeholder="Search" />*/}
+			{/*</div>*/}
 
 			<Box sx={{ width: "100%" }}>
 				<Box sx={{ borderBottom: 1, borderColor: "divider" }}>

@@ -48,8 +48,7 @@
 	z-index: 9;
 	width: 250px;
 	position: relative;
-	margin: 40px auto 80px;
-	margin: 24px auto 64px;
+	margin: 24px auto 40px;
 }
 .share {
 	padding: 8px 0;
@@ -57,7 +56,7 @@
 .visualizer {
 }
 .audio {
-	margin-top: 60px;
+	margin-top: 40px;
 }
 .menu {
 	position: absolute;
@@ -82,6 +81,7 @@
 }
 .mode_txt {
 	font-size: 12px;
+	cursor: pointer;
 }
 .btn {
 	width: 32px;
@@ -147,7 +147,7 @@
 	}
 }
 @media screen and (min-width: 769px) {
-	.wrapper {
-		background: #abb1b7;
-	}
+	/*.wrapper {*/
+	/*	background: #abb1b7;*/
+	/*}*/
 }

@@ -151,10 +151,11 @@ const Player = () => {
 							unoptimized
 						/>
 					</div>
-					<p className={styles.dialog_title}>Quran Live and Audio</p>
+					<p className={styles.dialog_title}>Quran Live Radio and Audio</p>
 					<div className={styles.dialog_text}>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-						eiusmod
+						Discover the beauty of Quranic recitations with Quran.radio.
+						Choose between <span className={styles.dialog_des_mode}>Live</span> for real-time broadcasts and <span className={styles.dialog_des_mode}>Reciters</span> for recorded sessions.
+						Switch sources if you encounter any connection issues.
 					</div>
 					<div className={styles.dialog_btn}>
 						<button onClick={() => handleDialog()}>

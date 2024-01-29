@@ -25,6 +25,7 @@ import {
 	helpCircleOutline,
 	heartOutline,
 } from "ionicons/icons";
+import { donate } from "@/icons";
 import SideNav from "./Sidenav";
 
 const HeaderHome = () => {
@@ -121,14 +122,14 @@ const HeaderHome = () => {
 										<span className={styles.text}>About</span>
 									</MenuItem>
 								</Link>
-								<Link href="/support">
+								<a href="https://www.deeniinfotech.com/donate#donation-form" target="_blank">
 									<MenuItem onClick={handleMenuClick}>
 										<span className={styles.icon}>
-											<IonIcon icon={helpCircleOutline} slot="start" />
+											<IonIcon icon={donate} slot="start" />
 										</span>
-										<span className={styles.text}>Support</span>
+										<span className={styles.text}>Donate</span>
 									</MenuItem>
-								</Link>
+								</a>
 
 								{/* <Divider />
 							<MenuItem onClick={handleMenuClick} className={styles.footer}>

@@ -39,9 +39,9 @@ export default function Recents() {
 		<>
 			<Meta
 				title="Recents"
-				description="Audio Quran and Live Radio"
+				description="Quran Live Radio and Audio"
 				url={`server/recent`}
-				image={`${server}/img/logo/logo.png`}
+				image={`${server}/img/logo/quran-radio-social.png`}
 				type="website"
 			/>
 			{isTab ? (

@@ -7,7 +7,7 @@
 	top: 0;
 	padding-left: 30px;
 	padding-right: 30px;
-	/* background: linear-gradient(90deg, #8b959e, #cdd8e0); */
+	 background: linear-gradient(90deg, #8b959e, #cdd8e0);
 	z-index: 99;
 }
 .wrapper {
@@ -82,6 +82,7 @@
 }
 .menu {
 	min-width: 200px;
+	background: #cdd8e0;
 }
 .menu .icon {
 	display: flex;
@@ -138,7 +139,7 @@
 	height: 100vh;
 	padding: 0;
 	margin: 0;
-	background: #fff;
+	background: #cdd8e0;
 }
 .m_menu_wrap {
 	display: flex;
@@ -177,7 +178,7 @@ ul.m_menu li .m_menu_item {
 	line-height: 3rem;
 	height: unset;
 	padding: 0 32px;
-	font-size: 1.15rem;
+	font-size: 1.1rem;
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
@@ -241,7 +242,7 @@ hr.m_menu_hr {
 	}
 }
 @media screen and (min-width: 769px) {
-	.header {
-		background-color: #abb1b7;
-	}
+	/*.header {*/
+	/*	background-color: #abb1b7;*/
+	/*}*/
 }
