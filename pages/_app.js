@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import Head from "next/head";
+import * as gtag from "../lib/gtag";
 
 // Core CSS required for Ionic components to work properly
 import "@ionic/core/css/core.css";
@@ -68,6 +69,17 @@ function MyApp({ Component, pageProps }) {
 		});
 	}, [router]);
 
+	// Google analytics
+	useEffect(() => {
+		const handleRouteChange = (url) => {
+			gtag.pageview(url);
+		};
+		router.events.on("routeChangeComplete", handleRouteChange);
+		return () => {
+			router.events.off("routeChangeComplete", handleRouteChange);
+		};
+	}, [router.events]);
+
 	// load from local storage to global stat
 	useEffect(() => {
 		const localSettings = localStorage.getItem("settings");
@@ -98,14 +110,14 @@ function MyApp({ Component, pageProps }) {
 			{isTab ? (
 				<IonApp>
 					<IonPage className="page-primary" id="main-content">
-						<Head>
-							<title>Quran.radio</title>
-							<meta
-								name="viewport"
-								content="width=device-width, initial-scale=1, viewport-fit=cover"
-							/>
-							<link rel="icon" href="/img/id/favicon.ico" />
-						</Head>
+						{/*<Head>*/}
+						{/*	<title>Quran.radio</title>*/}
+						{/*	<meta*/}
+						{/*		name="viewport"*/}
+						{/*		content="width=device-width, initial-scale=1, viewport-fit=cover"*/}
+						{/*	/>*/}
+						{/*	<link rel="icon" href="/img/id/favicon.png" />*/}
+						{/*</Head>*/}
 						<NonSSRWrapper>
 							<Component {...pageProps} isTab={isTab} />
 						</NonSSRWrapper>
@@ -113,14 +125,14 @@ function MyApp({ Component, pageProps }) {
 				</IonApp>
 			) : (
 				<>
-					<Head>
-						<title>Quran.radio</title>
-						<meta
-							name="viewport"
-							content="width=device-width, initial-scale=1, viewport-fit=cover"
-						/>
-						<link rel="icon" href="/img/id/favicon.ico" />
-					</Head>
+					{/*<Head>*/}
+					{/*	<title>Quran.radio</title>*/}
+					{/*	<meta*/}
+					{/*		name="viewport"*/}
+					{/*		content="width=device-width, initial-scale=1, viewport-fit=cover"*/}
+					{/*	/>*/}
+					{/*	<link rel="icon" href="/img/id/favicon.png" />*/}
+					{/*</Head>*/}
 					<Component {...pageProps} isTab={isTab} />
 				</>
 			)}

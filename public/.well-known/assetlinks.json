@@ -1,0 +1,13 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.deeniinfotech.quran.radio",
+      "sha256_cert_fingerprints": [
+        "DF:EC:46:1B:DF:D2:36:51:7A:1B:5B:25:F5:84:22:07:14:3A:29:AF:CF:C8:93:EB:3E:C3:76:5A:E5:00:69:93",
+        "7B:4D:C7:FE:16:46:63:93:16:68:2C:DD:4D:D9:9D:EF:59:98:93:12:0B:77:70:2E:AA:B0:12:2B:53:57:17:BE"
+      ]
+    }
+  }
+]

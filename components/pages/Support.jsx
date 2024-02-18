@@ -10,9 +10,9 @@ export default function SupportContent() {
 				<span>Email: </span>
 				<a
 					className="underline"
-					href="mailto:deeniinfotech@gmail.com"
+					href="mailto:info@deeniinfotech.com"
 					target="_blank">
-					deeniinfotech@gmail.com
+					info@deeniinfotech.com
 				</a>
 			</div>
 		</div>

@@ -19,6 +19,7 @@ import {
 	settingsOutline,
 	share,
 	shareOutline,
+	donate,
 } from "@/icons";
 import { IonIcon } from "@ionic/react";
 import classNames from "classnames";
@@ -70,6 +71,16 @@ export default function SideNav(props) {
 								</Link>
 							</li>
 							<li onClick={(e) => props.navControl(false)}>
+								<Link href="/live-radio" className={styles.m_menu_item}>
+									<IonIcon
+										icon={radioOutline}
+										slot="start"
+										class={styles.sidenav_icon}
+									/>
+									Live Radios
+								</Link>
+							</li>
+							<li onClick={(e) => props.navControl(false)}>
 								<Link href="/reciters" className={styles.m_menu_item}>
 									<IonIcon
 										icon={peopleOutline}
@@ -92,16 +103,6 @@ export default function SideNav(props) {
 								</Link>
 							</li>
 							<li onClick={(e) => props.navControl(false)}>
-								<Link href="/live-radio" className={styles.m_menu_item}>
-									<IonIcon
-										icon={radioOutline}
-										slot="start"
-										class={styles.sidenav_icon}
-									/>
-									Live Radios
-								</Link>
-							</li>
-							<li onClick={(e) => props.navControl(false)}>
 								<Link href="/favorites" className={styles.m_menu_item}>
 									<IonIcon
 										icon={heartOutline}
@@ -121,30 +122,8 @@ export default function SideNav(props) {
 									Recents
 								</Link>
 							</li>
-							{props.isTab && (
-								<>
-									<li onClick={(e) => props.navControl(false)}>
-										<Link href="/about" className={styles.m_menu_item}>
-											<IonIcon
-												icon={informationCircleOutline}
-												slot="start"
-												class={styles.sidenav_icon}
-											/>
-											About
-										</Link>
-									</li>
-									<li onClick={(e) => props.navControl(false)}>
-										<Link href="/support" className={styles.m_menu_item}>
-											<IonIcon
-												icon={helpCircleOutline}
-												slot="start"
-												class={styles.sidenav_icon}
-											/>
-											Support
-										</Link>
-									</li>
-								</>
-							)}
+							{/*TODO: Fix color*/}
+							<hr/>
 							<li onClick={(e) => props.handleShare()}>
 								<div className={styles.m_menu_item}>
 									<IonIcon
@@ -154,6 +133,26 @@ export default function SideNav(props) {
 									/>
 									Share
 								</div>
+							</li>
+							<li onClick={(e) => props.navControl(false)}>
+								<Link href="/about" className={styles.m_menu_item}>
+									<IonIcon
+										icon={informationCircleOutline}
+										slot="start"
+										class={styles.sidenav_icon}
+									/>
+									About
+								</Link>
+							</li>
+							<li onClick={(e) => props.navControl(false)}>
+								<a href="https://www.deeniinfotech.com/donate#donation-form" target="_blank" className={styles.m_menu_item}>
+									<IonIcon
+										icon={donate}
+										slot="start"
+										class={styles.sidenav_icon}
+									/>
+									Donate
+								</a>
 							</li>
 						</ul>
 					</div>

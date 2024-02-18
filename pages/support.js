@@ -14,9 +14,9 @@ const Support = () => {
 		<>
 			<Meta
 				title="Support"
-				description="Audio Quran and Live Radio"
+				description="Quran Live Radio and Audio"
 				url={`server/support`}
-				image={`${server}/img/logo/logo.png`}
+				image={`${server}/img/logo/quran-radio-social.png`}
 				type="website"
 			/>
 

@@ -201,7 +201,7 @@ const AudioTag = () => {
 		<>
 			<div className={classNames(styles.snackbar, isToast && styles.show)}>
 				<div>
-					<p>Something went wrong!</p>
+					<p>Source interrupted! Please try another.</p>
 				</div>
 			</div>
 			<audio

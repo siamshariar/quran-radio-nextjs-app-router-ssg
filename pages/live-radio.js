@@ -40,9 +40,9 @@ const LiveRadio = ({ liveRadios }) => {
 		<>
 			<Meta
 				title="Live Radios"
-				description="Audio Quran and Live Radio"
+				description="Quran Live Radio and Audio"
 				url={`server/live-radio`}
-				image={`${server}/img/logo/logo.png`}
+				image={`${server}/img/logo/quran-radio-social.png`}
 				type="website"
 			/>
 			{isTab ? (

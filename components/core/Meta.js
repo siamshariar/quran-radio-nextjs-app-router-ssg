@@ -2,7 +2,7 @@ import { server } from "@/lib/config";
 import Head from "next/head";
 
 export default function Meta(props) {
-	const commonTitle = "Quran.radio";
+	const commonTitle = "Quran.radio | Quran Live Radio and Audio";
 	const title =
 		props.title != "" ? props.title + " | " + commonTitle : "" + commonTitle;
 	return (
@@ -22,17 +22,18 @@ export default function Meta(props) {
 			<meta httpEquiv="X-UA-Compatible" content="ie=edge" />
 
 			{/* Android phone */}
-			<meta name="theme-color" content="#ABB1B7" />
+			<meta name="theme-color" content="#acb6c0" />
 			<meta name="mobile-web-app-capable" content="yes" />
 
 			{/* iOS phone */}
 			<meta name="apple-mobile-web-app-title" content="Quran.radio" />
 			<meta name="apple-mobile-web-app-capable" content="yes" />
-			<meta name="apple-mobile-web-app-status-bar-style" content="#ABB1B7" />
+			<meta name="apple-mobile-web-app-status-bar-style" content="#acb6c0" />
+			{/*<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />*/}
 
 			{/* Windows phone */}
-			<meta name="msapplication-navbutton-color" content="#ABB1B7" />
-			<meta name="msapplication-TileColor" content="#ABB1B7" />
+			<meta name="msapplication-navbutton-color" content="#acb6c0" />
+			<meta name="msapplication-TileColor" content="#acb6c0" />
 			{/* <meta name="msapplication-TileImage" content="ms-icon-144x144.png" /> */}
 			{/* <meta name="msapplication-config" content="browserconfig.xml" /> */}
 
@@ -97,13 +98,13 @@ export default function Meta(props) {
 				sizes="16x16"
 			/>
 			<link
-				href={`${server}/img/id/favicon-16x16.png`}
+				href={`${server}/img/id/favicon.png`}
 				rel="icon"
 				type="image/png"
 				sizes="16x16"
 			/>
 			<link
-				href={`${server}/img/id/favicon-32x32.png`}
+				href={`${server}/img/id/favicon.png`}
 				rel="icon"
 				type="image/png"
 				sizes="32x32"
@@ -163,12 +164,12 @@ export default function Meta(props) {
 
 			{/* UC Browser */}
 			<link
-				href={`${server}/img/id/favicon.ico`}
+				href={`${server}/img/id/favicon.png`}
 				rel="apple-touch-icon-precomposed"
 				sizes="57x57"
 			/>
 			<link
-				href={`${server}/img/id/favicon.ico`}
+				href={`${server}/img/id/favicon.png`}
 				rel="apple-touch-icon"
 				sizes="72x72"
 			/>

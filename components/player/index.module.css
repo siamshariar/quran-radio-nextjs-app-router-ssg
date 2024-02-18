@@ -127,8 +127,8 @@
 .dialog_content {
 	width: 80%;
 	max-width: 300px;
-	height: 300px;
-	background-color: #fff;
+	height: 340px;
+	background-color: #cdd8e0;
 	padding: 20px;
 	border-radius: 16px;
 	display: flex;
@@ -146,6 +146,9 @@
 	font-size: 14px;
 	text-align: center;
 	color: #6a6a6a;
+}
+.dialog_des_mode {
+	font-weight: 600;
 }
 .popup_logo {
 	width: 150px;
