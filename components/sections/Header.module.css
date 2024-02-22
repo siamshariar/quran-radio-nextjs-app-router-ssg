@@ -7,7 +7,7 @@
 	top: 0;
 	padding-left: 30px;
 	padding-right: 30px;
-	 background: linear-gradient(90deg, #8b959e, #cdd8e0);
+	background: linear-gradient(90deg, #8b959e, #cdd8e0);
 	z-index: 99;
 }
 .wrapper {
@@ -136,7 +136,8 @@
 .mobileMenu {
 	width: 300px;
 	max-width: 85vw;
-	height: 100vh;
+	/* height: 100vh; */
+	height: 100%;
 	padding: 0;
 	margin: 0;
 	background: #cdd8e0;
@@ -145,13 +146,15 @@
 	display: flex;
 	flex-direction: column;
 	width: 100%;
-	min-height: 100vh;
+	/* min-height: 100vh; */
+	min-height: 100%;
 	justify-content: space-between;
 	overflow-y: auto;
+	background: #cdd8e0;
 }
 .m_menu_ctn {
 	width: 100%;
-	margin-bottom: 1.5rem;
+	/* margin-bottom: 1.5rem; */
 }
 .m_menu_top {
 	padding: 4px 20px;
