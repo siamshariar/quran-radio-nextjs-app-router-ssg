@@ -3,9 +3,9 @@ import {
 	PlayerStore,
 	setReciter,
 	setChapter,
-	setChapterList,
 	setSrc,
 	setPlaying,
+	setChapterListByList,
 } from "@/store";
 import { LocalStore } from "@/store/local";
 import { trashOutline } from "ionicons/icons";
@@ -14,13 +14,13 @@ import styles from "./Card.module.css";
 import { IonIcon } from "@ionic/react";
 import { useSettingStorage } from "@/hooks/useSettingStorage";
 import Image from "next/image";
+import Link from "next/link";
 
 const FavRecentList = ({ item, handleRemoveFavorite, noRemoveIcon }) => {
 	const playing = PlayerStore.useState((s) => s.playing);
 	const reciterId = PlayerStore.useState((s) => s.reciterId);
 	const chapterIndex = PlayerStore.useState((s) => s.chapterIndex);
 	const mode = LocalStore.useState((s) => s.settings.mode);
-
 	const { setMode } = useSettingStorage();
 
 	const setPlaybackMode = async (mode) => {
@@ -34,7 +34,7 @@ const FavRecentList = ({ item, handleRemoveFavorite, noRemoveIcon }) => {
 		}
 
 		setReciter(item.reciterId);
-		setChapterList(item.reciterId);
+		setChapterListByList(item.chapterList);
 		setChapter(item.chapterList, item.chapterIndex);
 		setSrc(item.chapterList, item.reciterId, item.chapterIndex);
 		setPlaying(true);
@@ -55,30 +55,30 @@ const FavRecentList = ({ item, handleRemoveFavorite, noRemoveIcon }) => {
 		<div className={classNames(styles.card, styles.fav_card)}>
 			<div className={styles.wrapper}>
 				<div className={styles.left}>
-					<div className={styles.image}>
-						{/* <img
-							src="/img/reciters/mishary-rashid-alafasy-profile.webp"
-							alt=""
-						/> */}
-						<Image
-							src={
-								item.reciterImage
-									? item.reciterImage
-									: "/img/reciters/quran-reciting.jpg"
-							}
-							alt=""
-							width={100}
-							height={100}
-							loading="eager"
-							unoptimized
-						/>
-					</div>
+					<Link href={`/reciters/${item.reciterId}`}>
+						<div className={styles.image}>
+							<Image
+								src={
+									item.reciterImage
+										? item.reciterImage
+										: "/img/reciters/quran-reciting.jpg"
+								}
+								alt=""
+								width={100}
+								height={100}
+								loading="eager"
+								unoptimized
+							/>
+						</div>
+					</Link>
 				</div>
 
-				<div className={styles.middle}>
+				<Link href={`/reciters/${item.reciterId}`} className={styles.middle}>
+					{/* <div className={styles.middle}> */}
 					<div className={styles.name}>{item.reciterName}</div>
 					<div className={styles.meaning}>- {item.chapterName}</div>
-				</div>
+					{/* </div> */}
+				</Link>
 
 				<div className={classNames(styles.right, styles.btns)}>
 					{!noRemoveIcon && (

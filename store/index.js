@@ -87,7 +87,7 @@ export const setReciter = (reciterId) => {
 };
 
 export const setReciterByReciter = (reciter) => {
-	console.log(reciter);
+	// console.log(reciter);
 	PlayerStore.update((s) => {
 		s.reciter = reciter;
 		s.reciterId = reciter.id;
@@ -102,6 +102,7 @@ export const setChapterList = (reciterId) => {
 	});
 };
 
+// set chapterList by reciters default moshaf chapterlist directly
 export const setChapterListByList = (chpaterList) => {
 	PlayerStore.update((s) => {
 		s.chapterList = chpaterList;
@@ -133,6 +134,7 @@ export const setDefaultLiveRadio = (index) => {
 };
 
 export const setSrc = (currentChapters, reciterId, chapterIndex) => {
+	// console.log(currentChapters);
 	let chapterNo = currentChapters[chapterIndex];
 	let str = "0000" + chapterNo;
 	str = str.slice(-3);
@@ -145,7 +147,8 @@ export const setSrc = (currentChapters, reciterId, chapterIndex) => {
 
 	const src = moshaf.length
 		? moshaf[0].server + str + ".mp3"
-		: reciter.moshaf[0] + str + ".mp3";
+		: reciter.moshaf[0].server + str + ".mp3";
+	console.log(src);
 
 	PlayerStore.update((s) => {
 		s.src = src;

@@ -4,9 +4,9 @@ import {
 	setPlaying,
 	setReciter,
 	setChapter,
-	setChapterList,
 	setSrc,
 	setReciterByReciter,
+	setChapterListByList,
 } from "@/store";
 import { playCircle, pauseCircle } from "@/icons";
 import styles from "./Card.module.css";
@@ -23,17 +23,22 @@ const Chapter = ({ index, reciter, chapterNo }) => {
 	const mode = LocalStore.useState((s) => s.settings.mode);
 	const { setMode } = useSettingStorage();
 
+	// console.log(currentChapters);
+
 	const handleChapterChange = () => {
 		if (mode === "live") {
 			setMode("normal");
 		}
+
+		const chapterList = reciter.moshaf[0].surah_list.split(",");
+
 		// update reciter from json
 		// setReciter(reciterId);
 		// update reciter from pages props reciter
 		setReciterByReciter(reciter);
-		setChapterList(reciter.id);
-		setChapter(reciter.moshaf[0].surah_list.split(","), index);
-		setSrc(reciter.moshaf[0].surah_list.split(","), reciter.id, index);
+		setChapterListByList(chapterList);
+		setChapter(chapterList, index);
+		setSrc(chapterList, reciter.id, index);
 		setPlaying(true);
 		return;
 	};
@@ -98,7 +103,7 @@ const Chapter = ({ index, reciter, chapterNo }) => {
 							icon={pauseCircle}
 							slot="start"
 							class={styles.icon}
-							onClick={() => handleChapterChange()}
+							onClick={handleChapterChange}
 						/>
 					)}
 				</div>

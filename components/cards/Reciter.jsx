@@ -4,10 +4,10 @@ import {
 	PlayerStore,
 	setReciter,
 	setChapter,
-	setChapterList,
 	setPlaying,
 	setSrc,
 	setReciterByReciter,
+	setChapterListByList,
 } from "@/store";
 import { playCircle, pauseCircle } from "@/icons";
 import styles from "./Card.module.css";
@@ -42,7 +42,7 @@ const Reciter = ({ reciter }) => {
 		// update reciter from pages props reciter
 		setReciterByReciter(reciter);
 		setChapter(chapterList, randomChapterIndex);
-		setChapterList(reciterId);
+		setChapterListByList(chapterList);
 		setSrc(chapterList, reciterId, randomChapterIndex);
 		setPlaying(true);
 	};
