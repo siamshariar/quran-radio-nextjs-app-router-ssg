@@ -28,7 +28,7 @@
 .start span,
 .end span {
 	display: inline-block;
-	/* min-width: 35px; */
+	min-width: 35px;
 }
 .start {
 	text-align: left;
@@ -42,7 +42,7 @@
 	position: relative;
 	background-color: #d9d9d9;
 	border-radius: 8px;
-	margin: 0 5px;
+	margin: 0 3px;
 }
 .label {
 	height: 100%;

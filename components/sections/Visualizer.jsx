@@ -48,7 +48,7 @@ const Visualizer = () => {
 
 			<div className={styles.start}>
 				<span
-					style={{ width: `${formatDur(currentTime).length > 5 ? 48 : 32}px` }}>
+					style={{ width: `${formatDur(currentTime).length > 5 ? 48 : 35}px` }}>
 					{formatDur(currentTime)}
 				</span>
 			</div>
@@ -78,7 +78,7 @@ const Visualizer = () => {
 				<div className={styles.end}>
 					<span
 						style={{
-							width: `${formatDur(dur).length > 5 ? 48 : 32}px`,
+							width: `${formatDur(dur).length > 5 ? 48 : 35}px`,
 						}}>
 						{formatDur(dur)}
 					</span>
