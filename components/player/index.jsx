@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
-import classNames from "classnames";
 import {
 	PlayerStore,
 	setPlayerOpen,
@@ -12,9 +11,7 @@ import AudioMini from "./AudioMini";
 import AudioTag from "./Audio";
 import HomeContent from "@/components/ui/HomeContent";
 import styles from "./index.module.css";
-import Image from "next/image";
-import GraphicEqIcon from "@mui/icons-material/GraphicEq";
-import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
+import Dialog from "./Dialog";
 
 const Player = () => {
 	const [windowHeight, setWindowHeight] = useState(0);
@@ -130,41 +127,24 @@ const Player = () => {
 			: (backdropRef.current.style.display = "block");
 	}, [isPlayerMini]);
 
-	const [dialogOpen, setDialogOpen] = useState(true);
+	const [dialogOpen, setDialogOpen] = useState(false);
+
+	useEffect(() => {
+		const firstDialog = localStorage.getItem("firstDialog");
+		if (firstDialog === null) {
+			setDialogOpen(true);
+		}
+	}, []);
+
 	const handleDialog = () => {
 		setDialogOpen(false);
 		setPlaying(true);
+		localStorage.setItem("firstDialog", "opened");
 	};
 
 	return (
 		<>
-			<div className={classNames(styles.dialog, dialogOpen ? styles.open : "")}>
-				<div className={styles.dialog_content}>
-					<div className={styles.popup_logo}>
-						<Image
-							src="/img/logo/logo.png"
-							alt=""
-							width={150}
-							height={80}
-							style={{ objectFit: "contain", objectPosition: "center" }}
-							loading="eager"
-							unoptimized
-						/>
-					</div>
-					<p className={styles.dialog_title}>Quran Live Radio and Audio</p>
-					<div className={styles.dialog_text}>
-						Discover the beauty of Quranic recitations with Quran.radio.
-						Choose between <span className={styles.dialog_des_mode}>Live</span> for real-time broadcasts and <span className={styles.dialog_des_mode}>Reciters</span> for recorded sessions.
-						Switch sources if you encounter any connection issues.
-					</div>
-					<div className={styles.dialog_btn}>
-						<button onClick={() => handleDialog()}>
-							Start Listening
-							<PlayCircleOutlineIcon />
-						</button>
-					</div>
-				</div>
-			</div>
+			{dialogOpen && <Dialog handleDialog={handleDialog} />}
 
 			<div className={styles.backdrop} ref={backdropRef}></div>
 

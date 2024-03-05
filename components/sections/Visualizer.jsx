@@ -46,13 +46,22 @@ const Visualizer = () => {
 				)}
 			</div> */}
 
-			<div className={styles.start}>{formatDur(currentTime)}</div>
+			<div className={styles.start}>
+				<span
+					style={{ width: `${formatDur(currentTime).length > 5 ? 48 : 32}px` }}>
+					{formatDur(currentTime)}
+				</span>
+			</div>
 			<div className={styles.progress}>
 				<div
 					className={classNames(styles.label)}
 					style={{
 						width: `${
-							dur && mode === "normal" ? (currentTime * 100) / dur : 100
+							dur && mode === "normal"
+								? (currentTime * 100) / dur < 10
+									? (currentTime * 100) / dur + 1
+									: (currentTime * 100) / dur
+								: 100
 						}%`,
 					}}></div>
 				<input
@@ -66,7 +75,14 @@ const Visualizer = () => {
 				/>
 			</div>
 			{mode === "normal" ? (
-				<div className={styles.end}>{formatDur(dur)}</div>
+				<div className={styles.end}>
+					<span
+						style={{
+							width: `${formatDur(dur).length > 5 ? 48 : 32}px`,
+						}}>
+						{formatDur(dur)}
+					</span>
+				</div>
 			) : (
 				<div className={styles.end}>Live</div>
 			)}
