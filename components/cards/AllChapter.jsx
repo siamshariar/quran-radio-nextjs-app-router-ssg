@@ -1,52 +1,75 @@
-import classNames from "classnames";
 import {
 	PlayerStore,
 	setPlaying,
-	setReciter,
 	setChapter,
-	setSrc,
 	setReciterByReciter,
 	setChapterListByList,
+	setSrcAllChapters,
 } from "@/store";
 import { playCircle, pauseCircle } from "@/icons";
 import styles from "./Card.module.css";
 import { IonIcon } from "@ionic/react";
 import { useSettingStorage } from "@/hooks/useSettingStorage";
 import { LocalStore } from "@/store/local";
+import { reciters } from "@/data/reciters";
 
-const Chapter = ({ index, reciter, chapterNo }) => {
+const AllChapter = ({ chapter }) => {
 	const playing = PlayerStore.useState((s) => s.playing);
 	const chapterIndex = PlayerStore.useState((s) => s.chapterIndex);
-	const chapters = PlayerStore.useState((s) => s.chapters);
 	const currentChapters = PlayerStore.useState((s) => s.chapterList);
 	const currentReciter = PlayerStore.useState((s) => s.reciter);
 	const mode = LocalStore.useState((s) => s.settings.mode);
 	const { setMode } = useSettingStorage();
 
-	// console.log(currentChapters);
+	const chapterNoStr = chapter.chapterNo.toString();
 
-	const handleChapterChange = () => {
+	const getRandomReciter = () => {
+		const randomReciterIndex = Math.floor(Math.random() * reciters.length);
+		const reciter = reciters[randomReciterIndex];
+
+		let moshaf = [];
+
+		moshaf = reciter.moshaf.filter((i) => i.id == reciter.defaultMoshafId);
+
+		let reciterData = {
+			id: reciter.id,
+			name: reciter.name,
+			imgUrl: reciter.imgUrl
+				? reciter.imgUrl
+				: "/img/reciters/quran-reciting.jpg",
+			moshaf: moshaf.length ? moshaf : [reciter.moshaf[0]],
+		};
+
+		return reciterData;
+	};
+
+	const changeMode = () => {
 		if (mode === "live") {
 			setMode("normal");
 		}
+	};
 
-		const chapterList = reciter.moshaf[0].surah_list.split(",");
+	let currReciter = currentReciter;
 
-		// update reciter from json
-		// setReciter(reciterId);
-		// update reciter from pages props reciter
-		setSrc(chapterList, reciter.id, index);
-		setPlaying(true);
-		setChapterListByList(chapterList);
-		setReciterByReciter(reciter);
-		setChapter(chapterList, index);
-		return;
+	const handleChapterChange = () => {
+		let reciterChapList = currReciter.moshaf[0].surah_list.split(",");
+
+		if (reciterChapList.includes(chapterNoStr)) {
+			changeMode();
+			setSrcAllChapters(chapterNoStr, currReciter.moshaf);
+			setPlaying(true);
+			setChapterListByList(reciterChapList);
+			setChapter(reciterChapList, reciterChapList.indexOf(chapterNoStr));
+			setReciterByReciter(currReciter);
+			return;
+		} else {
+			currReciter = getRandomReciter();
+			handleChapterChange();
+		}
 	};
 
 	const play = () => {
-		if (mode === "live") {
-			setMode("normal");
-		}
+		changeMode();
 		setPlaying(true);
 	};
 
@@ -55,34 +78,21 @@ const Chapter = ({ index, reciter, chapterNo }) => {
 	};
 
 	return (
-		<div
-			className={classNames(
-				styles.card,
-				reciter.id === currentReciter.id &&
-					currentChapters[chapterIndex] === chapterNo &&
-					playing
-					? styles.active
-					: ""
-			)}>
+		<div className={styles.card}>
 			<div className={styles.wrapper}>
 				<div className={styles.left}>
 					<div className={styles.image}>
-						<div className={styles.number}>
-							{chapters[chapterNo - 1].chapterNo}
-						</div>
+						<div className={styles.number}>{chapter.chapterNo}</div>
 					</div>
 				</div>
 
 				<div className={styles.middle}>
-					<div className={styles.name}>{chapters[chapterNo - 1].name}</div>
-					<div className={styles.meaning}>
-						{chapters[chapterNo - 1].meaning}
-					</div>
+					<div className={styles.name}>{chapter.name}</div>
+					<div className={styles.meaning}>{chapter.meaning}</div>
 				</div>
 
 				<div className={styles.right}>
-					{reciter.id === currentReciter.id &&
-					currentChapters[chapterIndex] === chapterNo ? (
+					{currentChapters[chapterIndex] == chapter.chapterNo ? (
 						playing && mode === "normal" ? (
 							<IonIcon
 								icon={playCircle}
@@ -112,4 +122,4 @@ const Chapter = ({ index, reciter, chapterNo }) => {
 	);
 };
 
-export default Chapter;
+export default AllChapter;

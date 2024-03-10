@@ -155,6 +155,17 @@ export const setSrc = (currentChapters, reciterId, chapterIndex) => {
 	});
 };
 
+export const setSrcAllChapters = (chapterNo, moshaf) => {
+	let str = "0000" + chapterNo;
+	str = str.slice(-3);
+	const src = moshaf[0].server + str + ".mp3";
+	console.log(src);
+
+	PlayerStore.update((s) => {
+		s.src = src;
+	});
+};
+
 export const setLiveSrc = (liveIndex) => {
 	PlayerStore.update((s) => {
 		s.liveSrc = liveRadios[liveIndex].liveUrl;

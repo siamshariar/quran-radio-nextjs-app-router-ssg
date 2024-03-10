@@ -91,9 +91,7 @@ export default function SideNav(props) {
 								</Link>
 							</li>
 							<li onClick={(e) => props.navControl(false)}>
-								<Link
-									href={`/reciters/${reciterId}`}
-									className={styles.m_menu_item}>
+								<Link href={`/chapters`} className={styles.m_menu_item}>
 									<IonIcon
 										icon={musicalNoteOutline}
 										slot="start"
@@ -123,7 +121,7 @@ export default function SideNav(props) {
 								</Link>
 							</li>
 							{/*TODO: Fix color*/}
-							<hr/>
+							<hr />
 							<li onClick={(e) => props.handleShare()}>
 								<div className={styles.m_menu_item}>
 									<IonIcon
@@ -145,7 +143,10 @@ export default function SideNav(props) {
 								</Link>
 							</li>
 							<li onClick={(e) => props.navControl(false)}>
-								<a href="https://www.deeniinfotech.com/donate#donation-form" target="_blank" className={styles.m_menu_item}>
+								<a
+									href="https://www.deeniinfotech.com/donate#donation-form"
+									target="_blank"
+									className={styles.m_menu_item}>
 									<IonIcon
 										icon={donate}
 										slot="start"

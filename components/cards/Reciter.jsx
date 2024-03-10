@@ -40,11 +40,11 @@ const Reciter = ({ reciter }) => {
 		// update reciter from json
 		// setReciter(reciterId);
 		// update reciter from pages props reciter
+		setSrc(chapterList, reciterId, randomChapterIndex);
+		setPlaying(true);
 		setReciterByReciter(reciter);
 		setChapter(chapterList, randomChapterIndex);
 		setChapterListByList(chapterList);
-		setSrc(chapterList, reciterId, randomChapterIndex);
-		setPlaying(true);
 	};
 
 	const play = () => {
