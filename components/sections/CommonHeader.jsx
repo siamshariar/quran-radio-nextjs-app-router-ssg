@@ -3,7 +3,6 @@ import { IonButton, IonIcon } from "@ionic/react";
 import styles from "../pages/Pages.module.css";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { setIsBack } from "@/store/local";
 
 export default function CommonHeader({ title, prev_page = "/" }) {
 	const router = useRouter();
@@ -17,7 +16,6 @@ export default function CommonHeader({ title, prev_page = "/" }) {
 		if (historyLength > 2) {
 			router.back();
 		} else {
-			setIsBack(true);
 			router.push(`${prev_page}`).then((r) => "/");
 		}
 	};

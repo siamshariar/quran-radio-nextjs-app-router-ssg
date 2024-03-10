@@ -29,7 +29,6 @@ import { useRouter } from "next/router";
 import {
 	LocalStore,
 	setFavorites,
-	setIsBack,
 	setIsTab,
 	setLiveFavorites,
 	setRecent,
