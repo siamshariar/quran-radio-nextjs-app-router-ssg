@@ -1,18 +1,12 @@
 import AllChapters from "@/components/pages/AllChapters";
-import { reciters } from "@/data/reciters";
-import { IonContent } from "@ionic/react";
-import { LocalStore } from "@/store/local";
-
 import CommonHeader from "@/components/sections/CommonHeader";
 import styles from "@/components/pages/Pages.module.css";
 import HeaderHome from "@/components/sections/HeaderHome";
-import { getAllChapters, getReciterById } from "@/lib/fetch";
+import { getAllChapters } from "@/lib/fetch";
 import Meta from "@/components/core/Meta";
 import { server } from "@/lib/config";
 
 export default function Home({ chapters }) {
-	const isTab = LocalStore.useState((s) => s.isTab);
-
 	return (
 		<>
 			<Meta

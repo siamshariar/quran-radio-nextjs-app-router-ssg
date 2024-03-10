@@ -1,5 +1,4 @@
 import HomeContent from "@/components/pages/Home";
-import { liveRadios } from "@/data/liveRadios";
 import { useSettingStorage } from "@/hooks/useSettingStorage";
 import { getLiveIndexById } from "@/lib/fetch";
 import { setLiveRadio, setLiveSrc } from "@/store";

@@ -23,8 +23,7 @@ import "@ionic/core/css/display.css";
 import "@/styles/global.scss";
 
 import Player from "@/components/player";
-import Menu from "@/components/ui/Menu";
-import { IonApp, IonPage, setupIonicReact } from "@ionic/react";
+import { setupIonicReact } from "@ionic/react";
 import NonSSRWrapper from "../components/core/NoSSRWrapper";
 import { useRouter } from "next/router";
 import {
@@ -39,6 +38,7 @@ import {
 
 function MyApp({ Component, pageProps }) {
 	setupIonicReact();
+
 	const isTab = LocalStore.useState((s) => s.isTab);
 
 	// detect Tab
@@ -62,12 +62,6 @@ function MyApp({ Component, pageProps }) {
 	}, []);
 
 	const router = useRouter();
-	useEffect(() => {
-		router.beforePopState(() => {
-			setIsBack(true);
-			return true;
-		});
-	}, [router]);
 
 	// Google analytics
 	useEffect(() => {
@@ -103,39 +97,19 @@ function MyApp({ Component, pageProps }) {
 	return (
 		<>
 			<NonSSRWrapper>
-				{/* {isTab && <Menu />} */}
 				<Player />
-			</NonSSRWrapper>
-
-			{isTab ? (
-				<IonApp>
-					<IonPage className="page-primary" id="main-content">
-						{/*<Head>*/}
-						{/*	<title>Quran.radio</title>*/}
-						{/*	<meta*/}
-						{/*		name="viewport"*/}
-						{/*		content="width=device-width, initial-scale=1, viewport-fit=cover"*/}
-						{/*	/>*/}
-						{/*	<link rel="icon" href="/img/id/favicon.png" />*/}
-						{/*</Head>*/}
-						<NonSSRWrapper>
-							<Component {...pageProps} isTab={isTab} />
-						</NonSSRWrapper>
-					</IonPage>
-				</IonApp>
-			) : (
 				<>
-					{/*<Head>*/}
-					{/*	<title>Quran.radio</title>*/}
-					{/*	<meta*/}
-					{/*		name="viewport"*/}
-					{/*		content="width=device-width, initial-scale=1, viewport-fit=cover"*/}
-					{/*	/>*/}
-					{/*	<link rel="icon" href="/img/id/favicon.png" />*/}
-					{/*</Head>*/}
+					<Head>
+						<title>Quran.radio</title>
+						<meta
+							name="viewport"
+							content="width=device-width, initial-scale=1, viewport-fit=cover"
+						/>
+						<link rel="icon" href="/img/id/favicon.png" />
+					</Head>
 					<Component {...pageProps} isTab={isTab} />
 				</>
-			)}
+			</NonSSRWrapper>
 		</>
 	);
 }

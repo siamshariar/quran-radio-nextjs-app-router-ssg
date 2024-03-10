@@ -12,7 +12,7 @@ import { radioOutline } from "ionicons/icons";
 
 const HomeContent = () => {
 	return (
-		<div className={styles.panel_content}>
+		<div className={`${styles.panel_content} home`}>
 			<div className={styles.wrapper}>
 				<HeaderHome />
 

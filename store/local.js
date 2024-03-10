@@ -8,8 +8,6 @@ export const LocalStore = new Store({
 	recent: [],
 	liveRecent: [],
 	// to handle scroll
-	isBack: false,
-	yp: {},
 	isTab: true,
 });
 
@@ -39,18 +37,6 @@ export const setRecent = (recent) => {
 export const setLiveRecent = (recent) => {
 	LocalStore.update((s) => {
 		s.liveRecent = recent;
-	});
-};
-
-export const setIsBack = (v) => {
-	LocalStore.update((s) => {
-		s.isBack = v;
-	});
-};
-
-export const setScrollPosition = (key, v) => {
-	LocalStore.update((s) => {
-		s.yp[key] = v;
 	});
 };
 

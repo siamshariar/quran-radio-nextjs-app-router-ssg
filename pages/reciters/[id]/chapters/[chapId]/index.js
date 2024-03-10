@@ -1,5 +1,4 @@
 import HomeContent from "@/components/pages/Home";
-import { reciters } from "@/data/reciters";
 import { useSettingStorage } from "@/hooks/useSettingStorage";
 import { getReciterById } from "@/lib/fetch";
 import { setChapter, setChapterListByList, setReciter, setSrc } from "@/store";

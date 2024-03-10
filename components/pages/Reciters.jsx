@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { chevronBack, search } from "@/icons";
-import { PlayerStore } from "@/store";
 import ReciterCard from "@/components/cards/Reciter";
 import styles from "./Pages.module.css";
 import { IonIcon } from "@ionic/react";
-import { Virtuoso } from "react-virtuoso";
+// import { Virtuoso } from "react-virtuoso";
 
 const Reciters = ({ reciters }) => {
 	// const reciters = PlayerStore.useState((s) => s.reciters);

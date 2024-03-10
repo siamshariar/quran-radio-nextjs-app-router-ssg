@@ -7,6 +7,7 @@ import { playCircle, pauseCircle } from "@/icons";
 import styles from "./Card.module.css";
 import { IonIcon } from "@ionic/react";
 import { useSettingStorage } from "@/hooks/useSettingStorage";
+import RadioIcon from "@mui/icons-material/Radio";
 
 const LiveFavRecent = ({ item, handleRemoveLiveFavorite, noRemoveIcon }) => {
 	const playing = PlayerStore.useState((s) => s.playing);
@@ -37,7 +38,8 @@ const LiveFavRecent = ({ item, handleRemoveLiveFavorite, noRemoveIcon }) => {
 			<div className={styles.wrapper}>
 				<div className={styles.left}>
 					<div className={styles.image}>
-						<div className={styles.number}>{item.id}</div>
+						{/* <div className={styles.number}>{item.id}</div> */}
+						<RadioIcon />
 					</div>
 				</div>
 

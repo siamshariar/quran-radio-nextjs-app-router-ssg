@@ -72,7 +72,7 @@ const HeaderHome = () => {
 	};
 
 	return (
-		<div className={styles.header}>
+		<div className={`${styles.header} h-header`}>
 			<div className="page_width">
 				<div className={styles.wrapper}>
 					<div className={styles.content}>
@@ -122,7 +122,9 @@ const HeaderHome = () => {
 										<span className={styles.text}>About</span>
 									</MenuItem>
 								</Link>
-								<a href="https://www.deeniinfotech.com/donate#donation-form" target="_blank">
+								<a
+									href="https://www.deeniinfotech.com/donate#donation-form"
+									target="_blank">
 									<MenuItem onClick={handleMenuClick}>
 										<span className={styles.icon}>
 											<IonIcon icon={donate} slot="start" />

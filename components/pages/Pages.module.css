@@ -5,8 +5,9 @@
 	/* background: linear-gradient(90deg, #8b959e, #cdd8e0); */
 	padding-left: 30px;
 	padding-right: 30px;
-	/* padding-top: 16px; */
+	padding-top: 56px;
 	min-height: 100%;
+	padding-bottom: 77px;
 }
 
 .header {
@@ -158,6 +159,11 @@
 	.header {
 		padding: 10px 30px;
 		background: linear-gradient(90deg, #8b959e, #cdd8e0);
+		position: fixed;
+		width: 100%;
+		left: 0;
+		top: 0;
+		z-index: 99;
 	}
 }
 @media screen and (max-width: 420px) {
