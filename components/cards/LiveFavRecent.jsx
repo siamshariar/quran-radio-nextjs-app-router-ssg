@@ -2,12 +2,12 @@ import Link from "next/link";
 import classNames from "classnames";
 import { PlayerStore, setPlaying, setLiveSrc, setLiveRadio } from "@/store";
 import { LocalStore } from "@/store/local";
-import { trashOutline, playOutline } from "ionicons/icons";
+import { trashOutline, playOutline, radioOutline } from "ionicons/icons";
 import { playCircle, pauseCircle } from "@/icons";
 import styles from "./Card.module.css";
 import { IonIcon } from "@ionic/react";
 import { useSettingStorage } from "@/hooks/useSettingStorage";
-import RadioIcon from "@mui/icons-material/Radio";
+// import RadioIcon from "@mui/icons-material/Radio";
 
 const LiveFavRecent = ({ item, handleRemoveLiveFavorite, noRemoveIcon }) => {
 	const playing = PlayerStore.useState((s) => s.playing);
@@ -39,7 +39,8 @@ const LiveFavRecent = ({ item, handleRemoveLiveFavorite, noRemoveIcon }) => {
 				<div className={styles.left}>
 					<div className={styles.image}>
 						{/* <div className={styles.number}>{item.id}</div> */}
-						<RadioIcon />
+						{/* <RadioIcon /> */}
+						<IonIcon icon={radioOutline} slot="start" class={styles.icon} />
 					</div>
 				</div>
 

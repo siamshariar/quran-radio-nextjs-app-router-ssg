@@ -5,7 +5,8 @@ import styles from "./Card.module.css";
 import { IonIcon } from "@ionic/react";
 import { useSettingStorage } from "@/hooks/useSettingStorage";
 import { LocalStore } from "@/store/local";
-import RadioIcon from "@mui/icons-material/Radio";
+// import RadioIcon from "@mui/icons-material/Radio";
+import { radioOutline } from "ionicons/icons";
 
 const LiveRadioCard = ({ liveRadio, index }) => {
 	const playing = PlayerStore.useState((s) => s.playing);
@@ -41,7 +42,8 @@ const LiveRadioCard = ({ liveRadio, index }) => {
 				<div className={styles.left}>
 					<div className={styles.image}>
 						{/* <div className={styles.number}>{liveRadio.id}</div> */}
-						<RadioIcon />
+						{/* <RadioIcon /> */}
+						<IonIcon icon={radioOutline} slot="start" class={styles.icon} />
 					</div>
 				</div>
 
