@@ -69,6 +69,7 @@ const HeaderHome = () => {
 
 	const toggleMobileNav = (open) => {
 		setSidenavOpen(open);
+		setSliderDown(true);
 	};
 
 	return (

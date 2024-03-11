@@ -15,11 +15,7 @@ const NameSection = () => {
 			{mode === "normal" && (
 				<>
 					<div className={styles.chapter}>
-						<h2>
-							<Link href="/reciters" legacyBehavior>
-								<a>Reciter - {reciterName}</a>
-							</Link>
-						</h2>
+						<h2>Reciter - {reciterName}</h2>
 					</div>
 
 					<div className={styles.reciter}>
@@ -33,11 +29,7 @@ const NameSection = () => {
 			{mode === "live" && (
 				<>
 					<div className={styles.chapter}>
-						<h2>
-							<Link href="/reciters" legacyBehavior>
-								<a>Live Radio</a>
-							</Link>
-						</h2>
+						<h2>Live Radio</h2>
 					</div>
 
 					<div className={styles.reciter}>

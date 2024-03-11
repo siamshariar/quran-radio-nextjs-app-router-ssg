@@ -23,10 +23,10 @@ import {
 } from "@/icons";
 import { IonIcon } from "@ionic/react";
 import classNames from "classnames";
-import { PlayerStore } from "@/store";
+// import { PlayerStore } from "@/store";
 
 export default function SideNav(props) {
-	const reciterId = PlayerStore.useState((s) => s.reciterId);
+	// const reciterId = PlayerStore.useState((s) => s.reciterId);
 
 	return (
 		<Drawer
