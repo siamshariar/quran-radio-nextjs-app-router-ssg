@@ -35,7 +35,9 @@ const Reciter = ({ reciter }) => {
 
 		const reciterId = reciter.id;
 		const chapterList = reciter.moshaf[0].surah_list.split(",");
-		const randomChapterIndex = Math.floor(Math.random() * chapterList.length);
+		const randomChapterIndex = Math.floor(
+			Math.random() * (chapterList.length > 100 ? 100 : chapterList.length)
+		);
 
 		// update reciter from json
 		// setReciter(reciterId);

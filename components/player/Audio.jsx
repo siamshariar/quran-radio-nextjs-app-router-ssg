@@ -130,7 +130,8 @@ const AudioTag = () => {
 
 		const randomChapterList = randomReciter.moshaf[0].surah_list.split(",");
 		const randomChapterIndex = Math.floor(
-			Math.random() * randomChapterList.length
+			Math.random() *
+				(randomChapterList.length > 100 ? 100 : randomChapterList.length)
 		);
 
 		if (router.pathname !== "/reciters/[id]/chapters/[chapId]") {
