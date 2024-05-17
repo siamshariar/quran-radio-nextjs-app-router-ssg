@@ -51,10 +51,10 @@ export const PlayerStore = new Store({
 	shuffle: false,
 	playbackRate: 1,
 
-	timer: {
-		isSet: false,
-		value: 0,
-	},
+	// timer: {
+	// 	isSet: false,
+	// 	value: 0,
+	// },
 });
 
 export const setPlayerOpen = (open) => {
@@ -202,11 +202,11 @@ export const setPlaybackRate = (rate) => {
 	});
 };
 
-export const setTimer = (isSet, value) => {
-	PlayerStore.update((s) => {
-		s.timer = {
-			isSet: isSet,
-			value: value,
-		};
-	});
-};
+// export const setTimer = (isSet, value) => {
+// 	PlayerStore.update((s) => {
+// 		s.timer = {
+// 			isSet: isSet,
+// 			value: value,
+// 		};
+// 	});
+// };

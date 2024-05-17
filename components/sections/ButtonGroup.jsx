@@ -5,6 +5,7 @@ import {
 	musicalNoteOutline,
 	heart,
 	heartOutline,
+	time,
 } from "ionicons/icons";
 
 import { PlayerStore } from "@/store";
@@ -22,6 +23,7 @@ import { IonIcon } from "@ionic/react";
 import Share from "../actions/share";
 import { LocalStore } from "@/store/local";
 import { server } from "@/lib/config";
+import Timer from "../actions/TimerPrimary";
 
 const Buttons = () => {
 	const reciterId = PlayerStore.useState((s) => s.reciterId);
@@ -60,17 +62,17 @@ const Buttons = () => {
 				}
 				title="Quran Radio"
 			/>
-			{/* <Timer
-        classes={{
-          root: styles.item,
-          btn: styles.btn,
-          icon: styles.icon,
-        }}
-        icon={{
-          added: time,
-          removed: timeOutline,
-        }}
-      /> */}
+			<Timer
+				classes={{
+					root: styles.item,
+					btn: styles.btn,
+					icon: styles.icon,
+				}}
+				icon={{
+					added: time,
+					removed: timeOutline,
+				}}
+			/>
 			<PlaybackRate
 				classes={{
 					root: styles.item,

@@ -67,7 +67,7 @@ const AudioTag = () => {
 			playPromise
 				.then(() => {
 					setLoading(false);
-					setPlaying(true);
+					// setPlaying(true);
 				})
 				.catch((error) => {
 					console.error(error);
@@ -91,6 +91,7 @@ const AudioTag = () => {
 	const pauseAudio = () => {
 		if (loading) return;
 		audioRef.current.pause();
+		console.log("paused");
 	};
 
 	const handleEnd = () => {
@@ -110,12 +111,12 @@ const AudioTag = () => {
 			if (index >= chapterList.length) {
 				setChapter(chapterList, 0);
 				setSrc(chapterList, reciterId, 0);
-				setPlaying(true);
+				// setPlaying(true);
 				return;
 			} else {
 				setChapter(chapterList, index);
 				setSrc(chapterList, reciterId, index);
-				setPlaying(true);
+				// setPlaying(true);
 				return;
 			}
 		}
@@ -160,13 +161,13 @@ const AudioTag = () => {
 	}, [liveIndex]);
 
 	useEffect(() => {
+		console.log("playing: " + playing, src, liveSrc);
 		if (playing) {
 			playAudio();
 			audioRef.current.playbackRate = playbackRate;
 		} else {
 			pauseAudio();
 		}
-		console.log("playing: " + playing, src, liveSrc);
 	}, [playing, src, liveSrc, mode, playbackRate]);
 
 	useEffect(() => {
@@ -197,6 +198,13 @@ const AudioTag = () => {
 			}, 3000);
 		}
 	}, [isToast]);
+
+	// stop from timer
+	useEffect(() => {
+		if (!loading && !playing) {
+			pauseAudio();
+		}
+	}, [loading, playing]);
 
 	return (
 		<>

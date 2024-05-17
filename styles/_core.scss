@@ -4,6 +4,10 @@
 	--safe-area-left: env(safe-area-inset-left, 0);
 	--safe-area-right: env(safe-area-inset-right, 0);
 }
+html,
+body {
+	height: 100%;
+}
 body {
 	position: relative;
 	overflow-x: hidden;
