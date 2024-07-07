@@ -31,6 +31,7 @@ import {
 	setFavorites,
 	setIsTab,
 	setLiveFavorites,
+	setLiveRecent,
 	setRecent,
 	setSettings,
 } from "@/store/local";
@@ -79,6 +80,7 @@ function MyApp({ Component, pageProps }) {
 		const localFavorites = localStorage.getItem("favorites");
 		const localLiveFavorites = localStorage.getItem("liveFavorites");
 		const localRecents = localStorage.getItem("recent");
+		const localLiveRecents = localStorage.getItem("liveRecent");
 		if (localSettings) {
 			setSettings(JSON.parse(localSettings));
 		}
@@ -90,6 +92,9 @@ function MyApp({ Component, pageProps }) {
 		}
 		if (localLiveFavorites) {
 			setLiveFavorites(JSON.parse(localLiveFavorites));
+		}
+		if (localLiveRecents) {
+			setLiveRecent(JSON.parse(localLiveRecents));
 		}
 	}, []);
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { IonIcon, IonPicker, useIonPicker } from "@ionic/react";
-import { setPlaying } from "@/store";
+import { PlayerStore, setPlaying, setTimer, stopTimer } from "@/store";
 
 const TimerSet = ({ classes, icon, handleSetTimer }) => {
 	const [present] = useIonPicker();
@@ -54,6 +54,7 @@ const TimerSet = ({ classes, icon, handleSetTimer }) => {
 							{
 								text: "Cancel",
 								handler: () => null,
+								role: "cancel",
 							},
 							{
 								text: "Confirm",
@@ -72,7 +73,7 @@ const TimerSet = ({ classes, icon, handleSetTimer }) => {
 	);
 };
 
-const UnsetTimer = ({ classes, icon, timeRemaining, setIsSet }) => {
+const UnsetTimer = ({ classes, icon, timeRemaining }) => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	function formatDur(s) {
@@ -110,7 +111,7 @@ const UnsetTimer = ({ classes, icon, timeRemaining, setIsSet }) => {
 				buttons={[
 					{
 						text: "Cancel Timer",
-						handler: () => setIsSet(false),
+						handler: () => stopTimer(),
 					},
 					{
 						text: "Hide",
@@ -122,48 +123,28 @@ const UnsetTimer = ({ classes, icon, timeRemaining, setIsSet }) => {
 };
 
 const Timer = ({ classes, icon }) => {
-	const [timer, setTimer] = useState(-1);
-	const [isSet, setIsSet] = useState(false);
+	const timer = PlayerStore.useState((s) => s.timer);
 
+	// console.log(timer);
 	const handleSetTimer = (v) => {
-		setIsSet(true);
 		setTimer(v);
 	};
 
-	const triggerPause = () => {
-		setPlaying(false);
-		console.log("trigger pause");
-	};
-
 	useEffect(() => {
-		let timerID;
-
-		if (isSet) {
-			timerID = setInterval(() => setTimer((prev) => prev - 1), 1000);
-		}
-
-		return () => {
-			console.log(timerID);
-			clearInterval(timerID);
-		};
-	}, [isSet]);
-
-	useEffect(() => {
-		if (timer < 1) {
-			setIsSet(false);
-			triggerPause();
+		if (timer === 0) {
+			stopTimer();
+			setPlaying(false);
 		}
 	}, [timer]);
 
 	return (
 		<div className={classes.root}>
-			{isSet ? (
+			{timer > 0 ? (
 				<div className={classes.btn}>
 					<UnsetTimer
 						classes={classes}
 						icon={icon.added}
 						timeRemaining={timer}
-						setIsSet={setIsSet}
 					/>
 				</div>
 			) : (

@@ -10,7 +10,8 @@
 	-webkit-font-smoothing: antialiased;
 	top: 0;
 	display: block;
-	position: absolute;
+	// position: absolute;
+	position: fixed;
 	width: 100%;
 	height: 100%;
 	outline: none;
@@ -413,7 +414,8 @@
 	-webkit-font-smoothing: antialiased;
 	top: 0;
 	display: block;
-	position: absolute;
+	// position: absolute;
+	position: fixed;
 	width: 100%;
 	height: 100%;
 	outline: none;

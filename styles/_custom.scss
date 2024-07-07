@@ -9,3 +9,6 @@
 .MuiTabs-scroller .MuiTabs-indicator {
 	background-color: #3aad94;
 }
+body.backdrop-no-scroll {
+	overflow: auto;
+}

@@ -22,8 +22,9 @@ import PlaybackRate from "../actions/PlaybackRate";
 import { IonIcon } from "@ionic/react";
 import Share from "../actions/share";
 import { LocalStore } from "@/store/local";
-import { server } from "@/lib/config";
+// import { server } from "@/lib/config";
 import Timer from "../actions/TimerPrimary";
+import { useRouter } from "next/router";
 
 const Buttons = () => {
 	const reciterId = PlayerStore.useState((s) => s.reciterId);
@@ -31,7 +32,7 @@ const Buttons = () => {
 	const chapterList = PlayerStore.useState((s) => s.chapterList);
 	const mode = LocalStore.useState((s) => s.settings.mode);
 	const chapterNo = chapterList[chapterIndex];
-	const currLive = PlayerStore.useState((s) => s.currLive);
+	const router = useRouter();
 
 	const ShareIcon = () => (
 		<IonIcon icon={shareOutline} slot="start" class={styles.icon} />
@@ -53,15 +54,7 @@ const Buttons = () => {
 					removed: heartOutline,
 				}}
 			/>
-			<Share
-				Icon={ShareIcon}
-				url={
-					mode === "normal"
-						? `/reciters/${reciterId}/chapters/${chapterNo}`
-						: `/live-radios/${currLive.id}`
-				}
-				title="Quran Radio"
-			/>
+			<Share Icon={ShareIcon} url={router.asPath} title="Quran Radio" />
 			<Timer
 				classes={{
 					root: styles.item,

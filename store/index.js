@@ -5,7 +5,7 @@ import { liveRadios } from "@/data/liveRadios";
 import { defaultLiveRadios } from "@/data/defaultLiveRadios";
 
 const getReciterById = (reciterId) => {
-	const reciter = reciters.find((obj) => obj.id === reciterId);
+	const reciter = reciters.find((obj) => obj.id == reciterId);
 	return reciter;
 };
 
@@ -51,11 +51,44 @@ export const PlayerStore = new Store({
 	shuffle: false,
 	playbackRate: 1,
 
-	// timer: {
-	// 	isSet: false,
-	// 	value: 0,
-	// },
+	// timer
+	timer: -1,
+	intervalId: null,
 });
+
+export const setTimer = (v) => {
+	PlayerStore.update((s) => {
+		s.timer = v;
+	});
+
+	const { intervalId } = PlayerStore.getRawState();
+	if (intervalId !== null) return;
+
+	const newIntervalId = setInterval(() => {
+		PlayerStore.update((s) => {
+			if (s.timer > 0) {
+				s.timer -= 1;
+			} else {
+				s.timer = 0;
+			}
+		});
+	}, 1000);
+
+	PlayerStore.update((s) => {
+		s.intervalId = newIntervalId;
+	});
+};
+
+export const stopTimer = () => {
+	const { intervalId } = PlayerStore.getRawState();
+	if (intervalId !== null) {
+		clearInterval(intervalId);
+		PlayerStore.update((s) => {
+			s.timer = -1;
+			s.intervalId = null;
+		});
+	}
+};
 
 export const setPlayerOpen = (open) => {
 	PlayerStore.update((s) => {
@@ -140,7 +173,6 @@ export const setSrc = (currentChapters, reciterId, chapterIndex) => {
 	str = str.slice(-3);
 
 	const reciter = getReciterById(reciterId);
-
 	// set default moshaf for src
 	let moshaf = [];
 	moshaf = reciter.moshaf.filter((i) => i.id == reciter.defaultMoshafId);

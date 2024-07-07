@@ -3,6 +3,7 @@ import {
 	PlayerStore,
 	setChapter,
 	setSrc,
+	setSrcAllChapters as setSrcFirst,
 	setPlaying,
 	setReciter,
 	setLoading,
@@ -10,6 +11,8 @@ import {
 	setLiveRadio,
 	setLiveSrc,
 	setDefaultLiveRadio,
+	setReciterByReciter,
+	setChapterListByList,
 } from "@/store";
 import { LocalStore } from "@/store/local";
 import { useRecentStorage } from "@/hooks/useRecentStorage";
@@ -19,12 +22,15 @@ import classNames from "classnames";
 import { useLiveRecentStorage } from "@/hooks/useLiveRecentStorage";
 import { useRouter } from "next/router";
 import { defaultLiveRadios } from "@/data/defaultLiveRadios";
+import { getLiveIndexById, getReciterById } from "@/lib/fetch";
+import { liveRadios } from "@/data/liveRadios";
+import { useSettingStorage } from "@/hooks/useSettingStorage";
 // import { useIonToast } from "@ionic/react";
 
 const AudioTag = () => {
 	const audioRef = useRef(null);
 	const reciters = PlayerStore.useState((s) => s.reciters);
-	const liveRadios = PlayerStore.useState((s) => s.liveRadios);
+	// const liveRadios = PlayerStore.useState((s) => s.liveRadios);
 	const src = PlayerStore.useState((s) => s.src);
 	const liveSrc = PlayerStore.useState((s) => s.liveSrc);
 	const playing = PlayerStore.useState((s) => s.playing);
@@ -39,6 +45,13 @@ const AudioTag = () => {
 	const mode = LocalStore.useState((s) => s.settings.mode);
 	const currentTime = AudioStore.useState((s) => s.currentTime);
 	const isProgress = AudioStore.useState((s) => s.isProgress);
+	const [isPageLoaded, setIsPageLoaded] = useState(false);
+	const { setMode } = useSettingStorage();
+
+	const setPlaybackMode = async (mode) => {
+		await setMode(mode);
+		return;
+	};
 
 	const [isToast, setIsToast] = useState(false);
 	// const [presentToast, dismiss] = useIonToast();
@@ -55,14 +68,14 @@ const AudioTag = () => {
 	// to prevent "the play request was interrupted by a call to pause / a new load request" error
 	let c = 0;
 	const playAudio = () => {
-		console.log(c);
-		console.log("loading: " + loading);
+		// console.log(c);
+		// console.log("loading: " + loading);
 		if (loading) return;
 
 		setLoading(true);
 
 		const playPromise = audioRef.current.play();
-		console.log(playPromise);
+		// console.log(playPromise);
 		if (playPromise !== undefined) {
 			playPromise
 				.then(() => {
@@ -91,7 +104,6 @@ const AudioTag = () => {
 	const pauseAudio = () => {
 		if (loading) return;
 		audioRef.current.pause();
-		console.log("paused");
 	};
 
 	const handleEnd = () => {
@@ -122,8 +134,41 @@ const AudioTag = () => {
 		}
 	};
 
+	const setMediaResources = async () => {
+		const reciterId = router.query.reciter;
+		const chapId = router.query.chapter;
+		const reciter = await getReciterById(reciterId);
+		const chapterList = reciter.moshaf[0].surah_list.split(",");
+		const chapterIndex = chapterList.indexOf(chapId);
+
+		setSrcFirst(chapId, reciter.moshaf);
+		setReciterByReciter(reciter);
+		setChapterListByList(chapterList);
+		setChapter(chapterList, chapterIndex);
+		setPlaybackMode("normal");
+	};
+
+	const setLiveMediaResources = async () => {
+		const liveId = router.query.liveRadio;
+		let liveIndex = await getLiveIndexById(liveId);
+		setLiveSrc(liveIndex);
+		setLiveRadio(liveIndex);
+		setPlaybackMode("live");
+	};
+
 	// first loading play random
 	const router = useRouter();
+	useEffect(() => {
+		if (router.isReady) {
+			setIsPageLoaded(true);
+			if (router.query.reciter && router.query.chapter) {
+				setMediaResources();
+			} else if (router.query.liveRadio) {
+				setLiveMediaResources();
+			}
+		}
+	}, [router.isReady]);
+
 	useEffect(() => {
 		const randomReciterIndex = Math.floor(Math.random() * reciters.length);
 		const randomReciter = reciters[randomReciterIndex];
@@ -135,21 +180,17 @@ const AudioTag = () => {
 				(randomChapterList.length > 100 ? 100 : randomChapterList.length)
 		);
 
-		if (router.pathname !== "/reciters/[id]/chapters/[chapId]") {
-			setReciter(randomReciterId);
-			setChapterList(randomReciterId);
-			setChapter(randomChapterList, randomChapterIndex);
-		}
+		setReciter(randomReciterId);
+		setChapterList(randomReciterId);
+		setChapter(randomChapterList, randomChapterIndex);
 	}, []);
 
 	useEffect(() => {
-		if (router.pathname !== "/live-radios/[id]") {
-			// only set Live radio from Default json
-			const randomLiveIndex = Math.floor(
-				Math.random() * defaultLiveRadios.length
-			);
-			setDefaultLiveRadio(randomLiveIndex);
-		}
+		// only set Live radio from Default json
+		const randomLiveIndex = Math.floor(
+			Math.random() * defaultLiveRadios.length
+		);
+		setDefaultLiveRadio(randomLiveIndex);
 	}, []);
 
 	useEffect(() => {
@@ -161,12 +202,35 @@ const AudioTag = () => {
 	}, [liveIndex]);
 
 	useEffect(() => {
-		console.log("playing: " + playing, src, liveSrc);
+		// console.log("playing: " + playing, src, liveSrc);
 		if (playing) {
 			playAudio();
 			audioRef.current.playbackRate = playbackRate;
 		} else {
 			pauseAudio();
+		}
+		// Update the URL without triggering a full page navigation
+		if (isPageLoaded) {
+			router.replace(
+				{
+					pathname: router.pathname,
+					query:
+						mode == "normal"
+							? router.pathname == "/reciters/[id]"
+								? {
+										id: router.query.id,
+										reciter: reciterId,
+										chapter: chapterList[chapterIndex],
+								  }
+								: {
+										reciter: reciterId,
+										chapter: chapterList[chapterIndex],
+								  }
+							: { liveRadio: liveRadios[liveIndex].id },
+				},
+				undefined,
+				{ shallow: true }
+			);
 		}
 	}, [playing, src, liveSrc, mode, playbackRate]);
 
@@ -205,6 +269,32 @@ const AudioTag = () => {
 			pauseAudio();
 		}
 	}, [loading, playing]);
+
+	// Update the URL without triggering a full page navigation
+	useEffect(() => {
+		if (isPageLoaded) {
+			router.replace(
+				{
+					pathname: router.pathname,
+					query:
+						mode == "normal"
+							? router.pathname == "/reciters/[id]"
+								? {
+										id: router.query.id,
+										reciter: reciterId,
+										chapter: chapterList[chapterIndex],
+								  }
+								: {
+										reciter: reciterId,
+										chapter: chapterList[chapterIndex],
+								  }
+							: { liveRadio: liveRadios[liveIndex].id },
+				},
+				undefined,
+				{ shallow: true }
+			);
+		}
+	}, [router.pathname]);
 
 	return (
 		<>
