@@ -43,6 +43,7 @@ function a11yProps(index) {
 
 const Favorites = () => {
 	const [value, setValue] = useState(0);
+	const [searchQuery, setSearchQuery] = useState("");
 	const favorites = LocalStore.useState((s) => s.favorites);
 	const liveFavorites = LocalStore.useState((s) => s.liveFavorites);
 	const { removeFavorite } = useFavoriteStorage();
@@ -62,11 +63,32 @@ const Favorites = () => {
 		return;
 	};
 
+	const handleSearchChange = (event) => {
+		setSearchQuery(event.target.value);
+	  };
+	  
+
+	const filteredFavorites = favorites.filter((favorite) =>
+		favorite.reciterName && favorite.reciterName.toLowerCase().includes(searchQuery.toLowerCase())
+	);
+	
+	const filteredLiveFavorites = liveFavorites.filter((favorite) =>
+		favorite.name && favorite.name.toLowerCase().includes(searchQuery.toLowerCase())
+	);
+  
+
+
 	return (
 		<div className="favRecent">
 			<div className={styles.search}>
 				<IonIcon icon={search} slot="start" class={styles.s_icon} />
-				<input type="text" name="search" placeholder="Search" />
+				<input
+					type="text"
+					name="search"
+					placeholder="Search"
+					value={searchQuery}
+					onChange={handleSearchChange}
+				/>
 			</div>
 
 			<Box sx={{ width: "100%" }}>
@@ -83,16 +105,15 @@ const Favorites = () => {
 
 				<CustomTabPanel value={value} index={0}>
 					<div className={styles.content}>
-						{favorites &&
-							favorites.map((favorite, index) => (
+						{filteredFavorites.length > 0 ? (
+							filteredFavorites.map((favorite, index) => (
 								<FavoriteCard
 									key={index}
 									item={favorite}
 									handleRemoveFavorite={handleRemoveFavorite}
 								/>
-							))}
-
-						{favorites.length === 0 && (
+							))
+						) : (
 							<h2 className={styles.no_record}>No record found!</h2>
 						)}
 					</div>
@@ -100,16 +121,15 @@ const Favorites = () => {
 
 				<CustomTabPanel value={value} index={1}>
 					<div className={styles.content}>
-						{liveFavorites &&
-							liveFavorites.map((favorite, index) => (
+						{filteredLiveFavorites.length > 0 ? (
+							filteredLiveFavorites.map((favorite, index) => (
 								<LiveFavorite
 									key={index}
 									item={favorite}
 									handleRemoveLiveFavorite={handleRemoveLiveFavorite}
 								/>
-							))}
-
-						{liveFavorites.length === 0 && (
+							))
+						) : (
 							<h2 className={styles.no_record}>No record found!</h2>
 						)}
 					</div>

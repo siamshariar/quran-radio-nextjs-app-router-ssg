@@ -91,7 +91,7 @@ export const reciters = [
 			},
 		],
 		imgUrl:
-			"https://qurancentral.com/wp-content/uploads/abdulaziz-az-zahrani-150x150.jpg",
+			"https://tvquran.com/uploads/authors/images/%D8%B9%D8%A8%D8%AF%20%D8%A7%D9%84%D8%B9%D8%B2%D9%8A%D8%B2%20%D8%A7%D9%84%D8%B2%D9%87%D8%B1%D8%A7%D9%86%D9%8A.jpg",
 		defaultMoshafId: "54",
 	},
 	{
@@ -428,7 +428,7 @@ export const reciters = [
 			},
 		],
 		imgUrl:
-			"https://qurancentral.com/wp-content/uploads/abdullah-fahmi-150x150.jpg",
+			"https://tvquran.com/uploads/authors/images/%D8%B9%D8%A8%D8%AF%D8%A7%D9%84%D9%84%D9%87%20%D9%81%D9%87%D9%85%D9%8A.jpg",
 		defaultMoshafId: "151",
 	},
 	{
@@ -1346,7 +1346,7 @@ export const reciters = [
 			},
 		],
 		imgUrl:
-			"https://qurancentral.com/wp-content/uploads/ali-abu-hashem-150x150.jpg",
+			"https://tvquran.com/uploads/authors/images/%D8%B9%D9%84%D9%8A%20%D8%A3%D8%A8%D9%88%20%D9%87%D8%A7%D8%B4%D9%85.jpg",
 		defaultMoshafId: "71",
 	},
 	{
@@ -1528,7 +1528,7 @@ export const reciters = [
 			},
 		],
 		imgUrl:
-			"https://qurancentral.com/wp-content/uploads/dawood-hamza-150x150.jpg",
+			"https://artwork.qurancentral.com/dawood-hamza-150x150.jpg",
 		defaultMoshafId: "25",
 	},
 	{
@@ -1582,7 +1582,7 @@ export const reciters = [
 				surah_list: "50,56,69,72,73,74,75,76",
 			},
 		],
-		imgUrl: "https://i.goalzz.com/?i=commentator%2fcomnfahadalotaibi.jpg",
+		imgUrl: "https://artwork.qurancentral.com/fahad-al-otaibi-150x150.jpg",
 		defaultMoshafId: "79",
 	},
 	{
@@ -1863,7 +1863,7 @@ export const reciters = [
 			},
 		],
 		imgUrl:
-			"https://qurancentral.com/wp-content/uploads/ibrahem-assadan-150x150.jpg",
+			"https://artwork.qurancentral.com/ibrahem-assadan-150x150.jpg",
 		defaultMoshafId: "165",
 	},
 	{
@@ -1882,7 +1882,7 @@ export const reciters = [
 			},
 		],
 		imgUrl:
-			"https://qurancentral.com/wp-content/uploads/ibrahim-al-akhdar-150x150.jpg",
+			"https://www.assabile.com/media/person/200x256/ibrahim-al-akhdar.png",
 		defaultMoshafId: "1",
 	},
 	{
@@ -2343,7 +2343,7 @@ export const reciters = [
 			},
 		],
 		imgUrl:
-			"https://qurancentral.com/wp-content/uploads/maher-al-mueaqly-150x150.jpg",
+			"https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Maher_Al_Mueaqly.png/220px-Maher_Al_Mueaqly.png",
 		defaultMoshafId: "249",
 	},
 	{
@@ -3005,7 +3005,7 @@ export const reciters = [
 			},
 		],
 		imgUrl:
-			"https://qurancentral.com/wp-content/uploads/mohammed-hafas-ali-150x150.jpg.",
+			"https://artwork.qurancentral.com/mohammed-hafas-ali-150x150.jpg",
 		defaultMoshafId: "153",
 	},
 	{
@@ -3575,7 +3575,7 @@ export const reciters = [
 			},
 		],
 		imgUrl:
-			"https://qurancentral.com/wp-content/uploads/rachid-ifrad-150x150.jpg",
+			"https://tvquran.com/uploads/authors/images/%D8%B1%D8%B4%D9%8A%D8%AF%20%D8%A5%D9%81%D8%B1%D8%A7%D8%AF.jpg",
 		defaultMoshafId: "26",
 	},
 	{
@@ -4281,7 +4281,7 @@ export const reciters = [
 					"1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114",
 			},
 		],
-		imgUrl: "http://www.assajda.com/media/person/square/yasser-al-mazroyee.jpg",
+		imgUrl: "https://tvquran.com/uploads/authors/images/%D9%8A%D8%A7%D8%B3%D8%B1%20%D8%A7%D9%84%D9%85%D8%B2%D8%B1%D9%88%D8%B9%D9%8A.jpg",
 		defaultMoshafId: "92",
 	},
 	{
@@ -4393,7 +4393,7 @@ export const reciters = [
 			},
 		],
 		imgUrl:
-			"https://qurancentral.com/wp-content/uploads/youssef-edghouch-150x150.jpg",
+			"https://www.quran-tilawat.com/images/qari/dghouch.png",
 		defaultMoshafId: "168",
 	},
 	{

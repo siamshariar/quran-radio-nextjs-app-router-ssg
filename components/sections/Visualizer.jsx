@@ -36,16 +36,7 @@ const Visualizer = () => {
 	};
 
 	return (
-		<div className={styles.root}>
-			{/* <div className={styles.duration}>
-				<div className={styles.start}>{formatDur(currentTime)}</div>
-				{mode === "normal" ? (
-					<div className={styles.end}>{formatDur(dur)}</div>
-				) : (
-					<div className={styles.end}>Live</div>
-				)}
-			</div> */}
-
+		<div className={styles.root} data-mode={mode}>
 			<div className={styles.start}>
 				<span
 					style={{ width: `${formatDur(currentTime).length > 5 ? 48 : 35}px` }}>
@@ -65,7 +56,7 @@ const Visualizer = () => {
 						}%`,
 					}}></div>
 				<input
-					disabled={mode === "live" ? true : false}
+					disabled={mode === "live"}
 					type="range"
 					min="0"
 					max="100"
@@ -88,6 +79,7 @@ const Visualizer = () => {
 			)}
 		</div>
 	);
+	
 };
 
 export default Visualizer;
