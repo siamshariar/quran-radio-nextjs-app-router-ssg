@@ -217,7 +217,7 @@ hr.m_menu_hr {
 
   .icon {
 	color: #303030;
-	font-size: 32px;
+	font-size: 44px;
 	display: inline-block;
   }
   .item,
@@ -232,10 +232,8 @@ hr.m_menu_hr {
 }
 
 .label {
-  color: #030303 !important;
   font-size: 1.1rem;
   line-height: 20px;
-  font-family: "Roboto", sans-serif !important;
   font-weight: 400;
   margin-left: 12px;
   color: #303030;

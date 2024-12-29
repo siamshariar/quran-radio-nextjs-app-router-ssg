@@ -1,6 +1,7 @@
 import { PlayerStore } from "../store";
 import { LocalStore, setRecent } from "../store/local";
 import { checkIsInRecent } from "../lib/check";
+import { format } from "date-fns";
 
 const STORE_KEY = "recent";
 const MAX_LENGTH = 100;
@@ -14,7 +15,7 @@ export const useRecentStorage = () => {
 	const addRecent = async (reciterId, chapterIndex) => {
 		const chapterNo = chapterList[chapterIndex];
 		let newRecentArr = [...recent];
-
+	
 		// remove current recent
 		if (checkIsInRecent(recent, reciterId, chapterNo)) {
 			newRecentArr = recent.filter(
@@ -22,14 +23,16 @@ export const useRecentStorage = () => {
 					item.reciterId !== reciterId || item.chapterIndex !== chapterIndex
 			);
 		}
-
+	
 		// if > 100, remove last one
 		if (newRecentArr.length >= MAX_LENGTH) {
 			newRecentArr = newRecentArr.slice(0, -1);
 		}
-
+	
 		const reciter = reciters.find((obj) => obj.id === reciterId);
-
+	
+		const formattedDate = format(new Date(), "MMMM d, yyyy h:mm a"); // Format date and time
+	
 		const newRecentItem = {
 			// id: "" + new Date().getTime(),
 			reciterId: reciterId,
@@ -43,14 +46,23 @@ export const useRecentStorage = () => {
 			createdAt: new Date().getTime(),
 			status: 1,
 		};
-
+	
 		// const updatedRecent = [newRecentItem, ...recent];
 		const updatedRecent = [newRecentItem, ...newRecentArr];
 		setRecent(updatedRecent);
 		localStorage.setItem(STORE_KEY, JSON.stringify(updatedRecent));
 	};
 
+	const removeRecent = async (reciterId, chapterNo) => {
+		let updated = recent.filter(
+			(item) => item.reciterId !== reciterId || item.chapterNo !== chapterNo
+		);
+		setRecent(updated);
+		localStorage.setItem(STORE_KEY, JSON.stringify(updated));
+	};
+
 	return {
 		addRecent,
+		removeRecent,
 	};
 };

@@ -11,33 +11,41 @@ export const useLiveRecentStorage = () => {
 
 	const addLiveRecent = async (liveIndex) => {
 		let newRecentArr = [...liveRecent];
-
+	  
 		// remove current recent
 		if (checkIsInLiveRecent(liveRecent, currLive.id)) {
-			newRecentArr = liveRecent.filter((item) => item.id !== currLive.id);
+		  newRecentArr = liveRecent.filter((item) => item.id !== currLive.id);
 		}
-
+	  
 		// if > 100, remove last one
 		if (newRecentArr.length >= MAX_LENGTH) {
-			newRecentArr = newRecentArr.slice(0, -1);
+		  newRecentArr = newRecentArr.slice(0, -1);
 		}
-
+	  
 		const newRecentItem = {
-			id: currLive.id,
-			liveIndex: liveIndex,
-			name: currLive.name,
-			liveUrl: currLive.liveUrl,
-			logo: currLive.logo,
+		  id: currLive.id,
+		  liveIndex: liveIndex,
+		  name: currLive.name,
+		  liveUrl: currLive.liveUrl,
+		  logo: currLive.logo,
 			createdAt: new Date().getTime(),
 		};
-
+	  
 		// const updatedRecent = [newRecentItem, ...recent];
 		const updatedRecent = [newRecentItem, ...newRecentArr];
 		setLiveRecent(updatedRecent);
 		localStorage.setItem(STORE_KEY, JSON.stringify(updatedRecent));
-	};
+	  };
+	  
+
+	const removeLiveRecent = async (currLive) => {
+			let updated = liveRecent.filter((item) => item.id !== currLive.id);
+			setLiveRecent(updated);
+			localStorage.setItem(STORE_KEY, JSON.stringify(updated));
+		};
 
 	return {
 		addLiveRecent,
+		removeLiveRecent,
 	};
 };

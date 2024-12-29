@@ -2,7 +2,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { Drawer } from "@mui/material";
 import styles from "./Header.module.css";
-import { useLocation } from "react-router-dom";
 import { IonLabel, IonRouterLink } from "@ionic/react";
 import { useEffect, useState } from "react";
 import {

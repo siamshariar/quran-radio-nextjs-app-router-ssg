@@ -9,6 +9,8 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import { useState } from "react";
 import LiveFavRecent from "../cards/LiveFavRecent";
+import { useRecentStorage } from "@/hooks/useRecentStorage";
+import { useLiveRecentStorage } from "@/hooks/useLiveRecentStorage";
 
 function CustomTabPanel(props) {
 	const { children, value, index, ...other } = props;
@@ -42,9 +44,20 @@ const Recents = () => {
 	const [value, setValue] = useState(0);
 	const recents = LocalStore.useState((s) => s.recent);
 	const liveRecents = LocalStore.useState((s) => s.liveRecent);
+	const { removeRecent } = useRecentStorage();
+	const { removeLiveRecent } = useLiveRecentStorage();
 
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
+	};
+
+	const handleRemoveRecent = async (reciterId, chapterIndex) => {
+		await removeRecent(reciterId, chapterIndex);
+		return;
+	};
+	const handleRemoveLiveRecent = async (reciterId, chapterIndex) => {
+		await removeLiveRecent(reciterId, chapterIndex);
+		return;
 	};
 
 	return (
@@ -70,7 +83,7 @@ const Recents = () => {
 					<div className={styles.content}>
 						{recents &&
 							recents.map((recent, index) => (
-								<FavRecentList key={index} item={recent} noRemoveIcon={true} />
+								<FavRecentList key={index} item={recent}  handleRemoveRecent={handleRemoveRecent}/>
 							))}
 
 						{recents.length === 0 && (
@@ -83,7 +96,7 @@ const Recents = () => {
 					<div className={styles.content}>
 						{liveRecents &&
 							liveRecents.map((recent, index) => (
-								<LiveFavRecent key={index} item={recent} noRemoveIcon={true} />
+								<LiveFavRecent key={index} item={recent} handleRemoveLiveRecent={handleRemoveLiveRecent}/>
 							))}
 
 						{liveRecents.length === 0 && (

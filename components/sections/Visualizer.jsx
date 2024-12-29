@@ -36,7 +36,16 @@ const Visualizer = () => {
 	};
 
 	return (
-		<div className={styles.root} data-mode={mode}>
+		<div className={styles.root}>
+			{/* <div className={styles.duration}>
+				<div className={styles.start}>{formatDur(currentTime)}</div>
+				{mode === "normal" ? (
+					<div className={styles.end}>{formatDur(dur)}</div>
+				) : (
+					<div className={styles.end}>Live</div>
+				)}
+			</div> */}
+
 			<div className={styles.start}>
 				<span
 					style={{ width: `${formatDur(currentTime).length > 5 ? 48 : 35}px` }}>
@@ -56,7 +65,7 @@ const Visualizer = () => {
 						}%`,
 					}}></div>
 				<input
-					disabled={mode === "live"}
+					disabled={mode === "live" ? true : false}
 					type="range"
 					min="0"
 					max="100"
@@ -65,21 +74,13 @@ const Visualizer = () => {
 					name="progresBar"
 				/>
 			</div>
-			{mode === "normal" ? (
-				<div className={styles.end}>
-					<span
-						style={{
-							width: `${formatDur(dur).length > 5 ? 48 : 35}px`,
-						}}>
-						{formatDur(dur)}
-					</span>
-				</div>
-			) : (
-				<div className={styles.end}>Live</div>
-			)}
+			<div className={styles.end}>
+				<span className={styles.fixedWidth}>
+					{mode === "normal" ? formatDur(dur) : "Live"}
+				</span>
+			</div>
 		</div>
 	);
-	
 };
 
 export default Visualizer;
