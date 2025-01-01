@@ -4,12 +4,15 @@ import styles from "./Tune.module.css";
 
 const Tune = () => {
   const playing = PlayerStore.useState((s) => s.playing); 
+  const loading = PlayerStore.useState((s) => s.loading); 
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.icon}>
         <div
-          className={`${styles.visualize} ${playing ? styles.playing : styles.notPlaying}`}
+          className={`${styles.visualize} ${
+            playing && !loading ? styles.playing : styles.notPlaying
+          }`}
         >
           <span className={`${styles.spike} ${styles.spike1}`}></span>
           <span className={`${styles.spike} ${styles.spike2}`}></span>

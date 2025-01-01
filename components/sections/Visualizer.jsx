@@ -2,28 +2,30 @@ import { AudioStore, setCurrentTime, setIsProgress } from "@/store/audio";
 import styles from "./Visualizer.module.css";
 import { LocalStore } from "@/store/local";
 import classNames from "classnames";
+import { useEffect, useState } from "react";
 
 const Visualizer = () => {
 	const currentTime = AudioStore.useState((s) => s.currentTime);
 	const mode = LocalStore.useState((s) => s.settings.mode);
 	const dur = AudioStore.useState((s) => s.dur);
 
-	// const formatDur = (s) => {
-	// 	// let h = s - (s %= 360);
-	// 	return (s - (s %= 60)) / 60 + (s < 10 ? ":0" : ":") + ~~s;
-	// };
+	const [progressWidth, setProgressWidth] = useState(100);
+
+	useEffect(() => {
+		if (mode === "normal" && dur) {
+			setProgressWidth((currentTime * 100) / dur);
+		} else {
+			setProgressWidth(100);
+		}
+	}, [mode, currentTime, dur]);
 
 	function formatDur(s) {
-		// ~~ => math.floor()
 		const h = ~~(s / 3600);
 		const m = ~~((s % 3600) / 60);
 		const rs = ~~(s % 60);
-
-		const formattedTime = `${
+		return `${
 			h > 0 ? String(h).padStart(2, "0").concat(":") : ""
 		}${String(m).padStart(2, "0")}:${String(rs).padStart(2, "0")}`;
-
-		return formattedTime;
 	}
 
 	const handleProgress = (progress) => {
@@ -37,18 +39,8 @@ const Visualizer = () => {
 
 	return (
 		<div className={styles.root}>
-			{/* <div className={styles.duration}>
-				<div className={styles.start}>{formatDur(currentTime)}</div>
-				{mode === "normal" ? (
-					<div className={styles.end}>{formatDur(dur)}</div>
-				) : (
-					<div className={styles.end}>Live</div>
-				)}
-			</div> */}
-
 			<div className={styles.start}>
-				<span
-					style={{ width: `${formatDur(currentTime).length > 5 ? 48 : 35}px` }}>
+				<span style={{ width: `${formatDur(currentTime).length > 5 ? 48 : 35}px` }}>
 					{formatDur(currentTime)}
 				</span>
 			</div>
@@ -56,22 +48,17 @@ const Visualizer = () => {
 				<div
 					className={classNames(styles.label)}
 					style={{
-						width: `${
-							dur && mode === "normal"
-								? (currentTime * 100) / dur < 10
-									? (currentTime * 100) / dur + 1
-									: (currentTime * 100) / dur
-								: 100
-						}%`,
+						width: `${progressWidth}%`,
 					}}></div>
 				<input
-					disabled={mode === "live" ? true : false}
 					type="range"
 					min="0"
 					max="100"
-					value={dur && mode === "normal" ? (currentTime * 100) / dur : 100}
-					onChange={(e) => handleProgress(e.target.value)}
-					name="progresBar"
+					value={mode === "normal" && dur ? progressWidth : 100}
+					onChange={(e) =>
+						mode === "normal" && dur && handleProgress(e.target.value)
+					}
+					name="progressBar"
 				/>
 			</div>
 			<div className={styles.end}>

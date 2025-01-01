@@ -9,9 +9,17 @@ import { IonIcon } from "@ionic/react";
 import { useSettingStorage } from "@/hooks/useSettingStorage";
 
 const formatDate = (timestamp) => {
-	const date = new Date(timestamp);
-	return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
-  };
+    const date = new Date(timestamp);
+    return date.toLocaleString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+    });
+};
+
   
   const LiveFavRecent = ({ item, handleRemoveLiveFavorite, handleRemoveLiveRecent, noRemoveIcon }) => {
 	const playing = PlayerStore.useState((s) => s.playing);
