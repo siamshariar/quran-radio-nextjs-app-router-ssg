@@ -1,4 +1,4 @@
-import { AudioStore, setCurrentTime, setIsProgress } from "@/store/audio";
+import { AudioStore, setCurrentTime, setIsProgress, initializeAudioStore } from "@/store/audio";
 import styles from "./Visualizer.module.css";
 import { LocalStore } from "@/store/local";
 import classNames from "classnames";
@@ -8,8 +8,13 @@ const Visualizer = () => {
 	const currentTime = AudioStore.useState((s) => s.currentTime);
 	const mode = LocalStore.useState((s) => s.settings.mode);
 	const dur = AudioStore.useState((s) => s.dur);
+	const isPlaying = AudioStore.useState((s) => s.isPlaying);
 
 	const [progressWidth, setProgressWidth] = useState(100);
+
+    useEffect(() => {
+        initializeAudioStore();
+    }, []);
 
 	useEffect(() => {
 		if (mode === "normal" && dur) {
@@ -18,6 +23,12 @@ const Visualizer = () => {
 			setProgressWidth(100);
 		}
 	}, [mode, currentTime, dur]);
+
+    useEffect(() => {
+        if (mode === "normal" && dur) {
+            localStorage.setItem("audioPausedTime", currentTime);
+        }
+    }, [currentTime, mode, dur]);
 
 	function formatDur(s) {
 		const h = ~~(s / 3600);
@@ -32,6 +43,7 @@ const Visualizer = () => {
 		setIsProgress(false);
 		let compute = (progress * dur) / 100;
 		setCurrentTime(compute);
+		localStorage.setItem("audioPausedTime", compute);
 		setTimeout(() => {
 			setIsProgress(true);
 		}, 1);

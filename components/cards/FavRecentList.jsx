@@ -15,6 +15,15 @@ import { IonIcon } from "@ionic/react";
 import { useSettingStorage } from "@/hooks/useSettingStorage";
 import Image from "next/image";
 import Link from "next/link";
+import { formatDate } from "../utils/formatDate";
+import {
+    AudioStore,
+    setCurrentTime,
+    setIsPlaying,
+    initializeAudioStore,
+    loadPausedTime,
+} from "@/store/audio";
+import { useEffect, useState } from "react";
 
 const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemoveIcon }) => {
     const playing = PlayerStore.useState((s) => s.playing);
@@ -22,6 +31,18 @@ const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemov
     const chapterIndex = PlayerStore.useState((s) => s.chapterIndex);
     const mode = LocalStore.useState((s) => s.settings.mode);
     const { setMode } = useSettingStorage();
+    const [showPausedAt, setShowPausedAt] = useState(true);
+
+    const currentTime = AudioStore.useState((s) => s.currentTime);
+
+    useEffect(() => {
+        initializeAudioStore();
+        if (AudioStore.getRawState().isPlaying) {
+            setPlaying(true);
+            const pausedTime = loadPausedTime();
+            setCurrentTime(pausedTime);
+        }
+    }, []);
 
     const setPlaybackMode = async (mode) => {
         await setMode(mode);
@@ -38,6 +59,13 @@ const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemov
         setChapter(item.chapterList, item.chapterIndex);
         setSrc(item.chapterList, item.reciterId, item.chapterIndex);
         setPlaying(true);
+
+        const lastPlayedTime = localStorage.getItem("audioPausedTime");
+        if (lastPlayedTime) {
+            setCurrentTime(parseFloat(lastPlayedTime));
+        }
+
+        setShowPausedAt(false);
     };
 
     const play = () => {
@@ -45,25 +73,28 @@ const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemov
             setPlaybackMode("normal");
         }
         setPlaying(true);
+        setIsPlaying(true);
+        setShowPausedAt(false);
     };
 
     const pause = () => {
         setPlaying(false);
+        setIsPlaying(false);
+        localStorage.setItem("audioPausedTime", currentTime);
+        updatePausedAtTime(item.reciterId, item.chapterNo, currentTime);
+        setShowPausedAt(true);
     };
 
-    const formatDate = (timestamp) => {
-        const date = new Date(timestamp);
-        return date.toLocaleString("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "2-digit",
-            hour: "numeric",
-            minute: "2-digit",
-            hour12: true,
+    const updatePausedAtTime = (reciterId, chapterNo, time) => {
+        const recents = LocalStore.getRawState().recent;
+        const updatedRecents = recents.map((recent) => {
+            if (recent.reciterId === reciterId && recent.chapterNo === chapterNo) {
+                return { ...recent, pausedAt: time };
+            }
+            return recent;
         });
+        LocalStore.update((s) => ({ ...s, recent: updatedRecents }));
     };
-    
-    
 
     const handleRemove = () => {
         if (handleRemoveFavorite) {
@@ -71,6 +102,13 @@ const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemov
         } else if (handleRemoveRecent) {
             handleRemoveRecent(item.reciterId, item.chapterNo);
         }
+    };
+
+    const formatDur = (s) => {
+        const h = ~~(s / 3600);
+        const m = ~~((s % 3600) / 60);
+        const rs = ~~(s % 60);
+        return `${h > 0 ? String(h).padStart(2, "0").concat(":") : ""}${String(m).padStart(2, "0")}:${String(rs).padStart(2, "0")}`;
     };
 
     return (
@@ -100,6 +138,11 @@ const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemov
                     <div className={styles.name}>{item.reciterName}</div>
                     <div className={styles.meaning}>- {item.chapterName}</div>
                     <div className={styles.date}>{formatDate(item.createdAt)}</div>
+                    {item.pausedAt && showPausedAt && (
+                        <div className={styles.pausedAt}>
+                            Paused at: {formatDur(item.pausedAt)}
+                        </div>
+                    )}
                 </Link>
 
                 <div className={classNames(styles.right, styles.btns)}>

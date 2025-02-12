@@ -7,19 +7,7 @@ import { playCircle, pauseCircle } from "@/icons";
 import styles from "./Card.module.css";
 import { IonIcon } from "@ionic/react";
 import { useSettingStorage } from "@/hooks/useSettingStorage";
-
-const formatDate = (timestamp) => {
-    const date = new Date(timestamp);
-    return date.toLocaleString("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "2-digit",
-        hour: "numeric",
-        minute: "2-digit",
-        hour12: true,
-    });
-};
-
+import { formatDate } from "../utils/formatDate";
   
   const LiveFavRecent = ({ item, handleRemoveLiveFavorite, handleRemoveLiveRecent, noRemoveIcon }) => {
 	const playing = PlayerStore.useState((s) => s.playing);

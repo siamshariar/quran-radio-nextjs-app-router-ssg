@@ -45,6 +45,13 @@ function groupItemsByDate(items) {
     const yesterday = new Date(today);
     yesterday.setDate(today.getDate() - 1);
 
+    const formatter = new Intl.DateTimeFormat("en-US", {
+        weekday: "short",
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
+    });
+
     const grouped = {
         today: [],
         yesterday: [],
@@ -60,10 +67,11 @@ function groupItemsByDate(items) {
         } else if (createdDate === yesterday.toDateString()) {
             grouped.yesterday.push(item);
         } else {
-            if (!grouped.older[createdDate]) {
-                grouped.older[createdDate] = [];
+            const formattedDate = formatter.format(createdAt);
+            if (!grouped.older[formattedDate]) {
+                grouped.older[formattedDate] = [];
             }
-            grouped.older[createdDate].push(item);
+            grouped.older[formattedDate].push(item);
         }
     });
 

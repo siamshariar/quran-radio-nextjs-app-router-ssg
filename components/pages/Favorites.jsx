@@ -8,10 +8,11 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import { useState } from "react";
-import LiveRadioCard from "../cards/LiveRadioCard";
 import LiveFavorite from "../cards/LiveFavRecent";
 import { useFavoriteStorage } from "@/hooks/useFavoriteStorage";
 import { useLiveFavoriteStorage } from "@/hooks/useLiveFavoriteStorage";
+import { useReciterFavoriteStorage } from "@/hooks/useReciterFavoriteStorage";
+import ReciterCard from "../cards/Reciter";
 
 function CustomTabPanel(props) {
 	const { children, value, index, ...other } = props;
@@ -48,6 +49,7 @@ const Favorites = () => {
 	const liveFavorites = LocalStore.useState((s) => s.liveFavorites);
 	const { removeFavorite } = useFavoriteStorage();
 	const { removeLiveFavorite } = useLiveFavoriteStorage();
+	const { reciterFavorites, removeReciterFavorite } = useReciterFavoriteStorage();
 
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
@@ -61,6 +63,13 @@ const Favorites = () => {
 	const handleRemoveLiveFavorite = async (fav) => {
 		await removeLiveFavorite(fav);
 		return;
+	};
+  const handleRemoveReciterFavorite = async (reciterId) => {
+    await removeReciterFavorite(reciterId);
+
+    const favorites = JSON.parse(localStorage.getItem("reciterFavorites")) || [];
+    const updatedFavorites = favorites.filter(id => id !== reciterId);
+    localStorage.setItem("reciterFavorites", JSON.stringify(updatedFavorites));
 	};
 
 	const handleSearchChange = (event) => {
@@ -77,11 +86,14 @@ const Favorites = () => {
 	);
   
 
+  const filteredReciters = reciterFavorites.filter(
+    (reciter) => reciter.name && reciter.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
 	return (
 		<div className="favRecent">
 			<div className={styles.search}>
-				<IonIcon icon={search} slot="start" class={styles.s_icon} />
+				<IonIcon icon={search} slot="start" className={styles.s_icon} />
 				<input
 					type="text"
 					name="search"
@@ -100,6 +112,7 @@ const Favorites = () => {
 						aria-label="basic tabs">
 						<Tab label="Chapters" {...a11yProps(0)} />
 						<Tab label="Live Radios" {...a11yProps(1)} />
+						<Tab label="Reciters" {...a11yProps(2)} />
 					</Tabs>
 				</Box>
 
@@ -128,6 +141,18 @@ const Favorites = () => {
 									item={favorite}
 									handleRemoveLiveFavorite={handleRemoveLiveFavorite}
 								/>
+							))
+            ) : (
+              <h2 className={styles.no_record}>No record found!</h2>
+            )}
+          </div>
+        </CustomTabPanel>
+
+        <CustomTabPanel value={value} index={2}>
+          <div className={styles.content}>
+            {filteredReciters.length > 0 ? (
+              filteredReciters.map((reciter, index) => (
+                <ReciterCard key={index} reciter={reciter} removeReciterFavorite={handleRemoveReciterFavorite} />
 							))
 						) : (
 							<h2 className={styles.no_record}>No record found!</h2>

@@ -208,63 +208,16 @@ const MenuList = ({ pages, openModal }) => {
   
 	return (
 	  <div className={styles.list}>
-		{pages.map((p, i) => (
-		  <>
-			{p.linkType == "inProgress" && (
-			  <div
-				key={i}
-				className={classNames(
-				  styles.item,
-				  p.url === path ? styles.active : ""
-				)}
-				onClick={openModal}
-			  >
+		<a href={pages[0].url} target="_blank" rel="noreferrer">
+		  <div className={classNames(styles.item)}>
 				<IonIcon
-				  icon={p.url === path ? p.icon : p.iconOutline}
+				  icon={pages[0].iconOutline}
 				  slot="start"
 				  className={styles.icon}
 				/>
-				<IonLabel className={styles.label}>{p.title}</IonLabel>
-			  </div>
-			)}
-			{p.linkType == "internal" && (
-			  <IonRouterLink
-				routerLink={p.url}
-				routerDirection="none"
-				detail={false}
-				lines="none"
-				key={i}
-			  >
-				<div
-				  key={i}
-				  className={classNames(
-					styles.item,
-					p.url === path ? styles.active : ""
-				  )}
-				>
-				  <IonIcon
-					icon={p.url === path ? p.icon : p.iconOutline}
-					slot="start"
-					className={styles.icon}
-				  />
-				  <IonLabel className={styles.label}>{p.title}</IonLabel>
-				</div>
-			  </IonRouterLink>
-			)}
-			{p.linkType == "external" && (
-			  <a href={p.url} target="_blank" rel="noreferrer">
-				<div key={i} className={classNames(styles.item)}>
-				  <IonIcon
-					icon={p.iconOutline}
-					slot="start"
-					className={styles.icon}
-				  />
-				  <IonLabel className={styles.label}>{p.title}</IonLabel>
+				<IonLabel className={styles.label}>{pages[0].title}</IonLabel>
 				</div>
 			  </a>
-			)}
-		  </>
-		))}
 	  </div>
 	);
   };
