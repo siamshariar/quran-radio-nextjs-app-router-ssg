@@ -1,11 +1,19 @@
-import { PlayerStore } from "../store";
-import { LocalStore, setFavorites, setLiveFavorites } from "../store/local";
+import { useState } from 'react';
+import { LocalStore, setLiveFavorites } from '../store/local';
+import storage from '@/store/storage';
 
-const STORE_KEY = "liveFavorites";
+const STORE_KEY = 'liveFavorites';
 
 export const useLiveFavoriteStorage = () => {
-	const liveFavorites = LocalStore.useState((s) => s.liveFavorites);
-	const liveRadios = PlayerStore.useState((s) => s.liveRadios);
+	const [liveFavorites, setLiveFavoritesState] = useState([]);
+
+	const loadLiveFavorites = async () => {
+		const storedFavorites = await storage.get(STORE_KEY);
+		if (storedFavorites) {
+		setLiveFavoritesState(storedFavorites);
+		setLiveFavorites(storedFavorites);
+		}
+	};
 
 	const addLiveFavorite = async (currLive, liveIndex) => {
 		const newFavorite = {
@@ -14,22 +22,26 @@ export const useLiveFavoriteStorage = () => {
 			name: currLive.name,
 			liveUrl: currLive.liveUrl,
 			logo: currLive.logo,
-			createdAt: new Date().getTime(),
+			createdAt: new Date().getTime()
 		};
 
 		const updatedFavorites = [...liveFavorites, newFavorite];
+		setLiveFavoritesState(updatedFavorites);
 		setLiveFavorites(updatedFavorites);
-		localStorage.setItem(STORE_KEY, JSON.stringify(updatedFavorites));
+		await storage.set(STORE_KEY, updatedFavorites);
 	};
 
 	const removeLiveFavorite = async (currLive) => {
 		let updated = liveFavorites.filter((item) => item.id !== currLive.id);
+		setLiveFavoritesState(updated);
 		setLiveFavorites(updated);
-		localStorage.setItem(STORE_KEY, JSON.stringify(updated));
+		await storage.set(STORE_KEY, updated);
 	};
 
 	return {
+		liveFavorites,
+		loadLiveFavorites,
 		addLiveFavorite,
-		removeLiveFavorite,
+		removeLiveFavorite
 	};
 };

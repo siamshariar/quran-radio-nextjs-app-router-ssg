@@ -1,16 +1,25 @@
-import { PlayerStore } from "../store";
-import { LocalStore, setFavorites } from "../store/local";
+import { useState } from 'react';
+import { LocalStore, setFavorites } from '../store/local';
+import storage from '@/store/storage';
+import { chapters } from '../data/chapters';
+import { reciters } from '../data/reciters';
 
-const STORE_KEY = "favorites";
+const STORE_KEY = 'favorites';
 
 export const useFavoriteStorage = () => {
-	const favorites = LocalStore.useState((s) => s.favorites);
-	const chapters = PlayerStore.useState((s) => s.chapters);
-	const reciters = PlayerStore.useState((s) => s.reciters);
-	const chapterList = PlayerStore.useState((s) => s.chapterList);
+	const [favorites, setFavoritesState] = useState([]);
+
+	const loadFavorites = async () => {
+		const storedFavorites = await storage.get(STORE_KEY);
+		if (storedFavorites) {
+		setFavoritesState(storedFavorites);
+		setFavorites(storedFavorites);
+		}
+	};
 
 	const addFavorite = async (reciterId, chapterNo, chapterIndex) => {
 		const reciter = reciters.find((obj) => obj.id == reciterId);
+		const chapterList = reciter.moshaf[0].surah_list.split(',');
 		// console.log(reciterId, chapterNo);
 
 		const newFavorite = {
@@ -23,25 +32,29 @@ export const useFavoriteStorage = () => {
 			chapterList: chapterList,
 			chapterNo: chapterNo,
 			chapterName: chapters[chapterNo - 1].name,
-			createdAt: new Date().getTime(),
+			createdAt: new Date().getTime()
 			// status: 1,
 		};
 
 		const updatedFavorites = [...favorites, newFavorite];
+		setFavoritesState(updatedFavorites);
 		setFavorites(updatedFavorites);
-		localStorage.setItem(STORE_KEY, JSON.stringify(updatedFavorites));
+		await storage.set(STORE_KEY, updatedFavorites);
 	};
 
 	const removeFavorite = async (reciterId, chapterNo) => {
 		let updated = favorites.filter(
 			(item) => item.reciterId !== reciterId || item.chapterNo !== chapterNo
 		);
+		setFavoritesState(updated);
 		setFavorites(updated);
-		localStorage.setItem(STORE_KEY, JSON.stringify(updated));
+		await storage.set(STORE_KEY, updated);
 	};
 
-	return {
-		addFavorite,
-		removeFavorite,
-	};
+  return {
+    favorites,
+    loadFavorites,
+    addFavorite,
+    removeFavorite
+  };
 };
