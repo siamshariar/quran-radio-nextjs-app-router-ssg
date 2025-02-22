@@ -13,6 +13,7 @@ import { useFavoriteStorage } from '@/hooks/useFavoriteStorage';
 import { useLiveFavoriteStorage } from '@/hooks/useLiveFavoriteStorage';
 import { useReciterFavoriteStorage } from '@/hooks/useReciterFavoriteStorage';
 import ReciterCard from '../cards/Reciter';
+import storage from "@/store/storage";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -46,19 +47,57 @@ function a11yProps(index) {
 
 const Favorites = () => {
   const [value, setValue] = useState(0);
-  const [searchQuery, setSearchQuery] = useState('');
-  const { favorites, loadFavorites, removeFavorite } = useFavoriteStorage();
-  const { liveFavorites, loadLiveFavorites, removeLiveFavorite } = useLiveFavoriteStorage();
-  const { reciterFavorites, loadReciterFavorites, removeReciterFavorite } = useReciterFavoriteStorage();
+	const [searchQuery, setSearchQuery] = useState("");
+	const favorites = LocalStore.useState((s) => s.favorites);
+	const liveFavorites = LocalStore.useState((s) => s.liveFavorites);
+	const { removeFavorite } = useFavoriteStorage();
+	const { removeLiveFavorite } = useLiveFavoriteStorage();
+	const { reciterFavorites, removeReciterFavorite } = useReciterFavoriteStorage();
 
   useEffect(() => {
-    loadFavorites();
-    loadLiveFavorites();
-    loadReciterFavorites();
+    const loadFavorites = async () => {
+			const storedFavorites = await storage.get("favorites");
+			const storedLiveFavorites = await storage.get("liveFavorites");
+			const storedReciterFavorites = await storage.get("reciterFavorites");
+
+			if (storedFavorites) {
+				LocalStore.update((s) => {
+					s.favorites = storedFavorites;
+				});
+			}
+			if (storedLiveFavorites) {
+				LocalStore.update((s) => {
+					s.liveFavorites = storedLiveFavorites;
+				});
+			}
+			if (storedReciterFavorites) {
+				LocalStore.update((s) => {
+					s.reciterFavorites = storedReciterFavorites;
+				});
+			}
+		};
+		loadFavorites();
   }, []);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+	const handleRemoveFavorite = async (reciterId, chapterIndex) => {
+		await removeFavorite(reciterId, chapterIndex);
+		return;
+	};
+
+	const handleRemoveLiveFavorite = async (fav) => {
+		await removeLiveFavorite(fav);
+		return;
+	};
+	const handleRemoveReciterFavorite = async (reciterId) => {
+		await removeReciterFavorite(reciterId);
+
+		const favorites = await storage.get("reciterFavorites") || [];
+		const updatedFavorites = favorites.filter(id => id !== reciterId);
+		await storage.set("reciterFavorites", updatedFavorites);
   };
 
   const handleSearchChange = (event) => {
@@ -90,9 +129,13 @@ const Favorites = () => {
         />
       </div>
 
-      <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs centered value={value} onChange={handleChange} aria-label="basic tabs">
+      <Box sx={{ width: "100%" }}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <Tabs
+            centered
+            value={value}
+            onChange={handleChange}
+            aria-label="basic tabs">
             <Tab label="Chapters" {...a11yProps(0)} />
             <Tab label="Live Radios" {...a11yProps(1)} />
             <Tab label="Reciters" {...a11yProps(2)} />
@@ -106,7 +149,7 @@ const Favorites = () => {
                 <FavoriteCard
                   key={index}
                   item={favorite}
-                  handleRemoveFavorite={removeFavorite}
+                  handleRemoveFavorite={handleRemoveFavorite}
                 />
               ))
             ) : (
@@ -122,7 +165,7 @@ const Favorites = () => {
                 <LiveFavorite
                   key={index}
                   item={favorite}
-                  handleRemoveLiveFavorite={removeLiveFavorite}
+                  handleRemoveLiveFavorite={handleRemoveLiveFavorite}
                 />
               ))
             ) : (
@@ -135,7 +178,7 @@ const Favorites = () => {
           <div className={styles.content}>
             {filteredReciters.length > 0 ? (
               filteredReciters.map((reciter, index) => (
-                <ReciterCard key={index} reciter={reciter} removeReciterFavorite={removeReciterFavorite} />
+                <ReciterCard key={index} reciter={reciter} removeReciterFavorite={handleRemoveReciterFavorite} />
               ))
             ) : (
               <h2 className={styles.no_record}>No record found!</h2>

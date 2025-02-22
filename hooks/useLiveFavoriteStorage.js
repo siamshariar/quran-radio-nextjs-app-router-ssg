@@ -1,19 +1,27 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
+import { PlayerStore } from '../store';
 import { LocalStore, setLiveFavorites } from '../store/local';
 import storage from '@/store/storage';
 
 const STORE_KEY = 'liveFavorites';
 
 export const useLiveFavoriteStorage = () => {
-	const [liveFavorites, setLiveFavoritesState] = useState([]);
+  const liveFavorites = LocalStore.useState((s) => s.liveFavorites);
+  const liveRadios = PlayerStore.useState((s) => s.liveRadios);
 
-	const loadLiveFavorites = async () => {
-		const storedFavorites = await storage.get(STORE_KEY);
-		if (storedFavorites) {
-		setLiveFavoritesState(storedFavorites);
-		setLiveFavorites(storedFavorites);
-		}
-	};
+  useEffect(() => {
+    const loadLiveFavorites = async () => {
+      try {
+        const storedLiveFavorites = await storage.get(STORE_KEY);
+        if (storedLiveFavorites) {
+          setLiveFavorites(storedLiveFavorites);
+        }
+      } catch (error) {
+        console.error("Error loading live favorites:", error);
+      }
+    };
+    loadLiveFavorites();
+  }, []);
 
 	const addLiveFavorite = async (currLive, liveIndex) => {
 		const newFavorite = {
@@ -22,26 +30,26 @@ export const useLiveFavoriteStorage = () => {
 			name: currLive.name,
 			liveUrl: currLive.liveUrl,
 			logo: currLive.logo,
-			createdAt: new Date().getTime()
+			createdAt: new Date().getTime(),
 		};
 
 		const updatedFavorites = [...liveFavorites, newFavorite];
-		setLiveFavoritesState(updatedFavorites);
 		setLiveFavorites(updatedFavorites);
-		await storage.set(STORE_KEY, updatedFavorites);
+		await storage.set(STORE_KEY, updatedFavorites).catch((error) => {
+      console.error("Error saving live favorite:", error);
+		});
 	};
 
 	const removeLiveFavorite = async (currLive) => {
 		let updated = liveFavorites.filter((item) => item.id !== currLive.id);
-		setLiveFavoritesState(updated);
 		setLiveFavorites(updated);
-		await storage.set(STORE_KEY, updated);
+		await storage.set(STORE_KEY, updated).catch((error) => {
+      console.error("Error removing live favorite:", error);
+		});
 	};
 
 	return {
-		liveFavorites,
-		loadLiveFavorites,
 		addLiveFavorite,
-		removeLiveFavorite
-	};
+		removeLiveFavorite,
+  };
 };

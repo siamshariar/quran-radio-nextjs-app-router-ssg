@@ -1,11 +1,13 @@
 import { Storage } from '@ionic/storage';
-import localforage from 'localforage';
+import { Drivers } from '@ionic/storage';
 
 const storage = new Storage({
   name: '__mydb',
-  driverOrder: [localforage.INDEXEDDB, localforage.WEBSQL, localforage.LOCALSTORAGE]
+  driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage, Drivers.WebSQL]
 });
 
-storage.create();
+storage.create().catch((error) => {
+  console.error("Error creating storage:", error);
+});
 
 export default storage;
