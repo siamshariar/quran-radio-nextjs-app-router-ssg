@@ -69,9 +69,11 @@ const Favorites = () => {
 	const handleRemoveReciterFavorite = async (reciterId) => {
 		await removeReciterFavorite(reciterId);
 
-		const favorites = JSON.parse(localStorage.getItem("reciterFavorites")) || [];
+		const favorites = LocalStore.getRawState().reciterFavorites || [];
 		const updatedFavorites = favorites.filter((id) => id !== reciterId);
-		localStorage.setItem("reciterFavorites", JSON.stringify(updatedFavorites));
+    LocalStore.update((s) => {
+      s.reciterFavorites = updatedFavorites;
+    });
   };
 
   const handleSearchChange = (event) => {
