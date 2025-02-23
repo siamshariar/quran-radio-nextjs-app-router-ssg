@@ -1,20 +1,9 @@
 import { useEffect } from 'react';
 import { PlayerStore } from '../store';
 import { LocalStore, setFavorites } from '../store/local';
-import { Storage } from '@ionic/storage';
-import { Drivers } from '@ionic/storage';
+import storage from '@/store/storage';
 
 const STORE_KEY = "favorites";
-
-let storage;
-
-const initStorage = async () => {
-  storage = new Storage({
-    name: '__mydb',
-    driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage]
-  });
-  await storage.create();
-};
 
 export const useFavoriteStorage = () => {
   const favorites = LocalStore.useState((s) => s.favorites);
@@ -24,8 +13,7 @@ export const useFavoriteStorage = () => {
 
   useEffect(() => {
     const fetchFavorites = async () => {
-      await initStorage();
-      const storedFavorites = await storage.get(STORE_KEY);
+      const storedFavorites = await storage.getItem(STORE_KEY);
       if (storedFavorites && typeof storedFavorites === 'string') {
         try {
           const parsedFavorites = JSON.parse(storedFavorites);
@@ -39,7 +27,6 @@ export const useFavoriteStorage = () => {
   }, []);
 
 	const addFavorite = async (reciterId, chapterNo, chapterIndex) => {
-    await initStorage();
 		const reciter = reciters.find((obj) => obj.id == reciterId);
 		// console.log(reciterId, chapterNo);
 
@@ -58,16 +45,15 @@ export const useFavoriteStorage = () => {
 
 		const updatedFavorites = [...favorites, newFavorite];
 		setFavorites(updatedFavorites);
-		await storage.set(STORE_KEY, JSON.stringify(updatedFavorites));
+		await storage.setItem(STORE_KEY, JSON.stringify(updatedFavorites));
 	};
 
 	const removeFavorite = async (reciterId, chapterNo) => {
-		await initStorage();
 		let updated = favorites.filter(
 			(item) => item.reciterId !== reciterId || item.chapterNo !== chapterNo
 		);
 		setFavorites(updated);
-		await storage.set(STORE_KEY, JSON.stringify(updated));
+		await storage.setItem(STORE_KEY, JSON.stringify(updated));
 	};
 
   return {
