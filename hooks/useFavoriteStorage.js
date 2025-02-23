@@ -1,9 +1,20 @@
 import { useEffect } from 'react';
 import { PlayerStore } from '../store';
 import { LocalStore, setFavorites } from '../store/local';
-import storage from '@/store/storage';
+import { Storage } from '@ionic/storage';
+import { Drivers } from '@ionic/storage';
 
-const STORE_KEY = 'favorites';
+const STORE_KEY = "favorites";
+
+let storage;
+
+const initStorage = async () => {
+  storage = new Storage({
+    name: '__mydb',
+    driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage]
+  });
+  await storage.create();
+};
 
 export const useFavoriteStorage = () => {
   const favorites = LocalStore.useState((s) => s.favorites);
@@ -12,20 +23,23 @@ export const useFavoriteStorage = () => {
   const chapterList = PlayerStore.useState((s) => s.chapterList);
 
   useEffect(() => {
-    const loadFavorites = async () => {
-      try {
-        const storedFavorites = await storage.get(STORE_KEY);
-        if (storedFavorites) {
-          setFavorites(storedFavorites);
-        }
+    const fetchFavorites = async () => {
+      await initStorage();
+      const storedFavorites = await storage.get(STORE_KEY);
+      if (storedFavorites && typeof storedFavorites === 'string') {
+        try {
+          const parsedFavorites = JSON.parse(storedFavorites);
+          setFavorites(parsedFavorites);
       } catch (error) {
-        console.error("Error loading favorites:", error);
+        console.error("Failed to parse stored favorites:", error);
+        }
       }
     };
-    loadFavorites();
+    fetchFavorites();
   }, []);
 
 	const addFavorite = async (reciterId, chapterNo, chapterIndex) => {
+    await initStorage();
 		const reciter = reciters.find((obj) => obj.id == reciterId);
 		// console.log(reciterId, chapterNo);
 
@@ -44,19 +58,16 @@ export const useFavoriteStorage = () => {
 
 		const updatedFavorites = [...favorites, newFavorite];
 		setFavorites(updatedFavorites);
-		await storage.set(STORE_KEY, updatedFavorites).catch((error) => {
-			console.error("Error saving favorite:", error);
-		});
+		await storage.set(STORE_KEY, JSON.stringify(updatedFavorites));
 	};
 
 	const removeFavorite = async (reciterId, chapterNo) => {
+		await initStorage();
 		let updated = favorites.filter(
 			(item) => item.reciterId !== reciterId || item.chapterNo !== chapterNo
 		);
 		setFavorites(updated);
-		await storage.set(STORE_KEY, updated).catch((error) => {
-      console.error("Error removing favorite:", error);
-		});
+		await storage.set(STORE_KEY, JSON.stringify(updated));
 	};
 
   return {

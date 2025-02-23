@@ -27,6 +27,7 @@
 		"eslint": "8.43.0",
 		"eslint-config-next": "13.4.6",
 		"ionicons": "^7.1.2",
+		"localforage": "^1.10.0",
 		"next": "13.4.6",
 		"next-compose-plugins": "^2.2.1",
 		"next-pwa": "5.3.1",

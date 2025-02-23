@@ -13,7 +13,6 @@ import { useFavoriteStorage } from '@/hooks/useFavoriteStorage';
 import { useLiveFavoriteStorage } from '@/hooks/useLiveFavoriteStorage';
 import { useReciterFavoriteStorage } from '@/hooks/useReciterFavoriteStorage';
 import ReciterCard from '../cards/Reciter';
-import storage from "@/store/storage";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -54,31 +53,6 @@ const Favorites = () => {
 	const { removeLiveFavorite } = useLiveFavoriteStorage();
 	const { reciterFavorites, removeReciterFavorite } = useReciterFavoriteStorage();
 
-  useEffect(() => {
-    const loadFavorites = async () => {
-			const storedFavorites = await storage.get("favorites");
-			const storedLiveFavorites = await storage.get("liveFavorites");
-			const storedReciterFavorites = await storage.get("reciterFavorites");
-
-			if (storedFavorites) {
-				LocalStore.update((s) => {
-					s.favorites = storedFavorites;
-				});
-			}
-			if (storedLiveFavorites) {
-				LocalStore.update((s) => {
-					s.liveFavorites = storedLiveFavorites;
-				});
-			}
-			if (storedReciterFavorites) {
-				LocalStore.update((s) => {
-					s.reciterFavorites = storedReciterFavorites;
-				});
-			}
-		};
-		loadFavorites();
-  }, []);
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -95,9 +69,9 @@ const Favorites = () => {
 	const handleRemoveReciterFavorite = async (reciterId) => {
 		await removeReciterFavorite(reciterId);
 
-		const favorites = await storage.get("reciterFavorites") || [];
-		const updatedFavorites = favorites.filter(id => id !== reciterId);
-		await storage.set("reciterFavorites", updatedFavorites);
+		const favorites = JSON.parse(localStorage.getItem("reciterFavorites")) || [];
+		const updatedFavorites = favorites.filter((id) => id !== reciterId);
+		localStorage.setItem("reciterFavorites", JSON.stringify(updatedFavorites));
   };
 
   const handleSearchChange = (event) => {

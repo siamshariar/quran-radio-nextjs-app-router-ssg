@@ -1,29 +1,43 @@
 import { useEffect } from 'react';
 import { PlayerStore } from '../store';
 import { LocalStore, setLiveFavorites } from '../store/local';
-import storage from '@/store/storage';
+import { Storage } from '@ionic/storage';
+import { Drivers } from '@ionic/storage';
 
-const STORE_KEY = 'liveFavorites';
+const STORE_KEY = "liveFavorites";
+
+let storage;
+
+const initStorage = async () => {
+  storage = new Storage({
+    name: '__mydb',
+    driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage]
+  });
+  await storage.create();
+};
 
 export const useLiveFavoriteStorage = () => {
   const liveFavorites = LocalStore.useState((s) => s.liveFavorites);
   const liveRadios = PlayerStore.useState((s) => s.liveRadios);
 
   useEffect(() => {
-    const loadLiveFavorites = async () => {
-      try {
-        const storedLiveFavorites = await storage.get(STORE_KEY);
-        if (storedLiveFavorites) {
-          setLiveFavorites(storedLiveFavorites);
+    const fetchFavorites = async () => {
+      await initStorage();
+      const storedFavorites = await storage.get(STORE_KEY);
+      if (storedFavorites && typeof storedFavorites === 'string') {
+        try {
+          const parsedFavorites = JSON.parse(storedFavorites);
+          setLiveFavorites(parsedFavorites);
+        } catch (error) {
+          console.error("Failed to parse stored favorites:", error);
         }
-      } catch (error) {
-        console.error("Error loading live favorites:", error);
       }
     };
-    loadLiveFavorites();
+    fetchFavorites();
   }, []);
 
 	const addLiveFavorite = async (currLive, liveIndex) => {
+		await initStorage();
 		const newFavorite = {
 			id: currLive.id,
 			liveIndex: liveIndex,
@@ -35,17 +49,14 @@ export const useLiveFavoriteStorage = () => {
 
 		const updatedFavorites = [...liveFavorites, newFavorite];
 		setLiveFavorites(updatedFavorites);
-		await storage.set(STORE_KEY, updatedFavorites).catch((error) => {
-      console.error("Error saving live favorite:", error);
-		});
+		await storage.set(STORE_KEY, JSON.stringify(updatedFavorites));
 	};
 
 	const removeLiveFavorite = async (currLive) => {
+		await initStorage();
 		let updated = liveFavorites.filter((item) => item.id !== currLive.id);
 		setLiveFavorites(updated);
-		await storage.set(STORE_KEY, updated).catch((error) => {
-      console.error("Error removing live favorite:", error);
-		});
+		await storage.set(STORE_KEY, JSON.stringify(updated));
 	};
 
 	return {
