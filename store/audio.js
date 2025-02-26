@@ -1,4 +1,5 @@
 import { Store } from "pullstate";
+import storage from "./storage";
 
 export const AudioStore = new Store({
 	currentTime: 0,
@@ -7,11 +8,11 @@ export const AudioStore = new Store({
 	isPlaying: false,
 });
 
-export const setCurrentTime = (currentTime) => {
+export const setCurrentTime = async (currentTime) => {
 	AudioStore.update((s) => {
 		s.currentTime = currentTime;
-		localStorage.setItem("audioPausedTime", currentTime);
 	});
+  await storage.setItem("audioPausedTime", currentTime);
 };
 
 export const setDur = (dur) => {
@@ -26,26 +27,28 @@ export const setIsProgress = (isProgress) => {
 	});
 };
 
-export const setIsPlaying = (isPlaying) => {
+export const setIsPlaying = async (isPlaying) => {
   AudioStore.update((s) => {
     s.isPlaying = isPlaying;
-    localStorage.setItem("isPlaying", isPlaying);
   });
+  await storage.setItem("isPlaying", isPlaying);
 };
 
-export const loadPausedTime = () => {
-  const pausedTime = localStorage.getItem("audioPausedTime");
+export const loadPausedTime = async () => {
+  const pausedTime = await storage.getItem("audioPausedTime");
   return pausedTime ? parseFloat(pausedTime) : 0;
 };
 
-export const loadPlayingState = () => {
-  const isPlaying = localStorage.getItem("isPlaying");
+export const loadPlayingState = async () => {
+  const isPlaying = await storage.getItem("isPlaying");
   return isPlaying === "true";
 };
 
-export const initializeAudioStore = () => {
+export const initializeAudioStore = async () => {
+  const currentTime = await loadPausedTime();
+  const isPlaying = await loadPlayingState();
   AudioStore.update((s) => {
-    s.currentTime = loadPausedTime();
-    s.isPlaying = loadPlayingState();
+    s.currentTime = currentTime;
+    s.isPlaying = isPlaying;
   });
 };
