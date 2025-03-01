@@ -23,7 +23,6 @@ import { IonIcon } from "@ionic/react";
 import { liveRadios } from "@/data/liveRadios";
 import { LocalStore } from "@/store/local";
 import { repeat, repeatSharp } from "ionicons/icons";
-import { useEffect } from "react";
 
 const ControlButtons = () => {
 	const playing = PlayerStore.useState((s) => s.playing);
@@ -86,36 +85,6 @@ const ControlButtons = () => {
 	const handleShuffle = () => {
 		setShuffle(!shuffle);
 	};
-
-	useEffect(() => {
-		const audioElement = document.querySelector("audio");
-		const handlePlay = () => setPlaying(true);
-		const handlePause = () => setPlaying(false);
-
-		if (audioElement) {
-			audioElement.addEventListener("play", handlePlay);
-			audioElement.addEventListener("pause", handlePause);
-		}
-
-		document.addEventListener("visibilitychange", () => {
-			if (document.visibilityState === "visible") {
-				if (audioElement) {
-					if (audioElement.paused) {
-						setPlaying(false);
-					} else {
-						setPlaying(true);
-					}
-				}
-			}
-		});
-
-		return () => {
-			if (audioElement) {
-				audioElement.removeEventListener("play", handlePlay);
-				audioElement.removeEventListener("pause", handlePause);
-			}
-		};
-	}, []);
 
 	return (
 		<div className={styles.wrapper}>

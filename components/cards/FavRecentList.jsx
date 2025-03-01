@@ -22,10 +22,12 @@ import {
     setIsPlaying,
     initializeAudioStore,
     loadPausedTime,
+    setDuration,
 } from "@/store/audio";
 import { useEffect, useState } from "react";
+import storage from "@/store/storage"; // import storage
 
-const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemoveIcon }) => {
+const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemoveIcon, isRecent }) => {
     const playing = PlayerStore.useState((s) => s.playing);
     const reciterId = PlayerStore.useState((s) => s.reciterId);
     const chapterIndex = PlayerStore.useState((s) => s.chapterIndex);
@@ -34,6 +36,8 @@ const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemov
     const [showPausedAt, setShowPausedAt] = useState(true);
 
     const currentTime = AudioStore.useState((s) => s.currentTime);
+    const dur = AudioStore.useState((s) => s.dur);
+    const [trackDuration, setTrackDuration] = useState(0);
 
     useEffect(() => {
         initializeAudioStore();
@@ -42,7 +46,30 @@ const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemov
             const pausedTime = loadPausedTime();
             setCurrentTime(pausedTime);
         }
-    }, []);
+
+        const fetchTrackDurations = async () => {
+            const savedDurations = JSON.parse(await storage.getItem("trackDurations") || "{}");
+            const trackKey = `${item.reciterId}-${item.chapterNo}`;
+            if (savedDurations[trackKey]) {
+                setTrackDuration(savedDurations[trackKey]);
+            }
+        };
+        fetchTrackDurations();
+    }, [item.reciterId, item.chapterNo]);
+
+    useEffect(() => {
+        if (reciterId === item.reciterId && chapterIndex === item.chapterIndex && dur > 0) {
+            setTrackDuration(dur);
+            saveTrackDuration(item.reciterId, item.chapterNo, dur);
+        }
+    }, [dur, reciterId, chapterIndex, item.reciterId, item.chapterIndex, item.chapterNo]);
+
+    const saveTrackDuration = async (reciterId, chapterNo, duration) => {
+        const trackKey = `${reciterId}-${chapterNo}`;
+        const savedDurations = JSON.parse(await storage.getItem("trackDurations") || "{}");
+        savedDurations[trackKey] = duration;
+        await storage.setItem("trackDurations", JSON.stringify(savedDurations));
+    };
 
     const setPlaybackMode = async (mode) => {
         await setMode(mode);
@@ -60,10 +87,24 @@ const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemov
         setSrc(item.chapterList, item.reciterId, item.chapterIndex);
         setPlaying(true);
 
-        const lastPlayedTime = localStorage.getItem("audioPausedTime");
-        if (lastPlayedTime) {
-            setCurrentTime(parseFloat(lastPlayedTime));
-        }
+        const trackKey = `${item.reciterId}-${item.chapterNo}`;
+        const fetchPausedTimes = async () => {
+            const savedPausedTimes = JSON.parse(await storage.getItem("trackPausedTimes") || "{}");
+            if (savedPausedTimes[trackKey] && isRecent) {
+                setCurrentTime(savedPausedTimes[trackKey]);
+            } else {
+                setCurrentTime(0);
+            }
+        };
+        fetchPausedTimes();
+
+        const fetchTrackDurations = async () => {
+            const savedDurations = JSON.parse(await storage.getItem("trackDurations") || "{}");
+            if (savedDurations[trackKey]) {
+                setDuration(savedDurations[trackKey]);
+            }
+        };
+        fetchTrackDurations();
 
         setShowPausedAt(false);
     };
@@ -77,10 +118,16 @@ const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemov
         setShowPausedAt(false);
     };
 
-    const pause = () => {
+    const pause = async () => {
         setPlaying(false);
         setIsPlaying(false);
-        localStorage.setItem("audioPausedTime", currentTime);
+
+        const trackKey = `${item.reciterId}-${item.chapterNo}`;
+        const savedPausedTimes = JSON.parse(await storage.getItem("trackPausedTimes") || "{}");
+        savedPausedTimes[trackKey] = currentTime;
+        await storage.setItem("trackPausedTimes", JSON.stringify(savedPausedTimes));
+
+        await storage.setItem("audioPausedTime", currentTime);
         updatePausedAtTime(item.reciterId, item.chapterNo, currentTime);
         setShowPausedAt(true);
     };
@@ -105,6 +152,7 @@ const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemov
     };
 
     const formatDur = (s) => {
+        if (!s || isNaN(s)) return "00:00";
         const h = ~~(s / 3600);
         const m = ~~((s % 3600) / 60);
         const rs = ~~(s % 60);
@@ -140,7 +188,7 @@ const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemov
                     <div className={styles.date}>{formatDate(item.createdAt)}</div>
                     {item.pausedAt && showPausedAt && (
                         <div className={styles.pausedAt}>
-                            Paused at: {formatDur(item.pausedAt)}
+                            Duration: {formatDur(item.pausedAt)} / {formatDur(trackDuration)}
                         </div>
                     )}
                 </Link>

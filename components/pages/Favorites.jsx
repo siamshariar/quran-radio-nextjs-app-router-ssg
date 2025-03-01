@@ -112,7 +112,7 @@ const Favorites = () => {
             value={value}
             onChange={handleChange}
             aria-label="basic tabs">
-            <Tab label="Chapters" {...a11yProps(0)} />
+            <Tab label="Recitations" {...a11yProps(0)} />
             <Tab label="Live Radios" {...a11yProps(1)} />
             <Tab label="Reciters" {...a11yProps(2)} />
           </Tabs>

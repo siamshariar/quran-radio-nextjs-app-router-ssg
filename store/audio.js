@@ -52,3 +52,10 @@ export const initializeAudioStore = async () => {
     s.isPlaying = isPlaying;
   });
 };
+
+export const setDuration = (duration) => {
+  AudioStore.update((s) => ({
+    ...s,
+    dur: duration,
+  }))
+};
