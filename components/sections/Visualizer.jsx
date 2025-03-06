@@ -3,6 +3,7 @@ import styles from "./Visualizer.module.css";
 import { LocalStore } from "@/store/local";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
+import storage from "@/store/storage"; // import storage
 
 const Visualizer = () => {
 	const currentTime = AudioStore.useState((s) => s.currentTime);
@@ -27,6 +28,7 @@ const Visualizer = () => {
     useEffect(() => {
         if (mode === "normal" && dur) {
             localStorage.setItem("audioPausedTime", currentTime);
+            storage.setItem("audioPausedTime", currentTime);
         }
     }, [currentTime, mode, dur]);
 
@@ -44,6 +46,7 @@ const Visualizer = () => {
 		let compute = (progress * dur) / 100;
 		setCurrentTime(compute);
 		localStorage.setItem("audioPausedTime", compute);
+        storage.setItem("audioPausedTime", compute);
 		setTimeout(() => {
 			setIsProgress(true);
 		}, 1);

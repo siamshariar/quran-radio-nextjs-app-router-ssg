@@ -130,6 +130,9 @@ const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemov
         await storage.setItem("audioPausedTime", currentTime);
         updatePausedAtTime(item.reciterId, item.chapterNo, currentTime);
         setShowPausedAt(true);
+        
+        localStorage.setItem("audioPausedTime", currentTime);
+        await storage.setItem("audioPausedTime", currentTime);
     };
 
     const updatePausedAtTime = (reciterId, chapterNo, time) => {

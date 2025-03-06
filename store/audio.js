@@ -51,6 +51,14 @@ export const initializeAudioStore = async () => {
     s.currentTime = currentTime;
     s.isPlaying = isPlaying;
   });
+
+  // Retrieve the saved audio pause duration from localStorage
+  const savedPausedTime = localStorage.getItem("audioPausedTime");
+  if (savedPausedTime) {
+    AudioStore.update((s) => {
+      s.currentTime = parseFloat(savedPausedTime);
+    });
+  }
 };
 
 export const setDuration = (duration) => {
