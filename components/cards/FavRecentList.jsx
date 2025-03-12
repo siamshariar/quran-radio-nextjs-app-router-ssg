@@ -26,6 +26,7 @@ import {
 } from "@/store/audio";
 import { useEffect, useState } from "react";
 import storage from "@/store/storage"; // import storage
+import { useTrackStorage } from "@/hooks/useTrackStorage"
 
 const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemoveIcon, isRecent }) => {
     const playing = PlayerStore.useState((s) => s.playing);
@@ -39,6 +40,8 @@ const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemov
     const dur = AudioStore.useState((s) => s.dur);
     const [trackDuration, setTrackDuration] = useState(0);
 
+    const { saveTrackPausedTime, getTrackPausedTime, saveTrackDuration, getTrackDuration } = useTrackStorage()
+
     useEffect(() => {
         initializeAudioStore();
         if (AudioStore.getRawState().isPlaying) {
@@ -47,14 +50,20 @@ const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemov
             setCurrentTime(pausedTime);
         }
 
+      const trackDuration = getTrackDuration(item.reciterId, item.chapterNo)
+      if (trackDuration) {
+        setTrackDuration(trackDuration)
+      } else {
         const fetchTrackDurations = async () => {
-            const savedDurations = JSON.parse(await storage.getItem("trackDurations") || "{}");
+            const savedDurations = JSON.parse((await storage.getItem("trackDurations")) || "{}");
             const trackKey = `${item.reciterId}-${item.chapterNo}`;
             if (savedDurations[trackKey]) {
                 setTrackDuration(savedDurations[trackKey]);
-            }
-        };
+                saveTrackDuration(item.reciterId, item.chapterNo, savedDurations[trackKey])
+          }
+        }
         fetchTrackDurations();
+      }
     }, [item.reciterId, item.chapterNo]);
 
     useEffect(() => {
@@ -63,13 +72,6 @@ const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemov
             saveTrackDuration(item.reciterId, item.chapterNo, dur);
         }
     }, [dur, reciterId, chapterIndex, item.reciterId, item.chapterIndex, item.chapterNo]);
-
-    const saveTrackDuration = async (reciterId, chapterNo, duration) => {
-        const trackKey = `${reciterId}-${chapterNo}`;
-        const savedDurations = JSON.parse(await storage.getItem("trackDurations") || "{}");
-        savedDurations[trackKey] = duration;
-        await storage.setItem("trackDurations", JSON.stringify(savedDurations));
-    };
 
     const setPlaybackMode = async (mode) => {
         await setMode(mode);
@@ -87,25 +89,17 @@ const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemov
         setSrc(item.chapterList, item.reciterId, item.chapterIndex);
         setPlaying(true);
 
-        const trackKey = `${item.reciterId}-${item.chapterNo}`;
-        const fetchPausedTimes = async () => {
-            const savedPausedTimes = JSON.parse(await storage.getItem("trackPausedTimes") || "{}");
-            if (savedPausedTimes[trackKey] && isRecent) {
-                setCurrentTime(savedPausedTimes[trackKey]);
+        const pausedTime = getTrackPausedTime(item.reciterId, item.chapterNo);
+            if (pausedTime && isRecent) {
+                setCurrentTime(pausedTime);
             } else {
                 setCurrentTime(0);
             }
-        };
-        fetchPausedTimes();
 
-        const fetchTrackDurations = async () => {
-            const savedDurations = JSON.parse(await storage.getItem("trackDurations") || "{}");
-            if (savedDurations[trackKey]) {
-                setDuration(savedDurations[trackKey]);
-            }
-        };
-        fetchTrackDurations();
-
+        const duration = getTrackDuration(item.reciterId, item.chapterNo)
+        if (duration) {
+          setDuration(duration)
+        }
         setShowPausedAt(false);
     };
 
@@ -122,10 +116,7 @@ const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemov
         setPlaying(false);
         setIsPlaying(false);
 
-        const trackKey = `${item.reciterId}-${item.chapterNo}`;
-        const savedPausedTimes = JSON.parse(await storage.getItem("trackPausedTimes") || "{}");
-        savedPausedTimes[trackKey] = currentTime;
-        await storage.setItem("trackPausedTimes", JSON.stringify(savedPausedTimes));
+        saveTrackPausedTime(item.reciterId, item.chapterNo, currentTime)
 
         await storage.setItem("audioPausedTime", currentTime);
         updatePausedAtTime(item.reciterId, item.chapterNo, currentTime);
@@ -189,9 +180,10 @@ const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemov
                     <div className={styles.name}>{item.reciterName}</div>
                     <div className={styles.meaning}>- {item.chapterName}</div>
                     <div className={styles.date}>{formatDate(item.createdAt)}</div>
-                    {item.pausedAt && showPausedAt && (
+                    {(item.pausedAt || getTrackPausedTime(item.reciterId, item.chapterNo)) && showPausedAt && (
                         <div className={styles.pausedAt}>
-                            Duration: {formatDur(item.pausedAt)} / {formatDur(trackDuration)}
+                            Duration: {formatDur(item.pausedAt || getTrackPausedTime(item.reciterId, item.chapterNo))} /{" "}
+                            {formatDur(trackDuration)}
                         </div>
                     )}
                 </Link>

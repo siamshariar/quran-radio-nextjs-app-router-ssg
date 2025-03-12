@@ -28,8 +28,26 @@ const removeItem = async (key) => {
   await storage.remove(key);
 };
 
+const clear = async () => {
+  await initStorage();
+  await storage.clear();
+};
+
+const keys = async () => {
+  await initStorage();
+  return await storage.keys();
+};
+
+const length = async () => {
+  await initStorage();
+  return await storage.length();
+};
+
 export default {
   setItem,
   getItem,
-  removeItem
+  removeItem,
+  clear,
+  keys,
+  length
 };

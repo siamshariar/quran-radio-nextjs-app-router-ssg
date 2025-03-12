@@ -4,14 +4,20 @@ import { LocalStore } from "@/store/local";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
 import storage from "@/store/storage"; // import storage
+import { useTrackStorage } from "@/hooks/useTrackStorage"
+import { PlayerStore } from "@/store"
 
 const Visualizer = () => {
 	const currentTime = AudioStore.useState((s) => s.currentTime);
 	const mode = LocalStore.useState((s) => s.settings.mode);
 	const dur = AudioStore.useState((s) => s.dur);
 	const isPlaying = AudioStore.useState((s) => s.isPlaying);
+  const reciterId = PlayerStore.useState((s) => s.reciterId);
+  const chapterIndex = PlayerStore.useState((s) => s.chapterIndex);
+  const chapterList = PlayerStore.useState((s) => s.chapterList);
 
 	const [progressWidth, setProgressWidth] = useState(100);
+  const { saveTrackPausedTime } = useTrackStorage()
 
     useEffect(() => {
         initializeAudioStore();
@@ -29,8 +35,13 @@ const Visualizer = () => {
         if (mode === "normal" && dur) {
             localStorage.setItem("audioPausedTime", currentTime);
             storage.setItem("audioPausedTime", currentTime);
+
+        if (chapterList && chapterList.length > 0) {
+          const chapterNo = chapterList[chapterIndex]
+          saveTrackPausedTime(reciterId, chapterNo, currentTime)
         }
-    }, [currentTime, mode, dur]);
+    }
+  }, [currentTime, mode, dur, reciterId, chapterIndex, chapterList])
 
 	function formatDur(s) {
 		const h = ~~(s / 3600);
@@ -47,6 +58,12 @@ const Visualizer = () => {
 		setCurrentTime(compute);
 		localStorage.setItem("audioPausedTime", compute);
         storage.setItem("audioPausedTime", compute);
+
+    if (chapterList && chapterList.length > 0) {
+      const chapterNo = chapterList[chapterIndex]
+      saveTrackPausedTime(reciterId, chapterNo, compute)
+    }
+
 		setTimeout(() => {
 			setIsProgress(true);
 		}, 1);
