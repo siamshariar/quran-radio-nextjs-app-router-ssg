@@ -20,6 +20,7 @@ import {
 	share,
 	shareOutline,
 	donate,
+	installApp,
 } from "@/icons";
 import { IonIcon } from "@ionic/react";
 import classNames from "classnames";
@@ -122,6 +123,19 @@ export default function SideNav(props) {
 							</li>
 							{/*TODO: Fix color*/}
 							<hr />
+							<li onClick={(e) => props.navControl(false)}>
+								<a
+									href="https://www.deeniinfotech.com/p/quran-radio#apps"
+									target="_blank"
+									className={styles.m_menu_item}>
+									<IonIcon
+										icon={installApp}
+										slot="start"
+										class={styles.sidenav_icon}
+									/>
+									Mobile App
+								</a>
+							</li>
 							<li onClick={(e) => props.handleShare()}>
 								<div className={styles.m_menu_item}>
 									<IonIcon
