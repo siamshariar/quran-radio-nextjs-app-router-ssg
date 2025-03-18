@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Drawer } from "@mui/material";
+import { useEffect, useState } from "react";
+import { IonLabel } from "@ionic/react";
 import styles from "./Header.module.css";
 import {
 	peopleOutline,
@@ -25,6 +27,40 @@ import {
 import { IonIcon } from "@ionic/react";
 import classNames from "classnames";
 // import { PlayerStore } from "@/store";
+
+const pages = [
+    {
+      title: "Quran.tube",
+      icon: "/img/icons/quran-tube-icon.svg",
+      iconOutline: "/img/icons/quran-tube-icon.svg",
+      url: " https://www.deeniinfotech.com/p/quran-tube#apps",
+      linkType: "external",
+    },
+];
+
+const MenuList = ({ pages, openModal }) => {
+  // const location = useLocation();
+  const [path, setPath] = useState("/");
+  
+  useEffect(() => {
+    setPath(location.pathname);
+  }, [location]);
+  
+  return (
+    <div className={styles.list}>
+    <a href={pages[0].url} target="_blank" rel="noreferrer">
+      <div className={classNames(styles.item)}>
+        <IonIcon
+          icon={pages[0].iconOutline}
+          slot="start"
+          className={styles.icon}
+        />
+        <IonLabel className={styles.label}>{pages[0].title}</IonLabel>
+        </div>
+        </a>
+    </div>
+  );
+};
 
 export default function SideNav(props) {
 	// const reciterId = PlayerStore.useState((s) => s.reciterId);
@@ -170,6 +206,11 @@ export default function SideNav(props) {
 								</a>
 							</li>
 						</ul>
+            <hr />
+            <div className={styles.appstitle}>More Apps</div>
+              <div className={styles.moremenu}>
+                <MenuList pages={pages} />
+              </div>
 					</div>
 					<div className={classNames(styles.footer, "p-4 text-base")}>
 						<span>Powered by - </span>
