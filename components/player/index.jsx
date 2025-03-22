@@ -12,6 +12,7 @@ import AudioTag from "./Audio";
 import HomeContent from "@/components/ui/HomeContent";
 import styles from "./index.module.css";
 import Dialog from "./Dialog";
+import QuranTubeModal from "./QuranTubeModal";
 
 const Player = () => {
 	const [windowHeight, setWindowHeight] = useState(0);
@@ -128,11 +129,22 @@ const Player = () => {
 	}, [isPlayerMini]);
 
 	const [dialogOpen, setDialogOpen] = useState(false);
+	const [quranTubeModalOpen, setquranTubeModalOpen] = useState(false);
 
 	useEffect(() => {
 		const firstDialog = localStorage.getItem("firstDialog");
 		if (firstDialog === null) {
 			setDialogOpen(true);
+		}
+	}, []);
+
+	useEffect(() => {
+		const quranTubeModalFlag = localStorage.getItem("quranTubeModal");
+		if (quranTubeModalFlag === null) {
+			const timer = setTimeout(() => {
+				setquranTubeModalOpen(true);
+			}, 30000);
+			return () => clearTimeout(timer);
 		}
 	}, []);
 
@@ -142,9 +154,15 @@ const Player = () => {
 		localStorage.setItem("firstDialog", "opened");
 	};
 
+	const handleQuranTubeModal = () => {
+		setquranTubeModalOpen(false);
+		localStorage.setItem("quranTubeModal", "shown");
+	};
+
 	return (
 		<>
 			{dialogOpen && <Dialog handleDialog={handleDialog} />}
+			{quranTubeModalOpen && <QuranTubeModal handleModal={handleQuranTubeModal} />}
 
 			<div className={styles.backdrop} ref={backdropRef}></div>
 
