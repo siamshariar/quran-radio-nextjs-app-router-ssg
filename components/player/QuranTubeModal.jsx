@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import GetAppIcon from '@mui/icons-material/GetApp';
 import styles from "./index.module.css";
 
 const QuranTubeModal = ({ handleModal }) => {
@@ -23,9 +25,13 @@ const QuranTubeModal = ({ handleModal }) => {
 					Install now and enjoy authentic islamic videos.
 				</div>
 				<div className={styles.modal_btn}>
-					<button onClick={handleModal}>Already installed</button>
+					<button onClick={handleModal}>
+						Already installed
+            <CheckCircleIcon />
+					</button>
 					<button onClick={() => window.open('https://play.google.com/store/apps/details?id=com.deeniinfotech.qurantube&pcampaignid=web_share', '_blank')}>
 						Install now
+            <GetAppIcon />
 					</button>
 				</div>
 			</div>
