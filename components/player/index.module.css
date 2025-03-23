@@ -269,3 +269,14 @@
 		padding: 0 15px;
 	}
 }
+@media screen and (max-width: 560px) {
+
+	.modal_btn {
+		flex-direction: column-reverse;
+		gap: 10px;
+	}
+
+	.modal_btn button {
+		width: 100%;
+	}
+}

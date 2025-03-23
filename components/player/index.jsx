@@ -138,20 +138,14 @@ const Player = () => {
 		}
 	}, []);
 
-	useEffect(() => {
-		const quranTubeModalFlag = localStorage.getItem("quranTubeModal");
-		if (quranTubeModalFlag === null) {
-			const timer = setTimeout(() => {
-				setquranTubeModalOpen(true);
-			}, 30000);
-			return () => clearTimeout(timer);
-		}
-	}, []);
-
 	const handleDialog = () => {
 		setDialogOpen(false);
 		setPlaying(true);
 		localStorage.setItem("firstDialog", "opened");
+
+		setTimeout(() => {
+			setquranTubeModalOpen(true);
+		}, 5000);
 	};
 
 	const handleQuranTubeModal = () => {
