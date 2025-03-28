@@ -1,6 +1,8 @@
+import { useEffect } from "react"
 import { PlayerStore } from "../store";
 import { LocalStore, setRecent } from "../store/local";
 import { checkIsInRecent } from "../lib/check";
+import storage from "@/store/storage";
 
 const STORE_KEY = "recent";
 const MAX_LENGTH = 100;
@@ -11,7 +13,36 @@ export const useRecentStorage = () => {
 	const reciters = PlayerStore.useState((s) => s.reciters);
 	const chapterList = PlayerStore.useState((s) => s.chapterList);
 
-	const addRecent = async (reciterId, chapterIndex) => {
+  useEffect(() => {
+    const fetchRecents = async () => {
+      const storedRecents = await storage.getItem(STORE_KEY)
+      if (storedRecents) {
+        try {
+          const parsedRecents = typeof storedRecents === "string" ? JSON.parse(storedRecents) : storedRecents
+
+          if (Array.isArray(parsedRecents)) {
+            setRecent(parsedRecents)
+          }
+        } catch (error) {
+          console.error("Failed to parse stored recents:", error)
+
+          const localRecents = localStorage.getItem(STORE_KEY)
+          if (localRecents) {
+            try {
+              const parsedLocalRecents = JSON.parse(localRecents)
+              setRecent(parsedLocalRecents)
+              storage.setItem(STORE_KEY, localRecents)
+            } catch (e) {
+              console.error("Failed to parse localStorage recents:", e)
+            }
+          }
+        }
+      }
+    }
+    fetchRecents()
+  }, [])
+
+	const addRecent = async (reciterId, chapterIndex, pausedAt, duration) => {
 		const chapterNo = chapterList[chapterIndex];
 		let newRecentArr = [...recent];
 
@@ -19,7 +50,7 @@ export const useRecentStorage = () => {
 		if (checkIsInRecent(recent, reciterId, chapterNo)) {
 			newRecentArr = recent.filter(
 				(item) =>
-					item.reciterId !== reciterId || item.chapterIndex !== chapterIndex
+					item.reciterId !== reciterId || item.chapterNo !== chapterNo
 			);
 		}
 
@@ -29,6 +60,11 @@ export const useRecentStorage = () => {
 		}
 
 		const reciter = reciters.find((obj) => obj.id === reciterId);
+
+    const currentPausedAt = pausedAt !== undefined ? pausedAt : (await storage.getItem("visualizerProgress")) || 0
+
+    const currentDuration =
+      duration !== undefined ? duration : (await storage.getItem(`trackDuration-${reciterId}-${chapterNo}`)) || 0
 
 		const newRecentItem = {
 			// id: "" + new Date().getTime(),
@@ -42,15 +78,44 @@ export const useRecentStorage = () => {
 			chapterName: chapters[chapterNo - 1].name,
 			createdAt: new Date().getTime(),
 			status: 1,
+			pausedAt: currentPausedAt,
+      duration: currentDuration,
 		};
 
 		// const updatedRecent = [newRecentItem, ...recent];
 		const updatedRecent = [newRecentItem, ...newRecentArr];
 		setRecent(updatedRecent);
-		localStorage.setItem(STORE_KEY, JSON.stringify(updatedRecent));
-	};
+
+    try {
+      await storage.setItem(STORE_KEY, JSON.stringify(updatedRecent))
+
+      localStorage.setItem(STORE_KEY, JSON.stringify(updatedRecent))
+    } catch (error) {
+      console.error("Failed to save recents to storage:", error)
+      localStorage.setItem(STORE_KEY, JSON.stringify(updatedRecent))
+    }
+  }
+
+  const getRecent = (reciterId, chapterNo) => {
+    return recent.find((item) => item.reciterId === reciterId && item.chapterNo === chapterNo)
+  }
+
+  const removeRecent = async (reciterId, chapterNo) => {
+    const updated = recent.filter((item) => item.reciterId !== reciterId || item.chapterNo !== chapterNo)
+    setRecent(updated)
+
+    try {
+      await storage.setItem(STORE_KEY, JSON.stringify(updated))
+      localStorage.setItem(STORE_KEY, JSON.stringify(updated))
+    } catch (error) {
+      console.error("Failed to save updated recents to storage:", error)
+      localStorage.setItem(STORE_KEY, JSON.stringify(updated))
+    }
+  }
 
 	return {
 		addRecent,
+		getRecent,
+		removeRecent,
 	};
 };

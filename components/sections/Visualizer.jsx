@@ -1,7 +1,11 @@
-import { AudioStore, setCurrentTime, setIsProgress } from "@/store/audio";
+import { AudioStore, setCurrentTime, setIsProgress, initializeAudioStore } from "@/store/audio"
 import styles from "./Visualizer.module.css";
 import { LocalStore } from "@/store/local";
 import classNames from "classnames";
+import { useEffect, useState } from "react";
+import storage from "@/store/storage" // import storage;
+import { useTrackStorage } from "@/hooks/useTrackStorage";
+import { PlayerStore } from "@/store";
 
 const Visualizer = () => {
 	const currentTime = AudioStore.useState((s) => s.currentTime);
@@ -12,6 +16,65 @@ const Visualizer = () => {
 	// 	// let h = s - (s %= 360);
 	// 	return (s - (s %= 60)) / 60 + (s < 10 ? ":0" : ":") + ~~s;
 	// };
+  const isPlaying = AudioStore.useState((s) => s.isPlaying)
+  const reciterId = PlayerStore.useState((s) => s.reciterId)
+  const chapterIndex = PlayerStore.useState((s) => s.chapterIndex)
+  const chapterList = PlayerStore.useState((s) => s.chapterList)
+  const trackInfoMap = AudioStore.useState((s) => s.trackInfoMap) || {}
+
+  const [progressWidth, setProgressWidth] = useState(100)
+  const { saveTrackPausedTime } = useTrackStorage()
+  const [isInitialized, setIsInitialized] = useState(false)
+
+  useEffect(() => {
+    const init = async () => {
+      await initializeAudioStore()
+      setIsInitialized(true)
+    }
+    init()
+  }, [])
+
+  useEffect(() => {
+    if (mode === "normal" && dur) {
+      setProgressWidth((currentTime * 100) / dur)
+    } else {
+      setProgressWidth(100)
+    }
+  }, [mode, currentTime, dur])
+
+  useEffect(() => {
+    if (mode === "normal" && dur && isInitialized) {
+      localStorage.setItem("audioPausedTime", currentTime.toString())
+      storage.setItem("audioPausedTime", currentTime)
+
+      storage.setItem("visualizerProgress", currentTime)
+
+      if (chapterList && chapterList.length > 0) {
+        const chapterNo = chapterList[chapterIndex]
+        saveTrackPausedTime(reciterId, chapterNo, currentTime)
+
+        updateRecentPausedTime(reciterId, chapterNo, currentTime)
+      }
+    }
+  }, [currentTime, mode, dur, reciterId, chapterIndex, chapterList, isInitialized])
+
+  const updateRecentPausedTime = (reciterId, chapterNo, time) => {
+    if (Math.floor(time) % 5 !== 0) return
+
+    const recents = LocalStore.getRawState().recent
+    const updatedRecents = recents.map((recent) => {
+      if (recent.reciterId === reciterId && recent.chapterNo === chapterNo) {
+        return { ...recent, pausedAt: time }
+      }
+      return recent
+    })
+
+    if (JSON.stringify(recents) !== JSON.stringify(updatedRecents)) {
+      LocalStore.update((s) => ({ ...s, recent: updatedRecents }))
+
+      storage.setItem("recent", JSON.stringify(updatedRecents))
+    }
+  }
 
 	function formatDur(s) {
 		// ~~ => math.floor()
@@ -28,12 +91,34 @@ const Visualizer = () => {
 
 	const handleProgress = (progress) => {
 		setIsProgress(false);
-		let compute = (progress * dur) / 100;
+		const compute = (progress * dur) / 100;
 		setCurrentTime(compute);
+
+    localStorage.setItem("audioPausedTime", compute.toString())
+    storage.setItem("audioPausedTime", compute)
+
+    storage.setItem("visualizerProgress", compute)
+
+    if (chapterList && chapterList.length > 0) {
+      const chapterNo = chapterList[chapterIndex]
+      saveTrackPausedTime(reciterId, chapterNo, compute)
+
+      updateRecentPausedTime(reciterId, chapterNo, compute)
+    }
+
 		setTimeout(() => {
 			setIsProgress(true);
 		}, 1);
 	};
+
+  let trackInfo = { currentTime: 0, duration: 0 }
+  if (chapterList && chapterList.length > 0) {
+    const chapterNo = chapterList[chapterIndex]
+    const trackKey = `${reciterId}-${chapterNo}`
+    if (trackInfoMap && trackKey in trackInfoMap) {
+      trackInfo = trackInfoMap[trackKey]
+    }
+  }
 
 	return (
 		<div className={styles.root}>
@@ -56,13 +141,7 @@ const Visualizer = () => {
 				<div
 					className={classNames(styles.label)}
 					style={{
-						width: `${
-							dur && mode === "normal"
-								? (currentTime * 100) / dur < 10
-									? (currentTime * 100) / dur + 1
-									: (currentTime * 100) / dur
-								: 100
-						}%`,
+						width: `${progressWidth}%`,
 					}}></div>
 				<input
 					disabled={mode === "live" ? true : false}

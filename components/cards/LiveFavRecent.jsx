@@ -7,9 +7,10 @@ import { playCircle, pauseCircle } from "@/icons";
 import styles from "./Card.module.css";
 import { IonIcon } from "@ionic/react";
 import { useSettingStorage } from "@/hooks/useSettingStorage";
+import { formatDate } from "../utils/formatDate";
 // import RadioIcon from "@mui/icons-material/Radio";
 
-const LiveFavRecent = ({ item, handleRemoveLiveFavorite, noRemoveIcon }) => {
+  const LiveFavRecent = ({ item, handleRemoveLiveFavorite, handleRemoveLiveRecent, noRemoveIcon }) => {
 	const playing = PlayerStore.useState((s) => s.playing);
 	const currLive = PlayerStore.useState((s) => s.currLive);
 	const mode = LocalStore.useState((s) => s.settings.mode);
@@ -33,6 +34,14 @@ const LiveFavRecent = ({ item, handleRemoveLiveFavorite, noRemoveIcon }) => {
 		setPlaying(false);
 	};
 
+	const handleRemove = () => {
+	  if (handleRemoveLiveFavorite) {
+		handleRemoveLiveFavorite(item);
+	  } else if (handleRemoveLiveRecent) {
+		handleRemoveLiveRecent(item);
+	  }
+	};
+  
 	return (
 		<div className={classNames(styles.card, styles.liveFavCard)}>
 			<div className={styles.wrapper}>
@@ -47,6 +56,7 @@ const LiveFavRecent = ({ item, handleRemoveLiveFavorite, noRemoveIcon }) => {
 				<div className={styles.middle}>
 					<div className={styles.name}>{item.name}</div>
 					<div className={styles.meaning}>{item.place}</div>
+					<div className={styles.timestamp}>{formatDate(item.createdAt)}</div>
 				</div>
 
 				<div className={classNames(styles.right, styles.btns)}>
@@ -55,7 +65,7 @@ const LiveFavRecent = ({ item, handleRemoveLiveFavorite, noRemoveIcon }) => {
 							icon={trashOutline}
 							slot="start"
 							class={styles.icon}
-							onClick={() => handleRemoveLiveFavorite(item)}
+							onClick={handleRemove}
 						/>
 					)}
 					{playing && mode === "live" && currLive.id === item.id ? (

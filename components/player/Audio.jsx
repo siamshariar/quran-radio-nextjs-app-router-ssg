@@ -16,7 +16,16 @@ import {
 } from "@/store";
 import { LocalStore } from "@/store/local";
 import { useRecentStorage } from "@/hooks/useRecentStorage";
-import { AudioStore, setCurrentTime, setDur } from "@/store/audio";
+import {
+	AudioStore,
+	setCurrentTime,
+	setDur,
+  setActiveTrack,
+  saveTrackPausedTime,
+  saveTrackDuration,
+  updateTrackInfo,
+  loadTrackInfo,
+} from "@/store/audio";
 import styles from "./index.module.css";
 import classNames from "classnames";
 import { useLiveRecentStorage } from "@/hooks/useLiveRecentStorage";
@@ -26,6 +35,8 @@ import { getLiveIndexById, getReciterById } from "@/lib/fetch";
 import { liveRadios } from "@/data/liveRadios";
 import { useSettingStorage } from "@/hooks/useSettingStorage";
 // import { useIonToast } from "@ionic/react";
+import { useTrackStorage } from "@/hooks/useTrackStorage";
+import storage from "@/store/storage" // import storage;
 
 const AudioTag = () => {
 	const audioRef = useRef(null);
@@ -47,6 +58,13 @@ const AudioTag = () => {
 	const isProgress = AudioStore.useState((s) => s.isProgress);
 	const [isPageLoaded, setIsPageLoaded] = useState(false);
 	const { setMode } = useSettingStorage();
+  const {
+    saveTrackPausedTime: saveTrackTime,
+    getTrackPausedTime,
+    saveTrackDuration: saveTrackDur,
+    getTrackDuration,
+    clearTrackPausedTime,
+  } = useTrackStorage()
 
 	const setPlaybackMode = async (mode) => {
 		await setMode(mode);
@@ -101,13 +119,48 @@ const AudioTag = () => {
 		}
 	};
 
-	const pauseAudio = () => {
+	const pauseAudio = async () => {
 		if (loading) return;
 		audioRef.current.pause();
-	};
+
+    if (mode === "normal" && chapterList && chapterList.length > 0) {
+      const chapterNo = chapterList[chapterIndex]
+      await saveTrackTime(reciterId, chapterNo, audioRef.current.currentTime)
+      await saveTrackPausedTime(reciterId, chapterNo, audioRef.current.currentTime)
+
+      await storage.setItem("visualizerProgress", audioRef.current.currentTime)
+
+      updateTrackInfo(reciterId, chapterNo, {
+        currentTime: audioRef.current.currentTime,
+      })
+
+      updateRecentPausedTime(reciterId, chapterNo, audioRef.current.currentTime)
+    }
+  }
+
+  const updateRecentPausedTime = (reciterId, chapterNo, time) => {
+    const recents = LocalStore.getRawState().recent
+    const updatedRecents = recents.map((recent) => {
+      if (recent.reciterId === reciterId && recent.chapterNo === chapterNo) {
+        return { ...recent, pausedAt: time }
+      }
+      return recent
+    })
+
+    if (JSON.stringify(recents) !== JSON.stringify(updatedRecents)) {
+      LocalStore.update((s) => ({ ...s, recent: updatedRecents }))
+
+      storage.setItem("recent", JSON.stringify(updatedRecents))
+    }
+  }
 
 	const handleEnd = () => {
 		if (mode === "normal") {
+      if (chapterList && chapterList.length > 0) {
+        const chapterNo = chapterList[chapterIndex]
+        clearTrackPausedTime(reciterId, chapterNo)
+      }
+
 			let index;
 			if (loop) {
 				setCurrentTime(0);
@@ -146,11 +199,14 @@ const AudioTag = () => {
 		setChapterListByList(chapterList);
 		setChapter(chapterList, chapterIndex);
 		setPlaybackMode("normal");
+		setActiveTrack(reciterId, chapId);
+
+    await loadTrackInfo(reciterId, chapId);
 	};
 
 	const setLiveMediaResources = async () => {
 		const liveId = router.query.liveRadio;
-		let liveIndex = await getLiveIndexById(liveId);
+		const liveIndex = await getLiveIndexById(liveId);
 		setLiveSrc(liveIndex);
 		setLiveRadio(liveIndex);
 		setPlaybackMode("live");
@@ -195,6 +251,13 @@ const AudioTag = () => {
 
 	useEffect(() => {
 		setSrc(chapterList, reciterId, chapterIndex);
+
+    if (mode === "normal" && chapterList && chapterList.length > 0) {
+      const chapterNo = chapterList[chapterIndex]
+      setActiveTrack(reciterId, chapterNo)
+
+      loadTrackInfo(reciterId, chapterNo)
+    }
 	}, [chapterList, reciterId, chapterIndex]);
 
 	useEffect(() => {
@@ -206,6 +269,27 @@ const AudioTag = () => {
 		if (playing) {
 			playAudio();
 			audioRef.current.playbackRate = playbackRate;
+
+      if (mode === "normal" && chapterList && chapterList.length > 0) {
+        const chapterNo = chapterList[chapterIndex]
+        const loadSavedPosition = async () => {
+          const pausedTime = await getTrackPausedTime(reciterId, chapterNo)
+          const visualizerProgress = await storage.getItem("visualizerProgress")
+          const recentItem = LocalStore.getRawState().recent.find(
+            (item) => item.reciterId === reciterId && item.chapterNo === chapterNo,
+          )
+          const recentPausedAt = recentItem?.pausedAt
+
+          if (pausedTime > 0 && Math.abs(audioRef.current.currentTime - pausedTime) > 1) {
+            audioRef.current.currentTime = pausedTime
+          } else if (visualizerProgress && Math.abs(audioRef.current.currentTime - visualizerProgress) > 1) {
+            audioRef.current.currentTime = visualizerProgress
+          } else if (recentPausedAt && Math.abs(audioRef.current.currentTime - recentPausedAt) > 1) {
+            audioRef.current.currentTime = recentPausedAt
+          }
+        }
+        loadSavedPosition()
+      }
 		} else {
 			pauseAudio();
 		}
@@ -245,7 +329,15 @@ const AudioTag = () => {
 	const { addLiveRecent } = useLiveRecentStorage();
 	useEffect(() => {
 		if (playing) {
-			addRecent(reciterId, chapterIndex);
+			const currentPosition = audioRef.current?.currentTime || 0
+			const currentDuration = audioRef.current?.duration || 0
+
+			addRecent(reciterId, chapterIndex, currentPosition, currentDuration)
+
+      if (mode === "normal" && chapterList && chapterList.length > 0) {
+        const chapterNo = chapterList[chapterIndex]
+        setActiveTrack(reciterId, chapterNo)
+      }
 		}
 	}, [playing, reciterId, chapterIndex]);
 
@@ -310,10 +402,38 @@ const AudioTag = () => {
 				controls={false}
 				src={mode == "normal" ? src : liveSrc}
 				onEnded={handleEnd}
-				onTimeUpdate={(e) => setCurrentTime(e.target.currentTime)}
+				onTimeUpdate={(e) => {
+          setCurrentTime(e.target.currentTime)
+
+          if (mode === "normal" && playing && chapterList && chapterList.length > 0) {
+            const chapterNo = chapterList[chapterIndex]
+            if (Math.floor(e.target.currentTime) % 5 === 0) {
+              saveTrackTime(reciterId, chapterNo, e.target.currentTime)
+              saveTrackPausedTime(reciterId, chapterNo, e.target.currentTime)
+
+              storage.setItem("visualizerProgress", e.target.currentTime)
+
+              updateTrackInfo(reciterId, chapterNo, {
+                currentTime: e.target.currentTime,
+              })
+
+              updateRecentPausedTime(reciterId, chapterNo, e.target.currentTime)
+            }
+          }
+        }}
 				onCanPlay={(e) => {
 					if (mode === "normal") {
 						setDur(e.target.duration);
+
+            if (chapterList && chapterList.length > 0) {
+              const chapterNo = chapterList[chapterIndex]
+              saveTrackDur(reciterId, chapterNo, e.target.duration)
+              saveTrackDuration(reciterId, chapterNo, e.target.duration)
+
+              updateTrackInfo(reciterId, chapterNo, {
+                duration: e.target.duration,
+              })
+            }
 					}
 				}}></audio>
 		</>
