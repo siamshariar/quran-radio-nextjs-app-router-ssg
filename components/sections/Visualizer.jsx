@@ -40,7 +40,7 @@ const Visualizer = () => {
     } else {
       setProgressWidth(100)
     }
-  }, [mode, currentTime, dur])
+  }, [mode, currentTime, dur, isInitialized])
 
   useEffect(() => {
     if (mode === "normal" && dur && isInitialized) {
