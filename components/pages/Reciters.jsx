@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 const Reciters = ({ reciters }) => {
 	// const reciters = PlayerStore.useState((s) => s.reciters);
 	const [filter, setFilter] = useState("");
+	const [isReady, setIsReady] = useState(false);
 
 	const filteredReciters = reciters.filter((item) =>
 		item.name.toLowerCase().includes(filter.toLowerCase())
@@ -17,8 +18,11 @@ const Reciters = ({ reciters }) => {
 
 	const virtuosoRef = useRef(null);
 	const router = useRouter();
-	const scrollPositions = useRef({});
-	const initialScrollRestored = useRef(false);
+	const initialScrollTop = useRef(
+    typeof sessionStorage !== "undefined"
+      ? Number.parseInt(sessionStorage.getItem("reciterScrollPosition") || "0", 10)
+      : 0,
+  )
 
 
   useEffect(() => {
@@ -26,48 +30,23 @@ const Reciters = ({ reciters }) => {
       if (virtuosoRef.current) {
         virtuosoRef.current.getState((state) => {
           const scrollTop = state.scrollTop
-          scrollPositions.current[router.asPath] = scrollTop
           sessionStorage.setItem("reciterScrollPosition", String(scrollTop))
         })
       }
     }
 
-    const handleRouteChangeComplete = (url) => {
-
-      if (!initialScrollRestored.current && url === router.asPath) {
-        const savedPosition = sessionStorage.getItem("reciterScrollPosition")
-
-        if (savedPosition && virtuosoRef.current) {
-          setTimeout(() => {
-            virtuosoRef.current.scrollTo({
-              top: Number.parseInt(savedPosition, 10),
-              behavior: "auto",
-            })
-          }, 100)
-          initialScrollRestored.current = true
-        }
-      }
-    }
-
     router.events.on("routeChangeStart", handleRouteChangeStart)
-    router.events.on("routeChangeComplete", handleRouteChangeComplete)
-
-    const savedPosition = sessionStorage.getItem("reciterScrollPosition")
-    if (savedPosition && virtuosoRef.current && !initialScrollRestored.current) {
-      setTimeout(() => {
-        virtuosoRef.current.scrollTo({
-          top: Number.parseInt(savedPosition, 10),
-          behavior: "auto",
-        })
-        initialScrollRestored.current = true
-      }, 100)
-    }
+    setIsReady(true)
 
     return () => {
       router.events.off("routeChangeStart", handleRouteChangeStart)
-      router.events.off("routeChangeComplete", handleRouteChangeComplete)
     }
   }, [router])
+
+  const contentStyle = {
+    visibility: isReady ? "visible" : "hidden",
+    height: "calc(100vh - 120px)",
+  }
 
 	return (
 		<>
@@ -98,19 +77,27 @@ const Reciters = ({ reciters }) => {
 					/>
 				)}
 			</div> */}
-			<div className={styles.content}>
+			<div className={styles.content} style={contentStyle}>
 				{filteredReciters && (
           <Virtuoso
             ref={virtuosoRef}
             overscan={200}
             useWindowScroll
-            style={{ height: "calc(100vh - 120px)" }}
+            style={{ height: "100%" }}
             totalCount={filteredReciters.length}
             itemContent={(index) => <ReciterCard key={filteredReciters[index].id} reciter={filteredReciters[index]} />}
             components={{
               Footer: () => <div style={{ height: "20px" }}></div>,
             }}
-            initialTopMostItemIndex={0}
+            initialScrollTop={initialScrollTop.current}
+            scrollerRef={(scrollerElement) => {
+              if (scrollerElement) {
+                scrollerElement.scrollTo({
+                  top: initialScrollTop.current,
+                  behavior: "auto",
+                })
+              }
+            }}
           />
         )}
 			</div>
