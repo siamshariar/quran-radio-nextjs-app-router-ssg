@@ -1,10 +1,10 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { search } from "@/icons";
 import ReciterCard from "@/components/cards/Reciter";
 import styles from "./Pages.module.css";
 import { IonIcon } from "@ionic/react";
 import { Virtuoso } from "react-virtuoso";
-import { useRouter } from "next/router";
+import { useScrollPosition } from "@/hooks/useScrollPosition";
 // import { Virtuoso } from "react-virtuoso";
 
 const Reciters = ({ reciters }) => {
@@ -16,32 +16,12 @@ const Reciters = ({ reciters }) => {
 		item.name.toLowerCase().includes(filter.toLowerCase())
 	);
 
-	const virtuosoRef = useRef(null);
-	const router = useRouter();
-	const initialScrollTop = useRef(
-    typeof sessionStorage !== "undefined"
-      ? Number.parseInt(sessionStorage.getItem("reciterScrollPosition") || "0", 10)
-      : 0,
-  )
+	const { scrollRef, initialScrollTop } = useScrollPosition();
 
 
   useEffect(() => {
-    const handleRouteChangeStart = (url) => {
-      if (virtuosoRef.current) {
-        virtuosoRef.current.getState((state) => {
-          const scrollTop = state.scrollTop
-          sessionStorage.setItem("reciterScrollPosition", String(scrollTop))
-        })
-      }
-    }
-
-    router.events.on("routeChangeStart", handleRouteChangeStart)
     setIsReady(true)
-
-    return () => {
-      router.events.off("routeChangeStart", handleRouteChangeStart)
-    }
-  }, [router])
+  }, [])
 
   const contentStyle = {
     visibility: isReady ? "visible" : "hidden",
@@ -80,7 +60,7 @@ const Reciters = ({ reciters }) => {
 			<div className={styles.content} style={contentStyle}>
 				{filteredReciters && (
           <Virtuoso
-            ref={virtuosoRef}
+            ref={scrollRef}
             overscan={200}
             useWindowScroll
             style={{ height: "100%" }}
@@ -89,15 +69,7 @@ const Reciters = ({ reciters }) => {
             components={{
               Footer: () => <div style={{ height: "20px" }}></div>,
             }}
-            initialScrollTop={initialScrollTop.current}
-            scrollerRef={(scrollerElement) => {
-              if (scrollerElement) {
-                scrollerElement.scrollTo({
-                  top: initialScrollTop.current,
-                  behavior: "auto",
-                })
-              }
-            }}
+            initialScrollTop={initialScrollTop}
           />
         )}
 			</div>
