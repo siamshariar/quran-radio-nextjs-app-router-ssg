@@ -1,3 +1,4 @@
+import { Virtuoso } from 'react-virtuoso';
 import ChapterCard from "@/components/cards/Chapter";
 import styles from "@/components/pages/Pages.module.css";
 
@@ -20,11 +21,20 @@ const ChapterListPage = ({ reciter, chapterList, index }) => {
 
 			<div className={styles.content}>
 				<div className="page_width">
+          <Virtuoso
+            style={{ height: '100%' }}
+            totalCount={chapterList.length}
+            useWindowScroll
+            initialTopMostItemIndex={index}
+            itemContent={(index) => (
 							<ChapterCard
-								key={chapterNo}
+								key={`${reciter?.id}-${chapterList[index]}`}
 								index={index}
 								reciter={reciter}
-								chapterNo={chapterNo}
+								chapterNo={chapterList[index]}
+							/>
+            )}
+            overscan={200}
 							/>
 				</div>
 			</div>

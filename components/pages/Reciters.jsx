@@ -58,14 +58,14 @@ const Reciters = ({ reciters }) => {
 				)}
 			</div> */}
 			<div className={styles.content} style={contentStyle}>
-				{filteredReciters && (
+        {isReady && filteredReciters && (
           <Virtuoso
             ref={scrollRef}
             overscan={200}
             useWindowScroll
             style={{ height: "100%" }}
             totalCount={filteredReciters.length}
-            itemContent={(index) => <ReciterCard key={filteredReciters[index].id} reciter={filteredReciters[index]} />}
+            itemContent={(index) => ( <ReciterCard key={filteredReciters[index].id} reciter={filteredReciters[index]} /> )}
             components={{
               Footer: () => <div style={{ height: "20px" }}></div>,
             }}
