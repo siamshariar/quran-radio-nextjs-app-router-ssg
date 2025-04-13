@@ -1,5 +1,3 @@
-"use client"
-
 import { useRef, useEffect } from "react"
 import { useRouter } from "next/router"
 import { getSessionNumber, setSessionItem, removeSessionItem } from "@/components/utils/session-storage"
@@ -21,10 +19,8 @@ export function useScrollPosition() {
 
           if (url.startsWith("/reciters/")) {
             setSessionItem("reciterScrollPosition", String(scrollTop))
-          } else if (!url.includes("/reciters")) {
-            removeSessionItem("reciterScrollPosition")
           } else {
-            setSessionItem("reciterScrollPosition", String(scrollTop))
+            removeSessionItem("reciterScrollPosition")
           }
         })
       }
@@ -43,7 +39,6 @@ export function useScrollPosition() {
             })
           }, 0)
         }
-      } else {
       }
     }
 
