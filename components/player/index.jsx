@@ -12,6 +12,10 @@ import AudioTag from "./Audio";
 import HomeContent from "@/components/ui/HomeContent";
 import styles from "./index.module.css";
 import Dialog from "./Dialog";
+import DeeniTvPromoModal from "../actions/DeeniTvPromoModal";
+
+const DEENI_TV_PROMO_STORAGE_KEY = "deenitv-web-promo-shown";
+const FIRST_DIALOG_STORAGE_KEY = "firstDialog";
 
 const Player = () => {
 	const [windowHeight, setWindowHeight] = useState(0);
@@ -38,6 +42,9 @@ const Player = () => {
 
 	const router = useRouter();
 	const [path, setPath] = useState("/");
+	const [dialogOpen, setDialogOpen] = useState(false);
+	const [promoOpen, setPromoOpen] = useState(false);
+	const promoTimerRef = useRef(null);
 
 	useEffect(() => {
 		setPath(router.pathname);
@@ -127,24 +134,53 @@ const Player = () => {
 			: (backdropRef.current.style.display = "block");
 	}, [isPlayerMini]);
 
-	const [dialogOpen, setDialogOpen] = useState(false);
+	const schedulePromoPopup = () => {
+		if (promoTimerRef.current) {
+			window.clearTimeout(promoTimerRef.current);
+		}
+
+		const delayInSeconds = Math.floor(Math.random() * 21) + 40;
+		promoTimerRef.current = window.setTimeout(() => {
+			localStorage.setItem(DEENI_TV_PROMO_STORAGE_KEY, "shown");
+			setPromoOpen(true);
+		}, delayInSeconds * 1000);
+	};
 
 	useEffect(() => {
-		const firstDialog = localStorage.getItem("firstDialog");
+		const firstDialog = localStorage.getItem(FIRST_DIALOG_STORAGE_KEY);
+		const promoShown = localStorage.getItem(DEENI_TV_PROMO_STORAGE_KEY);
+
 		if (firstDialog === null) {
 			setDialogOpen(true);
 		}
+
+		if (firstDialog !== null && promoShown !== "shown") {
+			schedulePromoPopup();
+		}
+
+		return () => {
+			if (promoTimerRef.current) {
+				window.clearTimeout(promoTimerRef.current);
+				promoTimerRef.current = null;
+			}
+		};
 	}, []);
 
 	const handleDialog = () => {
 		setDialogOpen(false);
 		setPlaying(true);
-		localStorage.setItem("firstDialog", "opened");
+		localStorage.setItem(FIRST_DIALOG_STORAGE_KEY, "opened");
+		schedulePromoPopup();
+	};
+
+	const handlePromoClose = () => {
+		setPromoOpen(false);
 	};
 
 	return (
 		<>
 			{dialogOpen && <Dialog handleDialog={handleDialog} />}
+			{promoOpen && <DeeniTvPromoModal onClose={handlePromoClose} />}
 
 			<div className={styles.backdrop} ref={backdropRef}></div>
 
