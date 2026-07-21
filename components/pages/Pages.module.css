@@ -131,6 +131,23 @@
 .favRecent .css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
 	text-transform: none;
 }
+
+.dateHeader {
+    font-size: 1.3rem;
+	margin-top: 10px;
+    margin-bottom: 12px;
+	font-family: "SFProDisplay";
+	letter-spacing: 0.5px;
+}
+
+.subDateHeader {
+    font-size: 1.3rem;
+	margin-top: 10px;
+    margin-bottom: 12px;
+	font-family: "SFProDisplay";
+	letter-spacing: 0.5px;
+}
+
 @media screen and (max-height: 560px) {
 	.header {
 		padding-top: 5px;

@@ -146,6 +146,20 @@
 	font-weight: 400;
 }
 
+.date {
+    font-size: 0.7rem;
+    color: #3d3d3f;
+    margin-top: 5px;
+	font-family: "SFProDisplay";
+}
+
+.timestamp {
+    font-size: 0.7rem;
+	color: #3d3d3f;
+	margin-top: 5px;
+	font-family: "SFProDisplay";
+}
+
 /* favorite card */
 .fav_card .middle {
 	width: calc(100% - 72px - 82px);

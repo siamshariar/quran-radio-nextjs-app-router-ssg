@@ -16,7 +16,7 @@ import {
 } from "@/store";
 import { LocalStore } from "@/store/local";
 import { useRecentStorage } from "@/hooks/useRecentStorage";
-import { AudioStore, setCurrentTime, setDur } from "@/store/audio";
+import { AudioStore, setCurrentTime, setDur, setActiveTrack } from "@/store/audio";
 import styles from "./index.module.css";
 import classNames from "classnames";
 import { useLiveRecentStorage } from "@/hooks/useLiveRecentStorage";
@@ -25,6 +25,7 @@ import { defaultLiveRadios } from "@/data/defaultLiveRadios";
 import { getLiveIndexById, getReciterById } from "@/lib/fetch";
 import { liveRadios } from "@/data/liveRadios";
 import { useSettingStorage } from "@/hooks/useSettingStorage";
+import { useTrackStorage } from "@/hooks/useTrackStorage"
 // import { useIonToast } from "@ionic/react";
 
 const AudioTag = () => {
@@ -47,6 +48,8 @@ const AudioTag = () => {
 	const isProgress = AudioStore.useState((s) => s.isProgress);
 	const [isPageLoaded, setIsPageLoaded] = useState(false);
 	const { setMode } = useSettingStorage();
+	const { saveTrackPausedTime, getTrackPausedTime, saveTrackDuration, getTrackDuration, clearTrackPausedTime } =
+    useTrackStorage()
 
 	const setPlaybackMode = async (mode) => {
 		await setMode(mode);
@@ -102,12 +105,22 @@ const AudioTag = () => {
 	};
 
 	const pauseAudio = () => {
-		if (loading) return;
-		audioRef.current.pause();
+		if (loading) return
+		audioRef.current.pause()
+
+    if (mode === "normal" && chapterList && chapterList.length > 0) {
+      const chapterNo = chapterList[chapterIndex]
+      saveTrackPausedTime(reciterId, chapterNo, audioRef.current.currentTime)
+    }
 	};
 
 	const handleEnd = () => {
 		if (mode === "normal") {
+      if (chapterList && chapterList.length > 0) {
+        const chapterNo = chapterList[chapterIndex]
+        clearTrackPausedTime(reciterId, chapterNo)
+      }
+
 			let index;
 			if (loop) {
 				setCurrentTime(0);
@@ -195,6 +208,11 @@ const AudioTag = () => {
 
 	useEffect(() => {
 		setSrc(chapterList, reciterId, chapterIndex);
+
+    if (mode === "normal" && chapterList && chapterList.length > 0) {
+      const chapterNo = chapterList[chapterIndex]
+      setActiveTrack(reciterId, chapterNo)
+    }
 	}, [chapterList, reciterId, chapterIndex]);
 
 	useEffect(() => {
@@ -206,6 +224,17 @@ const AudioTag = () => {
 		if (playing) {
 			playAudio();
 			audioRef.current.playbackRate = playbackRate;
+
+      if (mode === "normal" && chapterList && chapterList.length > 0) {
+        const chapterNo = chapterList[chapterIndex]
+        const loadSavedPosition = async () => {
+          const pausedTime = await getTrackPausedTime(reciterId, chapterNo)
+          if (pausedTime > 0 && Math.abs(audioRef.current.currentTime - pausedTime) > 1) {
+            audioRef.current.currentTime = pausedTime
+          }
+        }
+        loadSavedPosition()
+      }
 		} else {
 			pauseAudio();
 		}
@@ -246,6 +275,11 @@ const AudioTag = () => {
 	useEffect(() => {
 		if (playing) {
 			addRecent(reciterId, chapterIndex);
+
+      if (mode === "normal" && chapterList && chapterList.length > 0) {
+        const chapterNo = chapterList[chapterIndex]
+        setActiveTrack(reciterId, chapterNo)
+      }
 		}
 	}, [playing, reciterId, chapterIndex]);
 
@@ -310,12 +344,27 @@ const AudioTag = () => {
 				controls={false}
 				src={mode == "normal" ? src : liveSrc}
 				onEnded={handleEnd}
-				onTimeUpdate={(e) => setCurrentTime(e.target.currentTime)}
+        onTimeUpdate={(e) => {
+          setCurrentTime(e.target.currentTime)
+
+          if (mode === "normal" && playing && chapterList && chapterList.length > 0) {
+            const chapterNo = chapterList[chapterIndex]
+            if (Math.floor(e.target.currentTime) % 5 === 0) {
+              saveTrackPausedTime(reciterId, chapterNo, e.target.currentTime)
+            }
+          }
+        }}
 				onCanPlay={(e) => {
 					if (mode === "normal") {
 						setDur(e.target.duration);
+
+            if (chapterList && chapterList.length > 0) {
+              const chapterNo = chapterList[chapterIndex]
+              saveTrackDuration(reciterId, chapterNo, e.target.duration)
+            }
 					}
-				}}></audio>
+        }}
+				></audio>
 		</>
 	);
 };

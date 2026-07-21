@@ -1,11 +1,28 @@
-import { PlayerStore } from "../store";
-import { LocalStore, setFavorites, setLiveFavorites } from "../store/local";
+import { useEffect } from 'react';
+import { PlayerStore } from '../store';
+import { LocalStore, setLiveFavorites } from '../store/local';
+import storage from '@/store/storage';
 
 const STORE_KEY = "liveFavorites";
 
 export const useLiveFavoriteStorage = () => {
-	const liveFavorites = LocalStore.useState((s) => s.liveFavorites);
-	const liveRadios = PlayerStore.useState((s) => s.liveRadios);
+  const liveFavorites = LocalStore.useState((s) => s.liveFavorites);
+  const liveRadios = PlayerStore.useState((s) => s.liveRadios);
+
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      const storedFavorites = await storage.getItem(STORE_KEY);
+      if (storedFavorites && typeof storedFavorites === 'string') {
+        try {
+          const parsedFavorites = JSON.parse(storedFavorites);
+          setLiveFavorites(parsedFavorites);
+        } catch (error) {
+          console.error("Failed to parse stored favorites:", error);
+        }
+      }
+    };
+    fetchFavorites();
+  }, []);
 
 	const addLiveFavorite = async (currLive, liveIndex) => {
 		const newFavorite = {
@@ -19,17 +36,17 @@ export const useLiveFavoriteStorage = () => {
 
 		const updatedFavorites = [...liveFavorites, newFavorite];
 		setLiveFavorites(updatedFavorites);
-		localStorage.setItem(STORE_KEY, JSON.stringify(updatedFavorites));
+		await storage.setItem(STORE_KEY, JSON.stringify(updatedFavorites));
 	};
 
 	const removeLiveFavorite = async (currLive) => {
 		let updated = liveFavorites.filter((item) => item.id !== currLive.id);
 		setLiveFavorites(updated);
-		localStorage.setItem(STORE_KEY, JSON.stringify(updated));
+		await storage.setItem(STORE_KEY, JSON.stringify(updated));
 	};
 
 	return {
 		addLiveFavorite,
 		removeLiveFavorite,
-	};
+  };
 };

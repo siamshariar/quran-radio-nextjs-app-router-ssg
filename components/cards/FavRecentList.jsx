@@ -15,111 +15,217 @@ import { IonIcon } from "@ionic/react";
 import { useSettingStorage } from "@/hooks/useSettingStorage";
 import Image from "next/image";
 import Link from "next/link";
+import { formatDate } from "../utils/formatDate";
+import {
+    AudioStore,
+    setCurrentTime,
+    setIsPlaying,
+    initializeAudioStore,
+    loadPausedTime,
+    setDuration,
+} from "@/store/audio";
+import { useEffect, useState } from "react";
+import storage from "@/store/storage"; // import storage
+import { useTrackStorage } from "@/hooks/useTrackStorage"
 
-const FavRecentList = ({ item, handleRemoveFavorite, noRemoveIcon }) => {
-	const playing = PlayerStore.useState((s) => s.playing);
-	const reciterId = PlayerStore.useState((s) => s.reciterId);
-	const chapterIndex = PlayerStore.useState((s) => s.chapterIndex);
-	const mode = LocalStore.useState((s) => s.settings.mode);
-	const { setMode } = useSettingStorage();
+const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemoveIcon, isRecent }) => {
+    const playing = PlayerStore.useState((s) => s.playing);
+    const reciterId = PlayerStore.useState((s) => s.reciterId);
+    const chapterIndex = PlayerStore.useState((s) => s.chapterIndex);
+    const mode = LocalStore.useState((s) => s.settings.mode);
+    const { setMode } = useSettingStorage();
+    const [showPausedAt, setShowPausedAt] = useState(true);
 
-	const setPlaybackMode = async (mode) => {
-		await setMode(mode);
-		return;
-	};
+    const currentTime = AudioStore.useState((s) => s.currentTime);
+    const dur = AudioStore.useState((s) => s.dur);
+    const [trackDuration, setTrackDuration] = useState(0);
 
-	const handleReciterChange = () => {
-		if (mode === "live") {
-			setPlaybackMode("normal");
-		}
+    const { saveTrackPausedTime, getTrackPausedTime, saveTrackDuration, getTrackDuration } = useTrackStorage()
 
-		setReciter(item.reciterId);
-		setChapterListByList(item.chapterList);
-		setChapter(item.chapterList, item.chapterIndex);
-		setSrc(item.chapterList, item.reciterId, item.chapterIndex);
-		setPlaying(true);
-	};
+    useEffect(() => {
+        initializeAudioStore();
+        if (AudioStore.getRawState().isPlaying) {
+            setPlaying(true);
+            const pausedTime = loadPausedTime();
+            setCurrentTime(pausedTime);
+        }
 
-	const play = () => {
-		if (mode === "live") {
-			setPlaybackMode("normal");
-		}
-		setPlaying(true);
-	};
+      const trackDuration = getTrackDuration(item.reciterId, item.chapterNo)
+      if (trackDuration) {
+        setTrackDuration(trackDuration)
+      } else {
+        const fetchTrackDurations = async () => {
+            const savedDurations = JSON.parse((await storage.getItem("trackDurations")) || "{}");
+            const trackKey = `${item.reciterId}-${item.chapterNo}`;
+            if (savedDurations[trackKey]) {
+                setTrackDuration(savedDurations[trackKey]);
+                saveTrackDuration(item.reciterId, item.chapterNo, savedDurations[trackKey])
+          }
+        }
+        fetchTrackDurations();
+      }
+    }, [item.reciterId, item.chapterNo]);
 
-	const pause = () => {
-		setPlaying(false);
-	};
+    useEffect(() => {
+        if (reciterId === item.reciterId && chapterIndex === item.chapterIndex && dur > 0) {
+            setTrackDuration(dur);
+            saveTrackDuration(item.reciterId, item.chapterNo, dur);
+        }
+    }, [dur, reciterId, chapterIndex, item.reciterId, item.chapterIndex, item.chapterNo]);
 
-	return (
-		<div className={classNames(styles.card, styles.fav_card)}>
-			<div className={styles.wrapper}>
-				<div className={styles.left}>
-					<Link href={`/reciters/${item.reciterId}`}>
-						<div className={styles.image}>
-							<Image
-								src={
-									item.reciterImage
-										? item.reciterImage
-										: "/img/reciters/quran-reciting.jpg"
-								}
-								alt=""
-								width={100}
-								height={100}
-								loading="eager"
-								unoptimized
-							/>
-						</div>
-					</Link>
-				</div>
+    const setPlaybackMode = async (mode) => {
+        await setMode(mode);
+        return;
+    };
 
-				<Link href={`/reciters/${item.reciterId}`} className={styles.middle}>
+    const handleReciterChange = () => {
+        if (mode === "live") {
+            setPlaybackMode("normal");
+        }
+
+        setReciter(item.reciterId);
+        setChapterListByList(item.chapterList);
+        setChapter(item.chapterList, item.chapterIndex);
+        setSrc(item.chapterList, item.reciterId, item.chapterIndex);
+        setPlaying(true);
+
+        const pausedTime = getTrackPausedTime(item.reciterId, item.chapterNo);
+            if (pausedTime && isRecent) {
+                setCurrentTime(pausedTime);
+            } else {
+                setCurrentTime(0);
+            }
+
+        const duration = getTrackDuration(item.reciterId, item.chapterNo)
+        if (duration) {
+          setDuration(duration)
+        }
+        setShowPausedAt(false);
+    };
+
+    const play = () => {
+        if (mode === "live") {
+            setPlaybackMode("normal");
+        }
+        setPlaying(true);
+        setIsPlaying(true);
+        setShowPausedAt(false);
+    };
+
+    const pause = async () => {
+        setPlaying(false);
+        setIsPlaying(false);
+
+        saveTrackPausedTime(item.reciterId, item.chapterNo, currentTime)
+
+        await storage.setItem("audioPausedTime", currentTime);
+        updatePausedAtTime(item.reciterId, item.chapterNo, currentTime);
+        setShowPausedAt(true);
+        
+        localStorage.setItem("audioPausedTime", currentTime);
+        await storage.setItem("audioPausedTime", currentTime);
+    };
+
+    const updatePausedAtTime = (reciterId, chapterNo, time) => {
+        const recents = LocalStore.getRawState().recent;
+        const updatedRecents = recents.map((recent) => {
+            if (recent.reciterId === reciterId && recent.chapterNo === chapterNo) {
+                return { ...recent, pausedAt: time };
+            }
+            return recent;
+        });
+        LocalStore.update((s) => ({ ...s, recent: updatedRecents }));
+    };
+
+    const handleRemove = () => {
+        if (handleRemoveFavorite) {
+            handleRemoveFavorite(item.reciterId, item.chapterNo);
+        } else if (handleRemoveRecent) {
+            handleRemoveRecent(item.reciterId, item.chapterNo);
+        }
+    };
+
+    const formatDur = (s) => {
+        if (!s || isNaN(s)) return "00:00";
+        const h = ~~(s / 3600);
+        const m = ~~((s % 3600) / 60);
+        const rs = ~~(s % 60);
+        return `${h > 0 ? String(h).padStart(2, "0").concat(":") : ""}${String(m).padStart(2, "0")}:${String(rs).padStart(2, "0")}`;
+    };
+
+    return (
+        <div className={classNames(styles.card, styles.fav_card)}>
+            <div className={styles.wrapper}>
+                <div className={styles.left}>
+                    <Link href={`/reciters/${item.reciterId}`}>
+                        <div className={styles.image}>
+                            <Image
+                                src={
+                                    item.reciterImage
+                                        ? item.reciterImage
+                                        : "/img/reciters/quran-reciting.jpg"
+                                }
+                                alt=""
+                                width={100}
+                                height={100}
+                                loading="eager"
+                                unoptimized
+                            />
+                        </div>
+                    </Link>
+                </div>
+
+                <Link href={`/reciters/${item.reciterId}`} className={styles.middle}>
 					{/* <div className={styles.middle}> */}
-					<div className={styles.name}>{item.reciterName}</div>
-					<div className={styles.meaning}>- {item.chapterName}</div>
-					{/* </div> */}
-				</Link>
+                    <div className={styles.name}>{item.reciterName}</div>
+                    <div className={styles.meaning}>- {item.chapterName}</div>
+                    <div className={styles.date}>{formatDate(item.createdAt)}</div>
+                    {(item.pausedAt || getTrackPausedTime(item.reciterId, item.chapterNo)) && showPausedAt && (
+                        <div className={styles.pausedAt}>
+                            Duration: {formatDur(item.pausedAt || getTrackPausedTime(item.reciterId, item.chapterNo))} /{" "}
+                            {formatDur(trackDuration)}
+                        </div>
+                    )}
+                </Link>
 
-				<div className={classNames(styles.right, styles.btns)}>
-					{!noRemoveIcon && (
-						<IonIcon
-							icon={trashOutline}
-							slot="start"
-							class={styles.icon}
-							onClick={() =>
-								handleRemoveFavorite(item.reciterId, item.chapterNo)
-							}
-						/>
-					)}
-					{reciterId === item.reciterId &&
-					item.chapterIndex === chapterIndex ? (
-						playing && mode === "normal" ? (
-							<IonIcon
-								icon={playCircle}
-								slot="start"
-								className={styles.icon}
-								onClick={pause}
-							/>
-						) : (
-							<IonIcon
-								icon={pauseCircle}
-								slot="start"
-								className={styles.icon}
-								onClick={play}
-							/>
-						)
-					) : (
-						<IonIcon
-							icon={pauseCircle}
-							slot="start"
-							className={styles.icon}
-							onClick={() => handleReciterChange()}
-						/>
-					)}
-				</div>
-			</div>
-		</div>
-	);
+                <div className={classNames(styles.right, styles.btns)}>
+                    {!noRemoveIcon && (
+                        <IonIcon
+                            icon={trashOutline}
+                            slot="start"
+                            class={styles.icon}
+                            onClick={handleRemove}
+                        />
+                    )}
+                    {reciterId === item.reciterId &&
+                    item.chapterIndex === chapterIndex ? (
+                        playing && mode === "normal" ? (
+                            <IonIcon
+                                icon={playCircle}
+                                slot="start"
+                                className={styles.icon}
+                                onClick={pause}
+                            />
+                        ) : (
+                            <IonIcon
+                                icon={pauseCircle}
+                                slot="start"
+                                className={styles.icon}
+                                onClick={play}
+                            />
+                        )
+                    ) : (
+                        <IonIcon
+                            icon={pauseCircle}
+                            slot="start"
+                            className={styles.icon}
+                            onClick={() => handleReciterChange()}
+                        />
+                    )}
+                </div>
+            </div>
+        </div>
+    );
 };
 
 export default FavRecentList;
