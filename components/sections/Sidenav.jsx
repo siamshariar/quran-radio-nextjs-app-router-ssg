@@ -145,6 +145,7 @@ export default function SideNav(props) {
 									Chapters
 								</Link>
 							</li>
+							<hr/>
 							<li onClick={(e) => props.navControl(false)}>
 								<Link href="/favorites" className={styles.m_menu_item}>
 									<IonIcon
@@ -166,7 +167,7 @@ export default function SideNav(props) {
 								</Link>
 							</li>
 							{/*TODO: Fix color*/}
-							<hr />
+							<hr/>
 							<li onClick={(e) => props.navControl(false)}>
 								<a
 									href="https://www.deeniinfotech.com/p/quran-radio#apps"
@@ -214,7 +215,7 @@ export default function SideNav(props) {
 								</a>
 							</li>
 						</ul>
-            <hr />
+						<hr />
             <div className={styles.appstitle}>More Apps</div>
               <div className={styles.moremenu}>
                 <MenuList pages={pages} />
