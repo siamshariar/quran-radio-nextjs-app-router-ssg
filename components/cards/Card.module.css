@@ -146,15 +146,19 @@
 	font-weight: 400;
 }
 
+.recent {
+	margin: 10px 0px;
+}
+
 .date {
-    font-size: 0.7rem;
-    color: #3d3d3f;
-    margin-top: 5px;
+	font-size: 0.7rem;
+	color: #3d3d3f;
+	margin-top: 5px;
 	font-family: "SFProDisplay";
 }
 
 .timestamp {
-    font-size: 0.7rem;
+	font-size: 0.7rem;
 	color: #3d3d3f;
 	margin-top: 5px;
 	font-family: "SFProDisplay";

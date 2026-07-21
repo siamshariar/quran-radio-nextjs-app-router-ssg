@@ -1,67 +1,109 @@
-import { AudioStore, setCurrentTime, setIsProgress, initializeAudioStore } from "@/store/audio";
+import { AudioStore, setCurrentTime, setIsProgress, initializeAudioStore } from "@/store/audio"
 import styles from "./Visualizer.module.css";
 import { LocalStore } from "@/store/local";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
-import storage from "@/store/storage"; // import storage
-import { useTrackStorage } from "@/hooks/useTrackStorage"
-import { PlayerStore } from "@/store"
+import storage from "@/store/storage" // import storage;
+import { useTrackStorage } from "@/hooks/useTrackStorage";
+import { PlayerStore } from "@/store";
 
 const Visualizer = () => {
 	const currentTime = AudioStore.useState((s) => s.currentTime);
 	const mode = LocalStore.useState((s) => s.settings.mode);
 	const dur = AudioStore.useState((s) => s.dur);
-	const isPlaying = AudioStore.useState((s) => s.isPlaying);
-  const reciterId = PlayerStore.useState((s) => s.reciterId);
-  const chapterIndex = PlayerStore.useState((s) => s.chapterIndex);
-  const chapterList = PlayerStore.useState((s) => s.chapterList);
 
-	const [progressWidth, setProgressWidth] = useState(100);
+	// const formatDur = (s) => {
+	// 	// let h = s - (s %= 360);
+	// 	return (s - (s %= 60)) / 60 + (s < 10 ? ":0" : ":") + ~~s;
+	// };
+  const isPlaying = AudioStore.useState((s) => s.isPlaying)
+  const reciterId = PlayerStore.useState((s) => s.reciterId)
+  const chapterIndex = PlayerStore.useState((s) => s.chapterIndex)
+  const chapterList = PlayerStore.useState((s) => s.chapterList)
+  const trackInfoMap = AudioStore.useState((s) => s.trackInfoMap) || {}
+
+  const [progressWidth, setProgressWidth] = useState(100)
   const { saveTrackPausedTime } = useTrackStorage()
+  const [isInitialized, setIsInitialized] = useState(false)
 
-    useEffect(() => {
-        initializeAudioStore();
-    }, []);
-
-	useEffect(() => {
-		if (mode === "normal" && dur) {
-			setProgressWidth((currentTime * 100) / dur);
-		} else {
-			setProgressWidth(100);
-		}
-	}, [mode, currentTime, dur]);
-
-    useEffect(() => {
-        if (mode === "normal" && dur) {
-            localStorage.setItem("audioPausedTime", currentTime);
-            storage.setItem("audioPausedTime", currentTime);
-
-        if (chapterList && chapterList.length > 0) {
-          const chapterNo = chapterList[chapterIndex]
-          saveTrackPausedTime(reciterId, chapterNo, currentTime)
-        }
+  useEffect(() => {
+    const init = async () => {
+      await initializeAudioStore()
+      setIsInitialized(true)
     }
-  }, [currentTime, mode, dur, reciterId, chapterIndex, chapterList])
+    init()
+  }, [])
+
+  useEffect(() => {
+    if (mode === "normal" && dur) {
+      setProgressWidth((currentTime * 100) / dur)
+    } else {
+      setProgressWidth(100)
+    }
+  }, [mode, currentTime, dur, isInitialized])
+
+  useEffect(() => {
+    if (mode === "normal" && dur && isInitialized) {
+      localStorage.setItem("audioPausedTime", currentTime.toString())
+      storage.setItem("audioPausedTime", currentTime)
+
+      storage.setItem("visualizerProgress", currentTime)
+
+      if (chapterList && chapterList.length > 0) {
+        const chapterNo = chapterList[chapterIndex]
+        saveTrackPausedTime(reciterId, chapterNo, currentTime)
+
+        updateRecentPausedTime(reciterId, chapterNo, currentTime)
+      }
+    }
+  }, [currentTime, mode, dur, reciterId, chapterIndex, chapterList, isInitialized])
+
+  const updateRecentPausedTime = (reciterId, chapterNo, time) => {
+    if (Math.floor(time) % 5 !== 0) return
+
+    const recents = LocalStore.getRawState().recent
+    const updatedRecents = recents.map((recent) => {
+      if (recent.reciterId === reciterId && recent.chapterNo === chapterNo) {
+        return { ...recent, pausedAt: time }
+      }
+      return recent
+    })
+
+    if (JSON.stringify(recents) !== JSON.stringify(updatedRecents)) {
+      LocalStore.update((s) => ({ ...s, recent: updatedRecents }))
+
+      storage.setItem("recent", JSON.stringify(updatedRecents))
+    }
+  }
 
 	function formatDur(s) {
+		// ~~ => math.floor()
 		const h = ~~(s / 3600);
 		const m = ~~((s % 3600) / 60);
 		const rs = ~~(s % 60);
-		return `${
+
+		const formattedTime = `${
 			h > 0 ? String(h).padStart(2, "0").concat(":") : ""
 		}${String(m).padStart(2, "0")}:${String(rs).padStart(2, "0")}`;
+
+		return formattedTime;
 	}
 
 	const handleProgress = (progress) => {
 		setIsProgress(false);
-		let compute = (progress * dur) / 100;
+		const compute = (progress * dur) / 100;
 		setCurrentTime(compute);
-		localStorage.setItem("audioPausedTime", compute);
-        storage.setItem("audioPausedTime", compute);
+
+    localStorage.setItem("audioPausedTime", compute.toString())
+    storage.setItem("audioPausedTime", compute)
+
+    storage.setItem("visualizerProgress", compute)
 
     if (chapterList && chapterList.length > 0) {
       const chapterNo = chapterList[chapterIndex]
       saveTrackPausedTime(reciterId, chapterNo, compute)
+
+      updateRecentPausedTime(reciterId, chapterNo, compute)
     }
 
 		setTimeout(() => {
@@ -69,10 +111,29 @@ const Visualizer = () => {
 		}, 1);
 	};
 
+  let trackInfo = { currentTime: 0, duration: 0 }
+  if (chapterList && chapterList.length > 0) {
+    const chapterNo = chapterList[chapterIndex]
+    const trackKey = `${reciterId}-${chapterNo}`
+    if (trackInfoMap && trackKey in trackInfoMap) {
+      trackInfo = trackInfoMap[trackKey]
+    }
+  }
+
 	return (
 		<div className={styles.root}>
+			{/* <div className={styles.duration}>
+				<div className={styles.start}>{formatDur(currentTime)}</div>
+				{mode === "normal" ? (
+					<div className={styles.end}>{formatDur(dur)}</div>
+				) : (
+					<div className={styles.end}>Live</div>
+				)}
+			</div> */}
+
 			<div className={styles.start}>
-				<span style={{ width: `${formatDur(currentTime).length > 5 ? 48 : 35}px` }}>
+				<span
+					style={{ width: `${formatDur(currentTime).length > 5 ? 48 : 35}px` }}>
 					{formatDur(currentTime)}
 				</span>
 			</div>
@@ -83,21 +144,27 @@ const Visualizer = () => {
 						width: `${progressWidth}%`,
 					}}></div>
 				<input
+					disabled={mode === "live" ? true : false}
 					type="range"
 					min="0"
 					max="100"
-					value={mode === "normal" && dur ? progressWidth : 100}
-					onChange={(e) =>
-						mode === "normal" && dur && handleProgress(e.target.value)
-					}
-					name="progressBar"
+					value={dur && mode === "normal" ? (currentTime * 100) / dur : 100}
+					onChange={(e) => handleProgress(e.target.value)}
+					name="progresBar"
 				/>
 			</div>
-			<div className={styles.end}>
-				<span className={styles.fixedWidth}>
-					{mode === "normal" ? formatDur(dur) : "Live"}
-				</span>
-			</div>
+			{mode === "normal" ? (
+				<div className={styles.end}>
+					<span
+						style={{
+							width: `${formatDur(dur).length > 5 ? 48 : 35}px`,
+						}}>
+						{formatDur(dur)}
+					</span>
+				</div>
+			) : (
+				<div className={styles.end}>Live</div>
+			)}
 		</div>
 	);
 };

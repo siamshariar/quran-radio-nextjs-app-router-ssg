@@ -1,13 +1,13 @@
-import { useEffect } from 'react';
-import { PlayerStore } from '../store';
-import { LocalStore, setLiveFavorites } from '../store/local';
-import storage from '@/store/storage';
+import { useEffect } from "react";
+import { PlayerStore } from "../store";
+import { LocalStore, setFavorites, setLiveFavorites } from "../store/local";
+import storage from "@/store/storage";
 
 const STORE_KEY = "liveFavorites";
 
 export const useLiveFavoriteStorage = () => {
-  const liveFavorites = LocalStore.useState((s) => s.liveFavorites);
-  const liveRadios = PlayerStore.useState((s) => s.liveRadios);
+	const liveFavorites = LocalStore.useState((s) => s.liveFavorites);
+	const liveRadios = PlayerStore.useState((s) => s.liveRadios);
 
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -48,5 +48,5 @@ export const useLiveFavoriteStorage = () => {
 	return {
 		addLiveFavorite,
 		removeLiveFavorite,
-  };
+	};
 };

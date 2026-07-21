@@ -1,9 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Drawer } from "@mui/material";
-import styles from "./Header.module.css";
-import { IonLabel, IonRouterLink } from "@ionic/react";
 import { useEffect, useState } from "react";
+import { IonLabel } from "@ionic/react";
+import styles from "./Header.module.css";
 import {
 	peopleOutline,
 	informationCircleOutline,
@@ -22,34 +22,48 @@ import {
 	share,
 	shareOutline,
 	donate,
+	installApp,
 } from "@/icons";
 import { IonIcon } from "@ionic/react";
 import classNames from "classnames";
 // import { PlayerStore } from "@/store";
 
 const pages = [
-	{
-	  title: "Quran.tube",
-	  icon: "/img/icons/quran-tube-icon.svg",
-	  iconOutline: "/img/icons/quran-tube-icon.svg",
-	  url: " https://www.deeniinfotech.com/p/quran-tube#apps",
-	  linkType: "external",
-	},
-  ];
+    {
+      title: "Quran.tube",
+      icon: "/img/icons/quran-tube-icon.svg",
+      iconOutline: "/img/icons/quran-tube-icon.svg",
+      url: " https://www.deeniinfotech.com/p/quran-tube#apps",
+      linkType: "external",
+    },
+];
 
-
+const MenuList = ({ pages, openModal }) => {
+  // const location = useLocation();
+  const [path, setPath] = useState("/");
+  
+  useEffect(() => {
+    setPath(location.pathname);
+  }, [location]);
+  
+  return (
+    <div className={styles.list}>
+    <a href={pages[0].url} target="_blank" rel="noreferrer">
+      <div className={classNames(styles.item)}>
+        <IonIcon
+          icon={pages[0].iconOutline}
+          slot="start"
+          className={styles.icon}
+        />
+        <IonLabel className={styles.label}>{pages[0].title}</IonLabel>
+        </div>
+        </a>
+    </div>
+  );
+};
 
 export default function SideNav(props) {
 	// const reciterId = PlayerStore.useState((s) => s.reciterId);
-	const [modalOpen, setModalOpen] = useState(false);
-	const handleModalClose = () => {
-	  setModalOpen(false);
-	};
-  
-	const openModal = () => {
-	  setModalOpen(true);
-	};
-
 
 	return (
 		<Drawer
@@ -145,6 +159,19 @@ export default function SideNav(props) {
 							</li>
 							{/*TODO: Fix color*/}
 							<hr />
+							<li onClick={(e) => props.navControl(false)}>
+								<a
+									href="https://www.deeniinfotech.com/p/quran-radio#apps"
+									target="_blank"
+									className={styles.m_menu_item}>
+									<IonIcon
+										icon={installApp}
+										slot="start"
+										class={styles.sidenav_icon}
+									/>
+									Mobile App
+								</a>
+							</li>
 							<li onClick={(e) => props.handleShare()}>
 								<div className={styles.m_menu_item}>
 									<IonIcon
@@ -179,14 +206,12 @@ export default function SideNav(props) {
 								</a>
 							</li>
 						</ul>
-						<hr />
-						<div className={styles.appstitle}>More Apps</div>
-						<div className={styles.moremenu}>
-						<MenuList pages={pages} openModal={openModal} />
-						</div>
+            <hr />
+            <div className={styles.appstitle}>More Apps</div>
+              <div className={styles.moremenu}>
+                <MenuList pages={pages} />
+              </div>
 					</div>
-					
-
 					<div className={classNames(styles.footer, "p-4 text-base")}>
 						<span>Powered by - </span>
 						<a target="_blank" href="https://www.deeniinfotech.com/">
@@ -198,26 +223,3 @@ export default function SideNav(props) {
 		</Drawer>
 	);
 }
-const MenuList = ({ pages, openModal }) => {
-	// const location = useLocation();
-	const [path, setPath] = useState("/");
-  
-	useEffect(() => {
-	  setPath(location.pathname);
-	}, [location]);
-  
-	return (
-	  <div className={styles.list}>
-		<a href={pages[0].url} target="_blank" rel="noreferrer">
-		  <div className={classNames(styles.item)}>
-				<IonIcon
-				  icon={pages[0].iconOutline}
-				  slot="start"
-				  className={styles.icon}
-				/>
-				<IonLabel className={styles.label}>{pages[0].title}</IonLabel>
-				</div>
-			  </a>
-	  </div>
-	);
-  };

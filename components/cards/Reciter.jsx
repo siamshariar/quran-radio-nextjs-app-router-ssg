@@ -50,13 +50,17 @@ const Reciter = ({ reciter,  removeReciterFavorite, noRemoveIcon }) => {
 		setChapterListByList(chapterList);
 	};
 
-  const togglePlayPause = () => {
-    if (reciterId === reciter.id) {
-      setPlaying(!playing)
-    } else {
-      handleReciterChange()
-    }
-  }
+	const play = () => {
+		if (mode === "live") {
+			setPlaybackMode("normal");
+		}
+		setPlaying(true);
+	};
+
+	const pause = () => {
+		setPlaying(false);
+	};
+
 
   const handleRemove = async () => {
     if (removeReciterFavorite) {
@@ -100,14 +104,32 @@ const Reciter = ({ reciter,  removeReciterFavorite, noRemoveIcon }) => {
 					</div>
 				</Link>
 
-        <div className={classNames(styles.right, styles.btns)}>
-          {!noRemoveIcon && <IonIcon icon={trashOutline} slot="start" className={styles.icon} onClick={handleRemove} />}
-          <IonIcon
-            icon={playing && reciterId === reciter.id ? playCircle : pauseCircle}
-            slot="start"
-            className={styles.icon}
-            onClick={togglePlayPause}
-          />
+				<div className={classNames(styles.right, styles.btns)}>
+        {!noRemoveIcon && <IonIcon icon={trashOutline} slot="start" className={styles.icon} onClick={handleRemove} />}
+					{reciterId === reciter.id &&
+						(playing && mode === "normal" ? (
+							<IonIcon
+								icon={playCircle}
+								slot="start"
+								className={styles.icon}
+								onClick={pause}
+							/>
+						) : (
+							<IonIcon
+								icon={pauseCircle}
+								slot="start"
+								className={styles.icon}
+								onClick={play}
+							/>
+						))}
+					{reciterId !== reciter.id && (
+						<IonIcon
+							icon={pauseCircle}
+							slot="start"
+							className={styles.icon}
+							onClick={() => handleReciterChange()}
+						/>
+					)}
 				</div>
 			</div>
 		</div>

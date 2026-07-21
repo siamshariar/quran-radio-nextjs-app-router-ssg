@@ -52,12 +52,24 @@ function MyApp({ Component, pageProps }) {
 			const x = window.matchMedia("(max-width: 768px)");
 			if (x.matches) {
 				setIsTab(true);
+
+				// DISABLED RIGHT CLICK/TAP ON MOBILE
+				window.addEventListener('contextmenu', function (e) {
+					e.preventDefault();
+				}, false);
+				// DISABLED RIGHT CLICK/TAP ON MOBILE
 			} else {
 				setIsTab(false);
 			}
 			x.onchange = () => {
 				if (x.matches) {
 					setIsTab(true);
+
+					// DISABLED RIGHT CLICK/TAP ON MOBILE
+					window.addEventListener('contextmenu', function (e) {
+						e.preventDefault();
+					}, false);
+					// DISABLED RIGHT CLICK/TAP ON MOBILE
 				} else {
 					setIsTab(false);
 				}

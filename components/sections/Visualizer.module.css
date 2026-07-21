@@ -7,6 +7,15 @@
 	align-items: center;
 	justify-content: space-evenly;
 }
+.duration {
+	width: calc(100% + 68px);
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: -9px;
+	margin-left: -34px;
+	position: relative;
+	z-index: -1;
+}
 .start,
 .end {
 	font-family: "SFProDisplay";
@@ -20,7 +29,7 @@
 	text-align: left;
 }
 .end {
-	/* text-align: right; */
+	text-align: right;
 }
 .progress {
 	width: 100%;
@@ -32,12 +41,13 @@
 }
 .label {
 	height: 100%;
+  width: 0;
 	position: absolute;
 	left: 0;
 	top: 0;
 	z-index: 9;
 	background-color: #3aad94;
-	border-radius: 8px;
+	border-radius: 8px 0 0 8px;
 }
 /* .label.disabled {
 	background-color: #d9d9d9;
@@ -62,7 +72,7 @@
 	background-color: #3aad94;
 	height: 16px;
 	width: 16px;
-    cursor: pointer;
+  cursor: pointer;
 }
 /* .progress input[disabled]::-webkit-slider-thumb {
 	-webkit-appearance: none;

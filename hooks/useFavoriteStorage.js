@@ -1,15 +1,15 @@
-import { useEffect } from 'react';
-import { PlayerStore } from '../store';
-import { LocalStore, setFavorites } from '../store/local';
-import storage from '@/store/storage';
+import { useEffect } from "react";
+import { PlayerStore } from "../store";
+import { LocalStore, setFavorites } from "../store/local";
+import storage from "@/store/storage";
 
 const STORE_KEY = "favorites";
 
 export const useFavoriteStorage = () => {
-  const favorites = LocalStore.useState((s) => s.favorites);
-  const chapters = PlayerStore.useState((s) => s.chapters);
-  const reciters = PlayerStore.useState((s) => s.reciters);
-  const chapterList = PlayerStore.useState((s) => s.chapterList);
+	const favorites = LocalStore.useState((s) => s.favorites);
+	const chapters = PlayerStore.useState((s) => s.chapters);
+	const reciters = PlayerStore.useState((s) => s.reciters);
+	const chapterList = PlayerStore.useState((s) => s.chapterList);
 
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -33,6 +33,7 @@ export const useFavoriteStorage = () => {
 		const newFavorite = {
 			// id: "" + new Date().getTime(),
 			reciterId: reciterId,
+			// reciterSlug: "",
 			reciterName: reciter.name,
 			reciterImage: reciter.imgUrl,
 			chapterIndex: chapterIndex,
@@ -56,8 +57,8 @@ export const useFavoriteStorage = () => {
 		await storage.setItem(STORE_KEY, JSON.stringify(updated));
 	};
 
-  return {
-    addFavorite,
-    removeFavorite,
-  };
+	return {
+		addFavorite,
+		removeFavorite,
+	};
 };

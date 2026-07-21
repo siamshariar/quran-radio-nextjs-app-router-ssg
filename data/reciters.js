@@ -2362,7 +2362,7 @@ export const reciters = [
 			},
 		],
 		imgUrl:
-			"https://play-lh.googleusercontent.com/nqojekyRVCbn3kkO_H6KiPnP1cz7gdMJwUmqqG9TewuD0KeqZmxNp5N2nOo0syS5hfQB=w240-h480-rw",
+			"https://i1.sndcdn.com/artworks-000538299873-c3vn6h-t500x500.jpg",
 		defaultMoshafId: "126",
 	},
 	{

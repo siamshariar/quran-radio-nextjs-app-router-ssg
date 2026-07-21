@@ -13,31 +13,31 @@ import { useRecentStorage } from "@/hooks/useRecentStorage";
 import { useLiveRecentStorage } from "@/hooks/useLiveRecentStorage";
 
 function CustomTabPanel(props) {
-    const { children, value, index, ...other } = props;
+	const { children, value, index, ...other } = props;
 
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
+	return (
+		<div
+			role="tabpanel"
+			hidden={value !== index}
+			id={`simple-tabpanel-${index}`}
+			aria-labelledby={`simple-tab-${index}`}
 			{...other}>
-            {value === index && <>{children}</>}
-        </div>
-    );
+			{value === index && <>{children}</>}
+		</div>
+	);
 }
 
 CustomTabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
+	children: PropTypes.node,
+	index: PropTypes.number.isRequired,
+	value: PropTypes.number.isRequired,
 };
 function a11yProps(index) {
-    return {
-        id: `simple-tab-${index}`,
-        className: "tab-btn",
-        "aria-controls": `simple-tabpanel-${index}`,
-    };
+	return {
+		id: `simple-tab-${index}`,
+		className: "tab-btn",
+		"aria-controls": `simple-tabpanel-${index}`,
+	};
 }
 
 function groupItemsByDate(items) {
@@ -78,44 +78,42 @@ function groupItemsByDate(items) {
     return grouped;
 }
 
-
 const Recents = () => {
-    const [value, setValue] = useState(0);
-    const recents = LocalStore.useState((s) => s.recent);
-    const liveRecents = LocalStore.useState((s) => s.liveRecent);
-    const { removeRecent } = useRecentStorage();
-    const { removeLiveRecent } = useLiveRecentStorage();
-    const groupedRecents = groupItemsByDate(recents);
-    const groupedLiveRecents = groupItemsByDate(liveRecents);
+	const [value, setValue] = useState(0);
+	const recents = LocalStore.useState((s) => s.recent);
+	const liveRecents = LocalStore.useState((s) => s.liveRecent);
+	const { removeRecent } = useRecentStorage();
+	const { removeLiveRecent } = useLiveRecentStorage();
+	const groupedRecents = groupItemsByDate(recents);
+	const groupedLiveRecents = groupItemsByDate(liveRecents);
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
+	const handleChange = (event, newValue) => {
+		setValue(newValue);
+	};
 
-    const noRecordsFound = 
-        Object.keys(groupedRecents).every((key) => groupedRecents[key].length === 0) && 
-        Object.keys(groupedLiveRecents).every((key) => groupedLiveRecents[key].length === 0);
+  const noRecordsFound = 
+    Object.keys(groupedRecents).every((key) => groupedRecents[key].length === 0) && 
+    Object.keys(groupedLiveRecents).every((key) => groupedLiveRecents[key].length === 0);
 
-    return (
-        <div className="favRecent">
+	return (
+		<div className="favRecent">
 			{/*<div className={styles.search}>*/}
 			{/*	<IonIcon icon={search} slot="start" class={styles.s_icon} />*/}
 			{/*	<input type="text" name="search" placeholder="Search" />*/}
 			{/*</div>*/}
 
-            <Box sx={{ width: "100%" }}>
-                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                    <Tabs
-                        centered
-                        value={value}
-                        onChange={handleChange}
+			<Box sx={{ width: "100%" }}>
+				<Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+					<Tabs
+						centered
+						value={value}
+						onChange={handleChange}
 						aria-label="basic tabs">
-                        <Tab label="Chapters" {...a11yProps(0)} />
-                        <Tab label="Live Radios" {...a11yProps(1)} />
-                    </Tabs>
-                </Box>
+						<Tab label="Chapters" {...a11yProps(0)} />
+						<Tab label="Live Radios" {...a11yProps(1)} />
+					</Tabs>
+				</Box>
 
-                {/* Conditional rendering for "No records found" */}
                 {noRecordsFound ? (
                     <p>No records found.</p>
                 ) : (
@@ -143,6 +141,7 @@ const Recents = () => {
                                                         <FavRecentList
                                                             key={index}
                                                             item={recent}
+                                                            isRecent={true}
                                                             handleRemoveRecent={removeRecent}
                                                         />
                                                     ))}
@@ -153,6 +152,7 @@ const Recents = () => {
                                                 <FavRecentList
                                                     key={index}
                                                     item={recent}
+                                                    isRecent={true}
                                                     handleRemoveRecent={removeRecent}
                                                 />
                                             ))
@@ -205,11 +205,9 @@ const Recents = () => {
                         </CustomTabPanel>
                     </>
                 )}
-            </Box>
-        </div>
-    );
+			</Box>
+		</div>
+	);
 };
 
-
 export default Recents;
-
