@@ -19,6 +19,16 @@ const DEENI_TV_PROMO_STORAGE_KEY = "deenitv-web-promo-shown";
 const QURAN_TUBE_MODAL_STORAGE_KEY = "quranTubeModal";
 const FIRST_DIALOG_STORAGE_KEY = "firstDialog";
 
+const readBooleanFlag = (key) => {
+	const raw = localStorage.getItem(key);
+	if (raw === null) return false;
+	try {
+		return JSON.parse(raw) === true;
+	} catch {
+		return true;
+	}
+};
+
 const Player = () => {
 	const [windowHeight, setWindowHeight] = useState(0);
 	const [panelHeight, setPanelHeight] = useState(0);
@@ -161,8 +171,8 @@ const Player = () => {
 	};
 
 	useEffect(() => {
-		const firstDialog = JSON.parse(localStorage.getItem(FIRST_DIALOG_STORAGE_KEY) || 'false');
-		const promoShown = JSON.parse(localStorage.getItem(DEENI_TV_PROMO_STORAGE_KEY) || 'false');
+		const firstDialog = readBooleanFlag(FIRST_DIALOG_STORAGE_KEY);
+		const promoShown = readBooleanFlag(DEENI_TV_PROMO_STORAGE_KEY);
 		const quranTubeShown = localStorage.getItem(QURAN_TUBE_MODAL_STORAGE_KEY) === "shown";
 
 		if (!firstDialog) {

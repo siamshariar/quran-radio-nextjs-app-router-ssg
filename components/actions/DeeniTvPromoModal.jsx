@@ -4,7 +4,7 @@ import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import styles from "./DeeniTvPromoModal.module.css";
 
 const DeeniTvPromoModal = ({ onClose }) => {
-	const deeniTvUrl = "#";
+	const deeniTvUrl = "https://www.deeni.tv/";
 
 	return (
 		<div className={styles.root} role="dialog" aria-modal="true" aria-label="Deeni TV promo">
