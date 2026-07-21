@@ -45,6 +45,19 @@
 	align-items: center;
 	padding-bottom: 7px;
 }
+.reciters .wrapper:after {
+  left: 75px;
+}
+
+.wrapper:after{
+  content: "";
+  position: absolute;
+  bottom: 4px;
+  left: 56px;
+  right: 0;
+  height: .7px;
+  background: linear-gradient(90deg, rgba(61, 61, 63, .7) 1.01%, hsla(208, 9%, 59%, .7) 100.67%);
+}
 .left {
 	width: 40px;
 	height: 64px;

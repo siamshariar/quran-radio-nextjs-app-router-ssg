@@ -13,6 +13,11 @@ import HomeContent from "@/components/ui/HomeContent";
 import styles from "./index.module.css";
 import Dialog from "./Dialog";
 import QuranTubeModal from "./QuranTubeModal";
+import DeeniTvPromoModal from "../actions/DeeniTvPromoModal";
+
+const DEENI_TV_PROMO_STORAGE_KEY = "deenitv-web-promo-shown";
+const QURAN_TUBE_MODAL_STORAGE_KEY = "quranTubeModal";
+const FIRST_DIALOG_STORAGE_KEY = "firstDialog";
 
 const Player = () => {
 	const [windowHeight, setWindowHeight] = useState(0);
@@ -39,6 +44,11 @@ const Player = () => {
 
 	const router = useRouter();
 	const [path, setPath] = useState("/");
+	const [dialogOpen, setDialogOpen] = useState(false);
+	const [quranTubeModalOpen, setQuranTubeModalOpen] = useState(false);
+	const [promoOpen, setPromoOpen] = useState(false);
+	const promoTimerRef = useRef(null);
+	const quranTubeTimerRef = useRef(null);
 
 	useEffect(() => {
 		setPath(router.pathname);
@@ -128,35 +138,79 @@ const Player = () => {
 			: (backdropRef.current.style.display = "block");
 	}, [isPlayerMini]);
 
-	const [dialogOpen, setDialogOpen] = useState(false);
-	const [quranTubeModalOpen, setquranTubeModalOpen] = useState(false);
+	const scheduleQuranTubeModal = () => {
+		if (quranTubeTimerRef.current) {
+			window.clearTimeout(quranTubeTimerRef.current);
+		}
+
+		quranTubeTimerRef.current = window.setTimeout(() => {
+			setQuranTubeModalOpen(true);
+		}, 5000);
+	};
+
+	const schedulePromoPopup = () => {
+		if (promoTimerRef.current) {
+			window.clearTimeout(promoTimerRef.current);
+		}
+
+		const delayInSeconds = Math.floor(Math.random() * 21) + 40;
+		promoTimerRef.current = window.setTimeout(() => {
+			localStorage.setItem(DEENI_TV_PROMO_STORAGE_KEY, JSON.stringify(true));
+			setPromoOpen(true);
+		}, delayInSeconds * 1000);
+	};
 
 	useEffect(() => {
-		const firstDialog = localStorage.getItem("firstDialog");
-		if (firstDialog === null) {
+		const firstDialog = JSON.parse(localStorage.getItem(FIRST_DIALOG_STORAGE_KEY) || 'false');
+		const promoShown = JSON.parse(localStorage.getItem(DEENI_TV_PROMO_STORAGE_KEY) || 'false');
+		const quranTubeShown = localStorage.getItem(QURAN_TUBE_MODAL_STORAGE_KEY) === "shown";
+
+		if (!firstDialog) {
 			setDialogOpen(true);
 		}
+
+		if (firstDialog && !promoShown) {
+			schedulePromoPopup();
+		}
+
+		if (firstDialog && !quranTubeShown) {
+			scheduleQuranTubeModal();
+		}
+
+		return () => {
+			if (promoTimerRef.current) {
+				window.clearTimeout(promoTimerRef.current);
+				promoTimerRef.current = null;
+			}
+			if (quranTubeTimerRef.current) {
+				window.clearTimeout(quranTubeTimerRef.current);
+				quranTubeTimerRef.current = null;
+			}
+		};
 	}, []);
 
 	const handleDialog = () => {
 		setDialogOpen(false);
 		setPlaying(true);
-		localStorage.setItem("firstDialog", "opened");
-
-		setTimeout(() => {
-			setquranTubeModalOpen(true);
-		}, 5000);
+		localStorage.setItem(FIRST_DIALOG_STORAGE_KEY, JSON.stringify(true));
+		schedulePromoPopup();
+		scheduleQuranTubeModal();
 	};
 
 	const handleQuranTubeModal = () => {
-		setquranTubeModalOpen(false);
-		localStorage.setItem("quranTubeModal", "shown");
+		setQuranTubeModalOpen(false);
+		localStorage.setItem(QURAN_TUBE_MODAL_STORAGE_KEY, "shown");
+	};
+
+	const handlePromoClose = () => {
+		setPromoOpen(false);
 	};
 
 	return (
 		<>
 			{dialogOpen && <Dialog handleDialog={handleDialog} />}
 			{quranTubeModalOpen && <QuranTubeModal handleModal={handleQuranTubeModal} />}
+			{promoOpen && <DeeniTvPromoModal onClose={handlePromoClose} />}
 
 			<div className={styles.backdrop} ref={backdropRef}></div>
 

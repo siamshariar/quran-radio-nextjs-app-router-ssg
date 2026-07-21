@@ -1,68 +1,32 @@
 import { useState, useEffect } from "react";
-import { chevronBack, search } from "@/icons";
+import { search } from "@/icons";
 import ReciterCard from "@/components/cards/Reciter";
 import styles from "./Pages.module.css";
 import { IonIcon } from "@ionic/react";
+import { Virtuoso } from "react-virtuoso";
+import { useScrollPosition } from "@/hooks/useScrollPosition";
 // import { Virtuoso } from "react-virtuoso";
-import { useReciterFavoriteStorage } from "@/hooks/useReciterFavoriteStorage";
-import storage from "@/store/storage";
 
-const Reciters = ({ reciters: initialReciters }) => {
+const Reciters = ({ reciters }) => {
 	// const reciters = PlayerStore.useState((s) => s.reciters);
 	const [filter, setFilter] = useState("");
+	const [isReady, setIsReady] = useState(false);
 
-	const [reciters, setReciters] = useState(initialReciters)
-	const { removeReciterFavorite: removeFromStorage, isLoaded } = useReciterFavoriteStorage()
+	const filteredReciters = reciters.filter((item) =>
+		item.name.toLowerCase().includes(filter.toLowerCase())
+	);
+
+	const { scrollRef, initialScrollTop } = useScrollPosition();
+
 
   useEffect(() => {
-    const loadReciters = async () => {
-      try {
-        const favoriteIdsStr = localStorage.getItem("reciterFavorites")
-        const favoriteIds = favoriteIdsStr ? JSON.parse(favoriteIdsStr) : []
+    setIsReady(true)
+  }, [])
 
-        const filteredReciters = initialReciters.filter((reciter) => {
-          return true 
-        })
-
-        setReciters(filteredReciters)
-      } catch (error) {
-        console.error("Error loading reciters:", error)
-        setReciters(initialReciters)
-      }
-    }
-
-    if (isLoaded) {
-      loadReciters()
-    }
-  }, [initialReciters, isLoaded])
-
-  const removeReciterFavorite = async (reciterId) => {
-
-    setReciters((prevReciters) => prevReciters.filter((reciter) => reciter.id !== reciterId))
-
-    if (removeFromStorage) {
-      await removeFromStorage(reciterId)
-    }
-
-    try {
-      await storage.remove(`reciter_${reciterId}`)
-
-      const storedFavorites = await storage.get("reciterFavorites")
-      if (storedFavorites) {
-        const favorites = Array.isArray(storedFavorites) ? storedFavorites : JSON.parse(storedFavorites)
-
-        const updatedFavorites = favorites.filter((fav) => {
-          return fav.id !== undefined ? fav.id !== reciterId : fav !== reciterId
-        })
-
-        await storage.set("reciterFavorites", updatedFavorites)
-      }
-    } catch (error) {
-      console.error("Error removing from Ion storage:", error)
-    }
+  const contentStyle = {
+    visibility: isReady ? "visible" : "hidden",
+    height: "calc(100vh - 120px)",
   }
-
-  const filteredReciters = reciters.filter((item) => item.name.toLowerCase().includes(filter.toLowerCase()))
 
 	return (
 		<>
@@ -93,18 +57,20 @@ const Reciters = ({ reciters: initialReciters }) => {
 					/>
 				)}
 			</div> */}
-			<div className={styles.content}>
-				{filteredReciters && filteredReciters.length > 0 ? (
-					filteredReciters.map((reciter) => (
-						<ReciterCard
-              key={reciter.id}
-              reciter={reciter}
-              noRemoveIcon= {true}
-              removeReciterFavorite={removeReciterFavorite}
-            />
-          ))
-        ) : (
-          <h2 className={styles.no_record}>No record found!</h2>
+			<div className={styles.content} style={contentStyle}>
+        {isReady && filteredReciters && (
+          <Virtuoso
+            ref={scrollRef}
+            overscan={200}
+            useWindowScroll
+            style={{ height: "100%" }}
+            totalCount={filteredReciters.length}
+            itemContent={(index) => ( <ReciterCard key={filteredReciters[index].id} reciter={filteredReciters[index]} /> )}
+            components={{
+              Footer: () => <div style={{ height: "20px" }}></div>,
+            }}
+            initialScrollTop={initialScrollTop}
+          />
         )}
 			</div>
 		</>
