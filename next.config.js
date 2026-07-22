@@ -18,7 +18,13 @@ const nextConfig = {
 	},
 	experimental: {
 		scrollRestoration: true,
+		// Cap static-generation worker parallelism. Next defaults to ~(CPU cores - 1)
+		// workers; on a memory-constrained machine that's enough concurrent workers
+		// (each holding its own copy of the page bundle) to thrash into swap and get
+		// SIGTERM'd mid-build. 2 keeps generation of the ~219 reciter pages stable.
+		cpus: 2,
 	},
+	staticPageGenerationTimeout: 180,
 	swcMinify: true,
 	pwa: {
 		dest: "public",

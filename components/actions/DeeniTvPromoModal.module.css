@@ -34,8 +34,8 @@
 	position: absolute;
 	top: 10px;
 	right: 10px;
-	width: 44px;
-	height: 44px;
+	width: 32px;
+	height: 32px;
 	border: 0;
 	border-radius: 999px;
 	background: transparent;
@@ -48,7 +48,7 @@
 }
 
 .closeButton svg {
-	font-size: 34px;
+	font-size: 24px;
 }
 
 .popupLogo {
@@ -108,8 +108,8 @@
 	}
 
 	.closeButton {
-		width: 44px;
-		height: 44px;
+		width: 32px;
+		height: 32px;
 		top: 10px;
 		right: 10px;
 	}

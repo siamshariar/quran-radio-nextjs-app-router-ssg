@@ -2,7 +2,7 @@
 
 import { useRef, useEffect } from "react"
 import { useRouter } from "next/router"
-import { getSessionNumber, setSessionItem } from "@/utils/session-storage"
+import { getSessionNumber, setSessionItem } from "@/components/utils/session-storage"
 
 /**
  * @returns {Object}

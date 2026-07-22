@@ -299,17 +299,22 @@ const AudioTag = () => {
 				{
 					pathname: router.pathname,
 					query:
-						mode == "normal"
-							? router.pathname == "/reciters/[id]"
+						router.pathname == "/reciters/[id]"
+							? mode == "normal"
 								? {
 										id: router.query.id,
 										reciter: reciterId,
 										chapter: chapterList[chapterIndex],
 								  }
 								: {
-										reciter: reciterId,
-										chapter: chapterList[chapterIndex],
+										id: router.query.id,
+										liveRadio: liveRadios[liveIndex].id,
 								  }
+							: mode == "normal"
+							? {
+									reciter: reciterId,
+									chapter: chapterList[chapterIndex],
+							  }
 							: { liveRadio: liveRadios[liveIndex].id },
 				},
 				undefined,
@@ -369,17 +374,22 @@ const AudioTag = () => {
 				{
 					pathname: router.pathname,
 					query:
-						mode == "normal"
-							? router.pathname == "/reciters/[id]"
+						router.pathname == "/reciters/[id]"
+							? mode == "normal"
 								? {
 										id: router.query.id,
 										reciter: reciterId,
 										chapter: chapterList[chapterIndex],
 								  }
 								: {
-										reciter: reciterId,
-										chapter: chapterList[chapterIndex],
+										id: router.query.id,
+										liveRadio: liveRadios[liveIndex].id,
 								  }
+							: mode == "normal"
+							? {
+									reciter: reciterId,
+									chapter: chapterList[chapterIndex],
+							  }
 							: { liveRadio: liveRadios[liveIndex].id },
 				},
 				undefined,
