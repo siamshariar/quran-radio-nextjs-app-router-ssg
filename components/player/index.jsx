@@ -1,5 +1,7 @@
-import { useEffect, useState, useRef } from "react";
-import { useRouter } from "next/router";
+"use client";
+
+import { Suspense, useEffect, useState, useRef } from "react";
+import { usePathname } from "next/navigation";
 import {
 	PlayerStore,
 	setPlayerOpen,
@@ -9,6 +11,7 @@ import {
 } from "../../store";
 import AudioMini from "./AudioMini";
 import AudioTag from "./Audio";
+import AudioDeepLinkInit from "./AudioDeepLinkInit";
 import HomeContent from "@/components/ui/HomeContent";
 import styles from "./index.module.css";
 import Dialog from "./Dialog";
@@ -52,7 +55,7 @@ const Player = () => {
 	const backdropRef = useRef(null);
 	const miniMenuRef = useRef(null);
 
-	const router = useRouter();
+	const pathname = usePathname();
 	const [path, setPath] = useState("/");
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const [quranTubeModalOpen, setQuranTubeModalOpen] = useState(false);
@@ -61,8 +64,8 @@ const Player = () => {
 	const quranTubeTimerRef = useRef(null);
 
 	useEffect(() => {
-		setPath(router.pathname);
-	}, [router]);
+		setPath(pathname);
+	}, [pathname]);
 
 	useEffect(() => {
 		setSliderDown(false);
@@ -245,6 +248,9 @@ const Player = () => {
 			</div>
 
 			<AudioTag />
+			<Suspense fallback={null}>
+				<AudioDeepLinkInit />
+			</Suspense>
 		</>
 	);
 };

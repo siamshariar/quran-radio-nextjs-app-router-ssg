@@ -1,22 +1,25 @@
+"use client";
+
 import { chevronBack } from "@/icons";
 import { IonButton, IonIcon } from "@ionic/react";
 import styles from "../pages/Pages.module.css";
-import { useRouter } from "next/router";
+import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function CommonHeader({ title, prev_page = "/" }) {
 	const router = useRouter();
+	const pathname = usePathname();
 	const [historyLength, setHistoryLength] = useState(0);
 
 	useEffect(() => {
 		setHistoryLength(window.history.length);
-	}, [router]);
+	}, [pathname]);
 
 	const goBack = () => {
 		if (historyLength > 2) {
 			router.back();
 		} else {
-			router.push(`${prev_page}`).then((r) => "/");
+			router.push(`${prev_page}`);
 		}
 	};
 

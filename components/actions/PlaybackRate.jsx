@@ -35,6 +35,14 @@ const PlaybackRateModal = ({ open, handler }) => {
 	const { setPlaybackRate } = useSettingStorage();
 
 	useEffect(() => {
+		// Only listen for outside clicks while the dropdown is actually open — this
+		// used to attach unconditionally on mount, meaning every click anywhere on
+		// the site (not just while the dropdown was open) hit handler(e, false),
+		// which calls e.stopPropagation() whenever mode === "normal" (the default).
+		// That silently swallowed every click on the page before it could reach
+		// React's own delegated listener on document, breaking every button site-wide.
+		if (!open) return;
+
 		const handleOpen = (e) => {
 			if (e.target === modalRef.current) return;
 			handler(e, false);
@@ -43,7 +51,7 @@ const PlaybackRateModal = ({ open, handler }) => {
 		return () => {
 			document.body.removeEventListener("click", handleOpen);
 		};
-	}, [handler]);
+	}, [open, handler]);
 
 	const setPlaybackSpeed = (rate) => {
 		setPlaybackRate(rate);

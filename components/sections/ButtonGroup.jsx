@@ -1,3 +1,5 @@
+"use client";
+
 import {
 	timeOutline,
 	bookmark,
@@ -24,7 +26,7 @@ import Share from "../actions/share";
 import { LocalStore } from "@/store/local";
 // import { server } from "@/lib/config";
 import Timer from "../actions/TimerPrimary";
-import { useRouter } from "next/router";
+import { usePathname, useSearchParams } from "next/navigation";
 
 const Buttons = () => {
 	const reciterId = PlayerStore.useState((s) => s.reciterId);
@@ -32,7 +34,10 @@ const Buttons = () => {
 	const chapterList = PlayerStore.useState((s) => s.chapterList);
 	const mode = LocalStore.useState((s) => s.settings.mode);
 	const chapterNo = chapterList[chapterIndex];
-	const router = useRouter();
+	const pathname = usePathname();
+	const searchParams = useSearchParams();
+	const queryString = searchParams.toString();
+	const asPath = queryString ? `${pathname}?${queryString}` : pathname;
 
 	const ShareIcon = () => (
 		<IonIcon icon={shareOutline} slot="start" class={styles.icon} />
@@ -54,7 +59,7 @@ const Buttons = () => {
 					removed: heartOutline,
 				}}
 			/>
-			<Share Icon={ShareIcon} url={router.asPath} title="Quran Radio" />
+			<Share Icon={ShareIcon} url={asPath} title="Quran Radio" />
 			<Timer
 				classes={{
 					root: styles.item,

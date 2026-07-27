@@ -1,55 +1,26 @@
-import { useRef, useEffect } from "react"
-import { useRouter } from "next/router"
-import { getSessionNumber, setSessionItem, removeSessionItem } from "@/components/utils/session-storage"
+"use client"
 
-/**
- * @returns {Object} 
- */
+import { useRef, useEffect } from "react"
+import { getSessionNumber, setSessionItem } from "@/components/utils/session-storage"
+
+// App Router has no router.events (routeChangeStart/Complete) equivalent, so we
+// save on unmount instead of on "navigating away from /reciters/*" specifically.
+// Net effect: scroll position now persists across any navigation away and back,
+// not just navigation into a reciter detail page — a minor, intentional behavior
+// change forced by the App Router API surface.
 export function useScrollPosition() {
   const scrollRef = useRef(null)
   const initialScrollTop = useRef(getSessionNumber("reciterScrollPosition", 0))
-  const router = useRouter()
 
   useEffect(() => {
-    const handleRouteChangeStart = (url) => {
+    return () => {
       if (scrollRef.current?.getState) {
         scrollRef.current.getState((state) => {
-          // Save current scroll position
-          const scrollTop = state.scrollTop
-
-          if (url.startsWith("/reciters/")) {
-            setSessionItem("reciterScrollPosition", String(scrollTop))
-          } else {
-            removeSessionItem("reciterScrollPosition")
-          }
+          setSessionItem("reciterScrollPosition", String(state.scrollTop))
         })
       }
     }
-
-
-    const handleRouteChangeComplete = (url) => {
-      if (url === "/reciters" || url.startsWith("/reciters/")) {
-        const savedPosition = getSessionNumber("reciterScrollPosition", 0)
-
-        if (scrollRef.current?.scrollTo) {
-          setTimeout(() => {
-            scrollRef.current.scrollTo({
-              top: savedPosition,
-              behavior: "auto",
-            })
-          }, 0)
-        }
-      }
-    }
-
-    router.events.on("routeChangeStart", handleRouteChangeStart)
-    router.events.on("routeChangeComplete", handleRouteChangeComplete)
-
-    return () => {
-      router.events.off("routeChangeStart", handleRouteChangeStart)
-      router.events.off("routeChangeComplete", handleRouteChangeComplete)
-    }
-  }, [router])
+  }, [])
 
   return {
     scrollRef,

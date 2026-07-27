@@ -1,18 +1,16 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import {
 	PlayerStore,
 	setChapter,
 	setSrc,
-	setSrcAllChapters as setSrcFirst,
 	setPlaying,
 	setReciter,
 	setLoading,
 	setChapterList,
-	setLiveRadio,
 	setLiveSrc,
 	setDefaultLiveRadio,
-	setReciterByReciter,
-	setChapterListByList,
 } from "@/store";
 import { LocalStore } from "@/store/local";
 import { useRecentStorage } from "@/hooks/useRecentStorage";
@@ -29,11 +27,9 @@ import {
 import styles from "./index.module.css";
 import classNames from "classnames";
 import { useLiveRecentStorage } from "@/hooks/useLiveRecentStorage";
-import { useRouter } from "next/router";
+import { useRouter, usePathname, useParams } from "next/navigation";
 import { defaultLiveRadios } from "@/data/defaultLiveRadios";
-import { getLiveIndexById, getReciterById } from "@/lib/fetch";
 import { liveRadios } from "@/data/liveRadios";
-import { useSettingStorage } from "@/hooks/useSettingStorage";
 // import { useIonToast } from "@ionic/react";
 import { useTrackStorage } from "@/hooks/useTrackStorage";
 import storage from "@/store/storage" // import storage;
@@ -57,7 +53,6 @@ const AudioTag = () => {
 	const currentTime = AudioStore.useState((s) => s.currentTime);
 	const isProgress = AudioStore.useState((s) => s.isProgress);
 	const [isPageLoaded, setIsPageLoaded] = useState(false);
-	const { setMode } = useSettingStorage();
   const {
     saveTrackPausedTime: saveTrackTime,
     getTrackPausedTime,
@@ -65,11 +60,6 @@ const AudioTag = () => {
     getTrackDuration,
     clearTrackPausedTime,
   } = useTrackStorage()
-
-	const setPlaybackMode = async (mode) => {
-		await setMode(mode);
-		return;
-	};
 
 	const [isToast, setIsToast] = useState(false);
 	// const [presentToast, dismiss] = useIonToast();
@@ -187,43 +177,27 @@ const AudioTag = () => {
 		}
 	};
 
-	const setMediaResources = async () => {
-		const reciterId = router.query.reciter;
-		const chapId = router.query.chapter;
-		const reciter = await getReciterById(reciterId);
-		const chapterList = reciter.moshaf[0].surah_list.split(",");
-		const chapterIndex = chapterList.indexOf(chapId);
-
-		setSrcFirst(chapId, reciter.moshaf);
-		setReciterByReciter(reciter);
-		setChapterListByList(chapterList);
-		setChapter(chapterList, chapterIndex);
-		setPlaybackMode("normal");
-		setActiveTrack(reciterId, chapId);
-
-    await loadTrackInfo(reciterId, chapId);
-	};
-
-	const setLiveMediaResources = async () => {
-		const liveId = router.query.liveRadio;
-		const liveIndex = await getLiveIndexById(liveId);
-		setLiveSrc(liveIndex);
-		setLiveRadio(liveIndex);
-		setPlaybackMode("live");
-	};
-
 	// first loading play random
 	const router = useRouter();
-	useEffect(() => {
-		if (router.isReady) {
-			setIsPageLoaded(true);
-			if (router.query.reciter && router.query.chapter) {
-				setMediaResources();
-			} else if (router.query.liveRadio) {
-				setLiveMediaResources();
-			}
+	const pathname = usePathname();
+	const params = useParams();
+
+	const buildPlaybackUrl = () => {
+		const query = new URLSearchParams();
+		if (params?.id) query.set("id", params.id);
+		if (mode === "normal") {
+			query.set("reciter", reciterId);
+			query.set("chapter", chapterList[chapterIndex]);
+		} else {
+			query.set("liveRadio", liveRadios[liveIndex].id);
 		}
-	}, [router.isReady]);
+		const qs = query.toString();
+		return qs ? `${pathname}?${qs}` : pathname;
+	};
+
+	useEffect(() => {
+		setIsPageLoaded(true);
+	}, []);
 
 	useEffect(() => {
 		const randomReciterIndex = Math.floor(Math.random() * reciters.length);
@@ -295,32 +269,9 @@ const AudioTag = () => {
 		}
 		// Update the URL without triggering a full page navigation
 		if (isPageLoaded) {
-			router.replace(
-				{
-					pathname: router.pathname,
-					query:
-						router.pathname == "/reciters/[id]"
-							? mode == "normal"
-								? {
-										id: router.query.id,
-										reciter: reciterId,
-										chapter: chapterList[chapterIndex],
-								  }
-								: {
-										id: router.query.id,
-										liveRadio: liveRadios[liveIndex].id,
-								  }
-							: mode == "normal"
-							? {
-									reciter: reciterId,
-									chapter: chapterList[chapterIndex],
-							  }
-							: { liveRadio: liveRadios[liveIndex].id },
-				},
-				undefined,
-				{ shallow: true }
-			);
+			router.replace(buildPlaybackUrl(), { scroll: false });
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [playing, src, liveSrc, mode, playbackRate]);
 
 	useEffect(() => {
@@ -370,33 +321,10 @@ const AudioTag = () => {
 	// Update the URL without triggering a full page navigation
 	useEffect(() => {
 		if (isPageLoaded) {
-			router.replace(
-				{
-					pathname: router.pathname,
-					query:
-						router.pathname == "/reciters/[id]"
-							? mode == "normal"
-								? {
-										id: router.query.id,
-										reciter: reciterId,
-										chapter: chapterList[chapterIndex],
-								  }
-								: {
-										id: router.query.id,
-										liveRadio: liveRadios[liveIndex].id,
-								  }
-							: mode == "normal"
-							? {
-									reciter: reciterId,
-									chapter: chapterList[chapterIndex],
-							  }
-							: { liveRadio: liveRadios[liveIndex].id },
-				},
-				undefined,
-				{ shallow: true }
-			);
+			router.replace(buildPlaybackUrl(), { scroll: false });
 		}
-	}, [router.pathname]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [pathname]);
 
 	return (
 		<>

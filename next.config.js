@@ -1,17 +1,18 @@
 const withPlugins = require('next-compose-plugins');
 const withPWA = require("next-pwa");
-const withTM = require("next-transpile-modules")([
-	"@ionic/react",
-	"@ionic/core",
-	"@stencil/core",
-	"ionicons",
-]);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-	// output: "export",
+	// Set only for the Capacitor mobile build (`npm run export`) — the API proxy
+	// route and ISR revalidation don't exist in a static export, so this must stay
+	// off for the normal web deployment.
+	...(process.env.NEXT_STATIC_EXPORT === "true" ? { output: "export" } : {}),
 	reactStrictMode: true,
 	basePath: "",
+	// Native replacement for next-transpile-modules (removed): that package
+	// predates the App Router and was clobbering Next's built-in CSS loader
+	// rule for the app/ compiler pass, breaking the plain-CSS @ionic/core imports.
+	transpilePackages: ["@ionic/react", "@ionic/core", "@stencil/core", "ionicons"],
 	images: {
 		domains: ["images.unsplash.com"],
 		unoptimized: true,
@@ -35,6 +36,6 @@ const nextConfig = {
 };
 
 module.exports = withPlugins(
-	[withTM, withPWA],
+	[withPWA],
 	nextConfig,
 );

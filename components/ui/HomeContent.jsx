@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import classNames from "classnames";
 import { musicalNoteOutline, musicalNote } from "../../icons";
 import HeaderHome from "../sections/HeaderHome";
@@ -38,7 +39,9 @@ const HomeContent = () => {
 				</div>
 
 				<div className={styles.buttons}>
-					<ButtonGroup />
+					<Suspense fallback={null}>
+						<ButtonGroup />
+					</Suspense>
 				</div>
 
 				<div className={styles.visualizer}>
