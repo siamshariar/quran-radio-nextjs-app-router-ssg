@@ -6,8 +6,8 @@ import styles from "./index.module.css";
 
 const QuranTubeModal = ({ handleModal }) => {
 	return (
-		<div className={styles.dialog}>
-			<div className={styles.modal_content}>
+		<div className={styles.promo_dialog}>
+			<div className={styles.promo_modal_content}>
 				<div className={styles.popup_logo}>
 					<Image
 						src="/img/logo/quran-tube-logo.png"

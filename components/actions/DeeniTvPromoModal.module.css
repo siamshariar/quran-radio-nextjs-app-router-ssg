@@ -7,12 +7,17 @@
 	justify-content: center;
 	padding: 0;
 	background: rgba(0, 0, 0, 0.1);
+	/* This is a promo popup, not a blocking gate — the rest of the page (nav,
+	   player controls, etc.) must stay clickable while it's up. Only the
+	   visible card itself should intercept clicks. */
+	pointer-events: none;
 }
 
 .backdrop {
 	position: absolute;
 	inset: 0;
 	background: transparent;
+	pointer-events: none;
 }
 
 .card {
@@ -28,6 +33,7 @@
 	align-items: center;
 	justify-content: space-between;
 	z-index: 1;
+	pointer-events: auto;
 }
 
 .closeButton {
