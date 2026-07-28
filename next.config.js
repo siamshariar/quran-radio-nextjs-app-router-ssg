@@ -27,6 +27,16 @@ const nextConfig = {
 	},
 	staticPageGenerationTimeout: 180,
 	swcMinify: true,
+	// Dev mode only: @ionic/react's full component registry makes each route's
+	// first compile ~15-25s (~24.5k modules). Next's default on-demand-entries
+	// buffer only keeps a couple of compiled routes in memory, so with this
+	// app's ~10 top-level routes, navigating between more than a couple of
+	// pages evicted the earlier ones and forced a full recompile on every
+	// single click — even for pages already visited. Hold all of them.
+	onDemandEntries: {
+		maxInactiveAge: 60 * 60 * 1000,
+		pagesBufferLength: 20,
+	},
 	pwa: {
 		dest: "public",
 		disable: process.env.NODE_ENV === 'development',
