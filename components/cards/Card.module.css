@@ -177,6 +177,17 @@
 	font-family: "SFProDisplay";
 }
 
+/* This class was referenced in FavRecentList.jsx but never actually defined —
+   the "Duration: ..." text had no color rule of its own, so it fell through
+   to inheriting a low-contrast link color from an ancestor <a>, making it
+   nearly unreadable against the page background. */
+.pausedAt {
+	font-size: 0.7rem;
+	color: #3d3d3f;
+	margin-top: 5px;
+	font-family: "SFProDisplay";
+}
+
 /* favorite card */
 .fav_card .middle {
 	width: calc(100% - 72px - 82px);
