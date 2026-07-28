@@ -1,5 +1,4 @@
 import { GA_TRACKING_ID } from "@/lib/gtag";
-import { server } from "@/lib/config";
 import Providers from "./providers";
 
 // Core CSS required for Ionic components to work properly
@@ -23,21 +22,25 @@ import "@/styles/global.scss";
 
 export const metadata = {
 	title: "Quran.radio",
-	manifest: `${server}/manifest.webmanifest`,
+	// Relative paths — browsers resolve these against whatever origin actually
+	// served the page, so favicon/manifest work correctly on localhost, any
+	// Vercel preview/staging deployment, and the real production domain alike
+	// without needing to guess which one we're on.
+	manifest: "/manifest.webmanifest",
 	applicationName: "Quran.radio",
 	icons: {
 		icon: [
-			{ url: `${server}/img/id/favicon.png`, sizes: "16x16", type: "image/png" },
-			{ url: `${server}/img/id/favicon.png`, sizes: "32x32", type: "image/png" },
+			{ url: "/img/id/favicon.png", sizes: "16x16", type: "image/png" },
+			{ url: "/img/id/favicon.png", sizes: "32x32", type: "image/png" },
 		],
 		apple: [
-			{ url: `${server}/img/app/Quran_Radio_App_Logo_384.jpg` },
-			{ url: `${server}/img/app/Quran_Radio_App_Logo_192.jpg`, sizes: "76x76" },
-			{ url: `${server}/img/app/Quran_Radio_App_Logo_192.jpg`, sizes: "120x120" },
-			{ url: `${server}/img/app/Quran_Radio_App_Logo_192.jpg`, sizes: "152x152" },
-			{ url: `${server}/img/app/Quran_Radio_App_Logo_192.jpg`, sizes: "180x180" },
+			{ url: "/img/app/Quran_Radio_App_Logo_384.jpg" },
+			{ url: "/img/app/Quran_Radio_App_Logo_192.jpg", sizes: "76x76" },
+			{ url: "/img/app/Quran_Radio_App_Logo_192.jpg", sizes: "120x120" },
+			{ url: "/img/app/Quran_Radio_App_Logo_192.jpg", sizes: "152x152" },
+			{ url: "/img/app/Quran_Radio_App_Logo_192.jpg", sizes: "180x180" },
 		],
-		shortcut: `${server}/img/id/favicon.png`,
+		shortcut: "/img/id/favicon.png",
 	},
 	appleWebApp: {
 		title: "Quran.radio",

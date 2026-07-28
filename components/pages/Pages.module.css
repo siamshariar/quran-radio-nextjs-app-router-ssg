@@ -106,6 +106,14 @@
 }
 
 .no_record {
+	/* Was an unstyled <h2>, rendering at the browser's large default h2 size —
+	   far bigger than the rest of the app's text. */
+	font-family: "SFProDisplay";
+	font-size: 15px;
+	font-weight: 500;
+	color: #3d3d3f;
+	text-align: center;
+	margin-top: 24px;
 }
 
 /* chapters page */

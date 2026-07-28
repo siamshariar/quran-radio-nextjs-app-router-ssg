@@ -1,5 +1,4 @@
 import { buildMetadata, getPlaybackMeta, isStaticExport } from "@/lib/metadata";
-import { server } from "@/lib/config";
 import RecentView from "@/components/pages/RecentView";
 
 export async function generateMetadata({ searchParams }) {
@@ -7,8 +6,7 @@ export async function generateMetadata({ searchParams }) {
 	return buildMetadata({
 		title: "Recents",
 		description: "Quran Live Radio and Audio",
-		url: `${server}/recent`,
-		image: `${server}/img/logo/quran-radio-social.png`,
+		path: "/recent",
 		playback: getPlaybackMeta(params),
 	});
 }

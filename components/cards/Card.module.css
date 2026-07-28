@@ -164,14 +164,14 @@
 }
 
 .date {
-	font-size: 0.7rem;
+	font-size: 0.8125rem;
 	color: #3d3d3f;
 	margin-top: 5px;
 	font-family: "SFProDisplay";
 }
 
 .timestamp {
-	font-size: 0.7rem;
+	font-size: 0.8125rem;
 	color: #3d3d3f;
 	margin-top: 5px;
 	font-family: "SFProDisplay";
@@ -182,16 +182,18 @@
    to inheriting a low-contrast link color from an ancestor <a>, making it
    nearly unreadable against the page background. */
 .pausedAt {
-	font-size: 0.7rem;
+	font-size: 0.8125rem;
 	color: #3d3d3f;
 	margin-top: 5px;
 	font-family: "SFProDisplay";
 }
 
 /* favorite card */
-.fav_card .middle {
-	width: calc(100% - 72px - 82px);
-}
+/* (removed duplicate, over-restrictive .fav_card .middle rule that used to
+   live here — it overrode the more accurate calc(100% - 128px) rule above
+   with calc(100% - 154px), leaving ~26px less room than the actual .left
+   (56px) + .right.btns (64px) needed, which is why date/time and duration
+   text wrapped into 3-4 broken lines on narrow mobile screens.) */
 
 .fav_card .right.btns,
 .liveFavCard .right.btns {

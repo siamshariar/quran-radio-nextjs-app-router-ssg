@@ -43,7 +43,7 @@ export default function AboutContent() {
 				<br />
 				<span>Website: </span>
 				<a
-					className="underline"
+					className="underline text-black"
 					href="https://www.deeniinfotech.com/"
 					target="_blank">
 					www.DeeniInfoTech.com
@@ -52,7 +52,7 @@ export default function AboutContent() {
 			<div className="mt-4">
 				<span>Email: </span>
 				<a
-					className="underline"
+					className="underline text-black"
 					href="mailto:info@deeniinfotech.com"
 					target="_blank">
 					info@deeniinfotech.com

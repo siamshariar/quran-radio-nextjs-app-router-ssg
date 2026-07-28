@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import { buildMetadata, getPlaybackMeta, isStaticExport } from "@/lib/metadata";
-import { server } from "@/lib/config";
 import { getReciterById } from "@/lib/fetch";
 import { reciters } from "@/data/reciters";
 import RecitersDetailView from "@/components/pages/RecitersDetailView";
@@ -19,8 +18,7 @@ export async function generateMetadata({ params, searchParams }) {
 	return buildMetadata({
 		title: reciter ? `${reciter.name} — Chapters` : "Chapters",
 		description: "Quran Live Radio and Audio",
-		url: `${server}/reciters/${id}`,
-		image: `${server}/img/logo/quran-radio-social.png`,
+		path: `/reciters/${id}`,
 		playback: getPlaybackMeta(query),
 	});
 }
