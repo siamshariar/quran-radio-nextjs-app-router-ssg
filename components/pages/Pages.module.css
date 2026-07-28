@@ -27,24 +27,20 @@
 	justify-content: flex-start;
 }
 .back {
-	/* Explicit, fixed look instead of relying on Ionic's default (transparent,
-	   fill="clear") shadow-DOM styling — that left the button's background
-	   dependent on ion-button's internal ripple/activated-state timing, so it
-	   sometimes rendered as a plain floating icon and sometimes as a boxed
-	   button depending on exactly when the screenshot/paint happened. */
+	/* No background — explicitly forced transparent (not left to Ionic's
+	   default fill="clear" shadow-DOM styling) so it can't intermittently
+	   pick up a background from ion-button's internal ripple/activated-state
+	   timing, which was showing up as a boxed button on some page loads and
+	   a bare icon on others. */
 	--padding-start: 0;
 	--padding-end: 0;
-	--background: rgba(255, 255, 255, 0.55);
-	--background-activated: rgba(255, 255, 255, 0.55);
-	--background-focused: rgba(255, 255, 255, 0.55);
-	--background-hover: rgba(255, 255, 255, 0.55);
-	--border-radius: 8px;
+	--background: transparent;
+	--background-activated: transparent;
+	--background-focused: transparent;
+	--background-hover: transparent;
 	--box-shadow: none;
-	width: 36px;
-	height: 36px;
 	margin: 0;
-	background: rgba(255, 255, 255, 0.55);
-	border-radius: 8px;
+	background: transparent;
 }
 .back a {
 }
