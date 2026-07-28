@@ -27,20 +27,20 @@
 	justify-content: flex-start;
 }
 .back {
-	/* No background — explicitly forced transparent (not left to Ionic's
-	   default fill="clear" shadow-DOM styling) so it can't intermittently
-	   pick up a background from ion-button's internal ripple/activated-state
-	   timing, which was showing up as a boxed button on some page loads and
-	   a bare icon on others. */
-	--padding-start: 0;
-	--padding-end: 0;
-	--background: transparent;
-	--background-activated: transparent;
-	--background-focused: transparent;
-	--background-hover: transparent;
-	--box-shadow: none;
-	margin: 0;
+	/* Plain <button>, not <IonButton> — this went back and forth between
+	   showing a boxed background and a bare icon depending on exactly when
+	   ion-button's shadow-DOM/ripple hydration happened to settle relative to
+	   paint, including a version of this exact flash on page reload. A plain
+	   button has no custom-element hydration step at all, so its appearance
+	   is identical on the very first paint and every reload thereafter. */
+	border: none;
 	background: transparent;
+	padding: 0;
+	margin: 0;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 }
 .back a {
 }
