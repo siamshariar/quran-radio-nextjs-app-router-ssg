@@ -13,6 +13,16 @@ body {
 	   browser's default white canvas underneath — looked like a white flash/
 	   blink mid-scroll. */
 	min-height: 100%;
+	overscroll-behavior: none;
+}
+html {
+	/* On mobile, a fast flick scroll can rubber-band/bounce past body's own
+	   box for an instant (even with overscroll-behavior: none, some browsers
+	   still show a brief bounce frame). That momentarily reveals whatever is
+	   behind body — html had no background of its own, i.e. transparent,
+	   falling through to the browser's white canvas. Match body's gradient
+	   here too so that instant isn't a flash of white. */
+	background: linear-gradient(90deg, #8b959e, #cdd8e0);
 }
 body {
 	position: relative;

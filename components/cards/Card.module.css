@@ -214,3 +214,35 @@
 		font-size: 24px;
 	}
 }
+
+/* Under ~400px (e.g. iPhone SE at 320px), "Jul 28, 2026, 3:10 PM" and
+   "Duration: 00:00 / 03:01" still didn't fit .middle's width even after
+   fixing the duplicate-rule bug above — there just isn't enough room left
+   once the fixed-width avatar and action icons are subtracted. Trim those
+   down and the text slightly so the date fits one line without losing any
+   information. */
+@media screen and (max-width: 400px) {
+	.reciters .left,
+	.fav_card .left {
+		width: 44px;
+	}
+	.reciters .image,
+	.fav_card .image {
+		width: 44px;
+		height: 44px;
+	}
+	.fav_card .right.btns,
+	.liveFavCard .right.btns {
+		width: 52px;
+	}
+	.reciters .middle,
+	.fav_card .middle,
+	.liveFavCard .middle {
+		width: calc(100% - 104px);
+	}
+	.date,
+	.timestamp,
+	.pausedAt {
+		font-size: 0.75rem;
+	}
+}
