@@ -26,10 +26,10 @@ const Reciters = ({ reciters }) => {
 	// Virtuoso's initialScrollTop prop only takes effect if the list is already
 	// tall enough to scroll that far at mount time — on first paint it hasn't
 	// measured real row heights yet, so it silently ignores the prop when the
-	// estimated height is still shorter than the saved position (confirmed via
-	// rangeChanged never landing it either). useWindowScroll means the window
-	// itself is the real scroll container, so bypass Virtuoso's own ref/prop
-	// entirely and drive window.scrollTo directly, retrying across a few
+	// estimated height is still shorter than the saved position. Calling
+	// Virtuoso's own scrollTo() (rather than raw window.scrollTo) is what the
+	// original Pages Router version did on router.events' routeChangeComplete;
+	// App Router has no equivalent "new page is ready" event, so retry across
 	// frames until the document has actually grown tall enough to reach it.
 	useEffect(() => {
 		if (!isReady || !initialScrollTop || hasRestoredScroll.current) return;
@@ -42,7 +42,7 @@ const Reciters = ({ reciters }) => {
 			attempts += 1;
 			const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
 			if (maxScroll >= initialScrollTop || attempts > 20) {
-				window.scrollTo(0, initialScrollTop);
+				scrollRef.current?.scrollTo({ top: initialScrollTop, behavior: "auto" });
 				hasRestoredScroll.current = true;
 				return;
 			}

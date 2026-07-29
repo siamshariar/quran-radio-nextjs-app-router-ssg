@@ -33,6 +33,20 @@ body {
 	overscroll-behavior: none;
 }
 
+// Ionic's overlay hosts (ion-picker, used by the sleep timer) size themselves
+// with a hardcoded `height: 100%`, which needs body — their containing
+// block, since body has position:relative — to have a definite height to
+// resolve against. body only has min-height (see above), so that percentage
+// silently resolves to auto and the picker's sheet collapses/mispositions
+// itself above the viewport instead of sliding up from the bottom. Force it
+// to a real viewport-relative height instead, which doesn't depend on body's
+// height property at all. !important is required — :host's own rule has
+// higher specificity (a pseudo-class) than this plain type selector, so it
+// wins the cascade even though this stylesheet loads after Ionic's.
+ion-picker {
+	height: 100vh !important;
+}
+
 // #__next {
 // 	height: 100vh;
 // 	width: 100vw;

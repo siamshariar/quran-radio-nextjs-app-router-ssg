@@ -1,11 +1,21 @@
 "use client";
 
 import { Suspense, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { setupIonicReact } from "@ionic/react";
 import { usePathname, useSearchParams } from "next/navigation";
 import * as gtag from "@/lib/gtag";
 import { initializeAudioStore } from "@/store/audio";
-import Player from "@/components/player";
+
+// Matches this app's original Pages Router setup, which mounted Player inside
+// a client-only (ssr: false) wrapper. Ionic's overlay components (IonPicker,
+// used by the sleep timer) position themselves via a Stencil web component
+// that self-upgrades on mount — when Player is server-rendered, that upgrade
+// races React's hydration and the picker's wrapper ends up positioned above
+// the viewport instead of sliding up from the bottom, appearing to never
+// open. Disabling SSR for Player removes that race the same way the original
+// did, instead of reimplementing the sleep timer's UI from scratch.
+const Player = dynamic(() => import("@/components/player"), { ssr: false });
 import {
 	setFavorites,
 	setIsTab,

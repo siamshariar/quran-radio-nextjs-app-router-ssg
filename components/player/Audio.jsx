@@ -220,15 +220,15 @@ const AudioTag = () => {
 	// window after the replace call.
 	const replaceUrlPreservingScroll = (url) => {
 		// On non-shareable routes buildPlaybackUrl() returns the pathname
-		// unchanged, so router.replace(url) here is a same-URL no-op — skip
-		// the scroll watcher entirely rather than installing it for nothing.
-		// It previously fired on every page's initial pathname-change effect
-		// regardless of route, freezing the user's own scrolling on e.g.
-		// /reciters for a second after every load.
-		if (!isShareablePlaybackRoute) {
-			router.replace(url, { scroll: false });
-			return;
-		}
+		// unchanged, so there's nothing to actually update in the URL — skip
+		// the router.replace() call entirely rather than calling it as a
+		// same-URL no-op. It turns out that call alone (even to an identical
+		// URL, even with {scroll:false}) still resets react-virtuoso's
+		// useWindowScroll position to 0 on every track change, which is
+		// exactly the bug this function exists to prevent — confirmed on
+		// /chapters, a non-shareable route, where clicking play while
+		// scrolled down reset the list to the top every time.
+		if (!isShareablePlaybackRoute) return;
 
 		const savedScrollY = window.scrollY;
 		router.replace(url, { scroll: false });
