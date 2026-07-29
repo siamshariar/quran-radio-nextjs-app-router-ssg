@@ -1,4 +1,5 @@
 import { GA_TRACKING_ID } from "@/lib/gtag";
+import { server } from "@/lib/config";
 import Providers from "./providers";
 
 // Core CSS required for Ionic components to work properly
@@ -21,6 +22,12 @@ import "@ionic/core/css/display.css";
 import "@/styles/global.scss";
 
 export const metadata = {
+	// Silences Next's "metadata.metadataBase is not set" warning. Every page's
+	// og:image/og:url is already built as a full absolute URL from the actual
+	// request host (see lib/metadata.js), so this is only a fallback for
+	// anywhere metadata resolution can't determine that per-request — it
+	// doesn't override the per-page values.
+	metadataBase: new URL(server),
 	title: "Quran.radio",
 	// Relative paths — browsers resolve these against whatever origin actually
 	// served the page, so favicon/manifest work correctly on localhost, any
