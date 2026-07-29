@@ -182,7 +182,15 @@ const AudioTag = () => {
 	const pathname = usePathname();
 	const params = useParams();
 
+	// Only Home ("/") and reciter detail pages are meant to be shareable "now
+	// playing" links — syncing the playback query onto every other route (e.g.
+	// /chapters, /favorites) pollutes their metadata, since generateMetadata
+	// on every page reads reciter/chapter from searchParams unconditionally.
+	const isShareablePlaybackRoute = pathname === "/" || /^\/reciters\/[^/]+$/.test(pathname);
+
 	const buildPlaybackUrl = () => {
+		if (!isShareablePlaybackRoute) return pathname;
+
 		const query = new URLSearchParams();
 		if (params?.id) query.set("id", params.id);
 		if (mode === "normal") {
