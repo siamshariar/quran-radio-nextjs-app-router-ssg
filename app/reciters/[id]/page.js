@@ -15,10 +15,16 @@ export async function generateMetadata({ params, searchParams }) {
 	const query = isStaticExport ? {} : await searchParams;
 	const reciter = await getReciterById(parseInt(encodeURI(id)));
 
+	// og:url must reflect the exact shared link (including ?reciter=&chapter=),
+	// not just the bare path — crawlers like Facebook cache a shared link by its
+	// og:url, so a constant path here would collapse every chapter share on this
+	// reciter into a single cached preview instead of one per shared chapter.
+	const qs = new URLSearchParams(query).toString();
+
 	return buildMetadata({
 		title: reciter ? `${reciter.name} — Chapters` : "Chapters",
 		description: "Quran Live Radio and Audio",
-		path: `/reciters/${id}`,
+		path: qs ? `/reciters/${id}?${qs}` : `/reciters/${id}`,
 		playback: getPlaybackMeta(query),
 	});
 }
