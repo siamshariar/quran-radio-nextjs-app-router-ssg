@@ -203,6 +203,47 @@ const AudioTag = () => {
 		return qs ? `${pathname}?${qs}` : pathname;
 	};
 
+	// Must be router.replace(), not a plain window.history.replaceState() call —
+	// that was tried first to dodge the scroll reset below, but it desyncs
+	// Next's own client-side router state from the browser's real history
+	// stack: the address bar updates, yet Next's router still thinks it's on
+	// the previous route, so a later browser back-navigation shows completely
+	// stale content (verified: URL bar said /reciters, but the DOM still
+	// showed the reciter-detail page indefinitely). router.replace() keeps
+	// them in sync, but even with {scroll:false} it still resets
+	// react-virtuoso's useWindowScroll position to 0 on every track switch —
+	// that option only suppresses Next's own scroll-to-top, not this side
+	// effect. The reset doesn't land on a predictable frame (it trails the
+	// replace's own async re-render, e.g. generateMetadata re-running against
+	// the new searchParams), so a fixed number of rAF retries isn't reliable —
+	// instead, actively watch for and correct any scroll change for a short
+	// window after the replace call.
+	const replaceUrlPreservingScroll = (url) => {
+		// On non-shareable routes buildPlaybackUrl() returns the pathname
+		// unchanged, so router.replace(url) here is a same-URL no-op — skip
+		// the scroll watcher entirely rather than installing it for nothing.
+		// It previously fired on every page's initial pathname-change effect
+		// regardless of route, freezing the user's own scrolling on e.g.
+		// /reciters for a second after every load.
+		if (!isShareablePlaybackRoute) {
+			router.replace(url, { scroll: false });
+			return;
+		}
+
+		const savedScrollY = window.scrollY;
+		router.replace(url, { scroll: false });
+
+		const enforceScroll = () => {
+			if (window.scrollY !== savedScrollY) {
+				window.scrollTo(0, savedScrollY);
+			}
+		};
+		window.addEventListener("scroll", enforceScroll, { passive: true });
+		setTimeout(() => {
+			window.removeEventListener("scroll", enforceScroll);
+		}, 1000);
+	};
+
 	useEffect(() => {
 		setIsPageLoaded(true);
 	}, []);
@@ -275,9 +316,9 @@ const AudioTag = () => {
 		} else {
 			pauseAudio();
 		}
-		// Update the URL without triggering a full page navigation
+		// Update the URL without triggering a full page navigation (see note above)
 		if (isPageLoaded) {
-			router.replace(buildPlaybackUrl(), { scroll: false });
+			replaceUrlPreservingScroll(buildPlaybackUrl());
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [playing, src, liveSrc, mode, playbackRate]);
@@ -326,10 +367,10 @@ const AudioTag = () => {
 		}
 	}, [loading, playing]);
 
-	// Update the URL without triggering a full page navigation
+	// Update the URL without triggering a full page navigation (see note above)
 	useEffect(() => {
 		if (isPageLoaded) {
-			router.replace(buildPlaybackUrl(), { scroll: false });
+			replaceUrlPreservingScroll(buildPlaybackUrl());
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [pathname]);

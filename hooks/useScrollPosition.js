@@ -13,12 +13,24 @@ export function useScrollPosition() {
   const initialScrollTop = useRef(getSessionNumber("reciterScrollPosition", 0))
 
   useEffect(() => {
+    // Neither an unmount cleanup nor a plain scroll listener works here:
+    // Next.js's own navigation scroll-to-top runs before this component
+    // unmounts, and it fires as a real `scroll` event too — so anything
+    // meant to track "this page's" position ends up overwritten with 0 by
+    // that reset before an unmount-time save could ever run. A capturing
+    // click listener runs synchronously during the click's capture phase,
+    // strictly before the Link's own handler starts the navigation (and
+    // before any resulting scroll reset), so it's the only reliably correct
+    // point to snapshot the still-current scroll position. This must be the
+    // ONLY writer — an unmount-time save as a second writer previously raced
+    // this one and clobbered the correct value with a stale one.
+    const handleClickCapture = () => {
+      setSessionItem("reciterScrollPosition", String(window.scrollY))
+    }
+    window.addEventListener("click", handleClickCapture, { capture: true })
+
     return () => {
-      if (scrollRef.current?.getState) {
-        scrollRef.current.getState((state) => {
-          setSessionItem("reciterScrollPosition", String(state.scrollTop))
-        })
-      }
+      window.removeEventListener("click", handleClickCapture, { capture: true })
     }
   }, [])
 

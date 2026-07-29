@@ -44,7 +44,13 @@ const PlaybackRateModal = ({ open, handler }) => {
 		if (!open) return;
 
 		const handleOpen = (e) => {
-			if (e.target === modalRef.current) return;
+			// Must check the whole subtree, not just the modal's own wrapper node —
+			// clicking a speed button inside the modal is a click on a *descendant*
+			// of modalRef.current, so a strict === check let this listener close the
+			// modal (and stopPropagation) before the button's own onClick could ever
+			// fire, silently discarding every speed selection except whatever the
+			// default happened to already be.
+			if (modalRef.current && modalRef.current.contains(e.target)) return;
 			handler(e, false);
 		};
 		document.body.addEventListener("click", handleOpen);
@@ -53,8 +59,9 @@ const PlaybackRateModal = ({ open, handler }) => {
 		};
 	}, [open, handler]);
 
-	const setPlaybackSpeed = (rate) => {
+	const setPlaybackSpeed = (e, rate) => {
 		setPlaybackRate(rate);
+		handler(e, false);
 	};
 
 	return (
@@ -67,27 +74,27 @@ const PlaybackRateModal = ({ open, handler }) => {
 				<div className={styles.header}>Playback Speed</div>
 				<button
 					className={playbackRate === 0.5 ? styles.active : ""}
-					onClick={() => setPlaybackSpeed(0.5)}>
+					onClick={(e) => setPlaybackSpeed(e, 0.5)}>
 					0.5
 				</button>
 				<button
 					className={playbackRate === 0.75 ? styles.active : ""}
-					onClick={() => setPlaybackSpeed(0.75)}>
+					onClick={(e) => setPlaybackSpeed(e, 0.75)}>
 					0.75
 				</button>
 				<button
 					className={playbackRate === 1 ? styles.active : ""}
-					onClick={() => setPlaybackSpeed(1)}>
+					onClick={(e) => setPlaybackSpeed(e, 1)}>
 					Normal
 				</button>
 				<button
 					className={playbackRate === 1.25 ? styles.active : ""}
-					onClick={() => setPlaybackSpeed(1.25)}>
+					onClick={(e) => setPlaybackSpeed(e, 1.25)}>
 					1.25
 				</button>
 				<button
 					className={playbackRate === 1.5 ? styles.active : ""}
-					onClick={() => setPlaybackSpeed(1.5)}>
+					onClick={(e) => setPlaybackSpeed(e, 1.5)}>
 					1.5
 				</button>
 			</div>

@@ -106,17 +106,12 @@
 }
 
 .no_record {
-	display: block;
-	width: fit-content;
-	margin: 24px auto 0;
 	font-family: "SFProDisplay";
-	font-size: 15px;
+	font-size: 17px;
 	font-weight: 500;
 	color: #3d3d3f;
-	text-align: center;
-	background-color: rgba(217, 217, 217, 0.6);
-	border-radius: 24px;
-	padding: 10px 24px;
+	text-align: left;
+	margin-top: 24px;
 }
 
 /* chapters page */

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { search } from "@/icons";
 import ReciterCard from "@/components/cards/Reciter";
 import styles from "./Pages.module.css";
@@ -11,6 +11,7 @@ const Reciters = ({ reciters }) => {
 	// const reciters = PlayerStore.useState((s) => s.reciters);
 	const [filter, setFilter] = useState("");
 	const [isReady, setIsReady] = useState(false);
+	const hasRestoredScroll = useRef(false);
 
 	const filteredReciters = reciters.filter((item) =>
 		item.name.toLowerCase().includes(filter.toLowerCase())
@@ -18,10 +19,41 @@ const Reciters = ({ reciters }) => {
 
 	const { scrollRef, initialScrollTop } = useScrollPosition();
 
-
   useEffect(() => {
     setIsReady(true)
   }, [])
+
+	// Virtuoso's initialScrollTop prop only takes effect if the list is already
+	// tall enough to scroll that far at mount time — on first paint it hasn't
+	// measured real row heights yet, so it silently ignores the prop when the
+	// estimated height is still shorter than the saved position (confirmed via
+	// rangeChanged never landing it either). useWindowScroll means the window
+	// itself is the real scroll container, so bypass Virtuoso's own ref/prop
+	// entirely and drive window.scrollTo directly, retrying across a few
+	// frames until the document has actually grown tall enough to reach it.
+	useEffect(() => {
+		if (!isReady || !initialScrollTop || hasRestoredScroll.current) return;
+
+		let cancelled = false;
+		let attempts = 0;
+
+		const tryRestore = () => {
+			if (cancelled) return;
+			attempts += 1;
+			const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+			if (maxScroll >= initialScrollTop || attempts > 20) {
+				window.scrollTo(0, initialScrollTop);
+				hasRestoredScroll.current = true;
+				return;
+			}
+			requestAnimationFrame(tryRestore);
+		};
+		requestAnimationFrame(tryRestore);
+
+		return () => {
+			cancelled = true;
+		};
+	}, [isReady, initialScrollTop]);
 
   const contentStyle = {
     visibility: isReady ? "visible" : "hidden",
