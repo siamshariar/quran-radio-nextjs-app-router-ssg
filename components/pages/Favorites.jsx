@@ -129,7 +129,7 @@ const Favorites = () => {
 								/>
 							))
 						) : (
-							<h2>No record found!</h2>
+							<div>No record found!</div>
 						)}
 					</div>
 				</CustomTabPanel>
@@ -145,7 +145,7 @@ const Favorites = () => {
 								/>
               ))
 						) : (
-							<h2>No record found!</h2>
+							<div>No record found!</div>
             )}
 					</div>
 				</CustomTabPanel>
@@ -157,7 +157,7 @@ const Favorites = () => {
                 <ReciterCard key={index} reciter={reciter} removeReciterFavorite={handleRemoveReciterFavorite} />
 							))
 						) : (
-							<h2>No record found!</h2>
+							<div>No record found!</div>
 						)}
 					</div>
 				</CustomTabPanel>
