@@ -82,7 +82,7 @@ const Reciter = ({ reciter,  removeReciterFavorite, noRemoveIcon }) => {
 			id={reciter.id}>
 			<div className={styles.wrapper}>
 				<div className={styles.left}>
-					<Link href={`/reciters/${reciter.id}`}>
+					<Link href={`/reciters/${reciter.id}`} scroll={false}>
 						<div className={styles.image}>
 							{/* <img src={`/img/reciters/${reciter.reciter_image}`} alt="" /> */}
 							<Image
@@ -97,7 +97,7 @@ const Reciter = ({ reciter,  removeReciterFavorite, noRemoveIcon }) => {
 					</Link>
 				</div>
 
-				<Link href={`/reciters/${reciter.id}`} className={styles.middle}>
+				<Link href={`/reciters/${reciter.id}`} scroll={false} className={styles.middle}>
 					<div className={styles.name}>{reciter.name}</div>
 					<div className={styles.meaning}>
 						- Recited sura {reciter.moshaf[0].surah_list.split(",").length}
