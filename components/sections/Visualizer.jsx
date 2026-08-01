@@ -36,8 +36,7 @@ const Visualizer = () => {
 
   useEffect(() => {
     if (mode === "normal" && dur) {
-	    const nextWidth = (currentTime * 100) / dur
-	    setProgressWidth(Math.max(0, Math.min(100, Number.isFinite(nextWidth) ? nextWidth : 0)))
+      setProgressWidth((currentTime * 100) / dur)
     } else {
       setProgressWidth(100)
     }
@@ -92,7 +91,7 @@ const Visualizer = () => {
 
 	const handleProgress = (progress) => {
 		setIsProgress(false);
-		const compute = (Math.max(0, Math.min(100, Number(progress))) * dur) / 100;
+		const compute = (progress * dur) / 100;
 		setCurrentTime(compute);
 
     localStorage.setItem("audioPausedTime", compute.toString())
