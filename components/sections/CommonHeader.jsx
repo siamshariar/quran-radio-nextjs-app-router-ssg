@@ -19,7 +19,7 @@ export default function CommonHeader({ title, prev_page = "/" }) {
 		if (historyLength > 2) {
 			router.back();
 		} else {
-			router.push(`${prev_page}`, { scroll: false });
+			router.push(`${prev_page}`);
 		}
 	};
 
