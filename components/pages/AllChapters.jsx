@@ -18,23 +18,23 @@ const AllChapterList = ({ chapters }) => {
 	return (
 		<>
 			<div className={styles.content} style={contentStyle}>
-				<div className="page_width">
-					{isReady && (
-						<Virtuoso
-							style={{ height: '100%' }}
-							totalCount={chapters.length}
+			<div className="page_width" style={{ paddingBottom: "100px" }}>
+			{isReady && (
+				<Virtuoso
+							
+				totalCount={chapters.length}
 							useWindowScroll
-							itemContent={(index) => (
-							<AllChapterCard
-								key={chapters[index].id}
-								index={index}
-	              chapter={chapters[index]}
-	            />
-							)}
-          overscan={200}
-        />
-					)}
-				</div>
+				itemContent={(index) => (
+					<AllChapterCard
+					key={chapters[index].id}
+					index={index}
+					chapter={chapters[index]}
+					/>
+				)}
+				overscan={200}
+				/>
+			)}
+			</div>
 			</div>
 		</>
 	);
