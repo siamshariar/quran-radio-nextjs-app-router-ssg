@@ -99,7 +99,7 @@ const Reciters = ({ reciters }) => {
             totalCount={filteredReciters.length}
             itemContent={(index) => ( <ReciterCard key={filteredReciters[index].id} reciter={filteredReciters[index]} noRemoveIcon /> )}
             components={{
-              Footer: () => <div style={{ height: "75px" }}></div>,
+              Footer: () => <div style={{ height: "80px" }}></div>,
             }}
             initialScrollTop={initialScrollTop}
           />
