@@ -5,7 +5,11 @@ import styles from "./Pages.module.css";
 import { IonIcon } from "@ionic/react";
 import { Virtuoso } from "react-virtuoso";
 import { useScrollPosition } from "@/hooks/useScrollPosition";
+import { getSessionItem, getSessionNumber } from "@/components/utils/session-storage";
 // import { Virtuoso } from "react-virtuoso";
+
+const ANCHOR_ID_KEY = "reciterScrollAnchorId";
+const ANCHOR_TOP_KEY = "reciterScrollAnchorTop";
 
 const Reciters = ({ reciters }) => {
 	// const reciters = PlayerStore.useState((s) => s.reciters);
@@ -43,6 +47,22 @@ const Reciters = ({ reciters }) => {
 			const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
 			if (maxScroll >= initialScrollTop || attempts > 20) {
 				scrollRef.current?.scrollTo({ top: initialScrollTop, behavior: "auto" });
+
+				const anchorId = getSessionItem(ANCHOR_ID_KEY);
+				const savedAnchorTop = getSessionNumber(ANCHOR_TOP_KEY, Number.NaN);
+				if (anchorId && Number.isFinite(savedAnchorTop)) {
+					requestAnimationFrame(() => {
+						const anchorEl = document.getElementById(anchorId);
+						if (!anchorEl) return;
+
+						const currentTop = Math.round(anchorEl.getBoundingClientRect().top);
+						const delta = currentTop - savedAnchorTop;
+						if (Math.abs(delta) > 1) {
+							window.scrollBy({ top: delta, behavior: "auto" });
+						}
+					});
+				}
+
 				hasRestoredScroll.current = true;
 				return;
 			}
