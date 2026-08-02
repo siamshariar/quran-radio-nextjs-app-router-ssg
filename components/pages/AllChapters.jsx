@@ -21,6 +21,7 @@ const AllChapterList = ({ chapters }) => {
 			<div className="page_width" style={{ paddingBottom: "100px" }}>
 			{isReady && (
 				<Virtuoso
+
 				totalCount={chapters.length}
 							useWindowScroll
 				itemContent={(index) => (
