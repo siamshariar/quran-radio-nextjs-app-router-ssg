@@ -10,7 +10,7 @@
 }
 
 .panel_container {
-	background-color: #fff;
+	background: linear-gradient(90deg, #8b959e, #cdd8e0);
 	border-radius: 0;
 	padding-top: 12px;
 	padding-top: 0;
@@ -30,7 +30,7 @@
 	height: 60px;
 	background-color: var(--ion-background-color);
 	transform: translateY(-100%);
-	background-color: #fff;
+	background: linear-gradient(90deg, #8b959e, #cdd8e0);
 	display: none;
 }
 
