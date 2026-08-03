@@ -14,7 +14,6 @@ const AllChapterList = ({ chapters }) => {
 		visibility: isReady ? "visible" : "hidden",
 		height: "calc(100vh - 120px)",
 	};
-
 	return (
 		<>
 			<div className={styles.content} style={contentStyle}>
