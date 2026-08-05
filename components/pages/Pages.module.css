@@ -2,7 +2,7 @@
 	height: 100%;
 }
 .wrapper {
-	/* background: linear-gradient(90deg, #8b959e, #cdd8e0); */
+	background: linear-gradient(90deg, #8b959e, #cdd8e0);
 	padding-left: 30px;
 	padding-right: 30px;
 	padding-top: 56px;
@@ -13,7 +13,7 @@
 .header {
 	color: #3d3d3f;
 	padding: 16px 0;
-	/* background: linear-gradient(90deg, #8b959e, #cdd8e0); */
+	background: linear-gradient(90deg, #8b959e, #cdd8e0);
 }
 .header_content {
 	display: flex;
