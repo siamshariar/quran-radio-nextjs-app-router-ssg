@@ -31,9 +31,6 @@
 .liveFavCard.card::after {
 	left: 52px;
 }
-.card:last-child::after {
-	display: none;
-}
 .card.active {
 }
 .card.active .wrapper {
