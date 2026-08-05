@@ -117,7 +117,7 @@ const Reciters = ({ reciters }) => {
             useWindowScroll
             style={{ height: "100%" }}
             totalCount={filteredReciters.length}
-            itemContent={(index) => ( <ReciterCard key={filteredReciters[index].id} reciter={filteredReciters[index]} noRemoveIcon /> )}
+            itemContent={(index) => ( <ReciterCard key={filteredReciters[index].id} reciter={filteredReciters[index]} noRemoveIcon isLast={index === filteredReciters.length - 1} /> )}
             components={{
               Footer: () => <div style={{ height: "80px" }}></div>,
             }}

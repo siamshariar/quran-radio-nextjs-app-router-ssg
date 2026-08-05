@@ -10,7 +10,7 @@ import { useSettingStorage } from "@/hooks/useSettingStorage";
 import { formatDate } from "../utils/formatDate";
 // import RadioIcon from "@mui/icons-material/Radio";
 
-  const LiveFavRecent = ({ item, handleRemoveLiveFavorite, handleRemoveLiveRecent, noRemoveIcon }) => {
+  const LiveFavRecent = ({ item, handleRemoveLiveFavorite, handleRemoveLiveRecent, noRemoveIcon, isLast }) => {
 	const playing = PlayerStore.useState((s) => s.playing);
 	const currLive = PlayerStore.useState((s) => s.currLive);
 	const mode = LocalStore.useState((s) => s.settings.mode);
@@ -43,7 +43,7 @@ import { formatDate } from "../utils/formatDate";
 	};
   
 	return (
-		<div className={classNames(styles.card, styles.liveFavCard)}>
+		<div className={classNames(styles.card, styles.liveFavCard, isLast && styles.last)}>
 			<div className={styles.wrapper}>
 				<div className={styles.left}>
 					<div className={styles.image}>

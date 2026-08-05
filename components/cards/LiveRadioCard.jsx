@@ -8,7 +8,7 @@ import { LocalStore } from "@/store/local";
 // import RadioIcon from "@mui/icons-material/Radio";
 import { radioOutline } from "ionicons/icons";
 
-const LiveRadioCard = ({ liveRadio, index }) => {
+const LiveRadioCard = ({ liveRadio, index, isLast }) => {
 	const playing = PlayerStore.useState((s) => s.playing);
 	const currLive = PlayerStore.useState((s) => s.currLive);
 	const mode = LocalStore.useState((s) => s.settings.mode);
@@ -36,7 +36,8 @@ const LiveRadioCard = ({ liveRadio, index }) => {
 		<div
 			className={classNames(
 				styles.card,
-				currLive.id === liveRadio.id ? styles.active : ""
+				currLive.id === liveRadio.id ? styles.active : "",
+				isLast && styles.last
 			)}>
 			<div className={styles.wrapper}>
 				<div className={styles.left}>

@@ -31,6 +31,15 @@
 .liveFavCard.card::after {
 	left: 52px;
 }
+/* Applied explicitly by the last item's index in each list, rather than
+   :last-child - virtualized lists (react-virtuoso) only mount a small
+   rolling window of DOM nodes, so :last-child would match whichever item
+   currently sits at the bottom of that window instead of the true last
+   item. */
+.card.last::after,
+.card.last .wrapper::after {
+	display: none;
+}
 .card.active {
 }
 .card.active .wrapper {

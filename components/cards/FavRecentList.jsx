@@ -29,7 +29,7 @@ import { useEffect, useState } from "react"
 import storage from "@/store/storage" // import storage
 import { useTrackStorage } from "@/hooks/useTrackStorage"
 
-const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemoveIcon, isRecent }) => {
+const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemoveIcon, isRecent, isLast }) => {
 	const playing = PlayerStore.useState((s) => s.playing);
 	const reciterId = PlayerStore.useState((s) => s.reciterId);
 	const chapterIndex = PlayerStore.useState((s) => s.chapterIndex);
@@ -202,7 +202,7 @@ const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemov
   }, [currentTime, isCurrentTrack]);
 
 	return (
-		<div className={classNames(styles.card, styles.fav_card, styles.recent)}>
+		<div className={classNames(styles.card, styles.fav_card, styles.recent, isLast && styles.last)}>
 			<div className={styles.wrapper}>
 				<div className={styles.left}>
 					<Link href={`/reciters/${item.reciterId}`}>

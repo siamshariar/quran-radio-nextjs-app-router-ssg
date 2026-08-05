@@ -28,6 +28,7 @@ const AllChapterList = ({ chapters }) => {
 					key={chapters[index].id}
 					index={index}
 					chapter={chapters[index]}
+					isLast={index === chapters.length - 1}
 					/>
 				)}
 				overscan={200}

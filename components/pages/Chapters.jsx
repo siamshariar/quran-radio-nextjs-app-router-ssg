@@ -58,6 +58,7 @@ const ChapterListPage = ({ reciter, chapterList, index }) => {
 						index={index}
 						reciter={reciter}
 						chapterNo={chapterNo}
+						isLast={index === chapterList.length - 1}
 					/>
 				</div>
 			</div>
