@@ -51,16 +51,14 @@ const ChapterListPage = ({ reciter, chapterList, index }) => {
 				</div>
 			)}
 
-			<div className={styles.content}>
-				<div className="page_width">
-					<ChapterCard
-						key={`${reciter?.id}-${chapterNo}`}
-						index={index}
-						reciter={reciter}
-						chapterNo={chapterNo}
-						isLast={index === chapterList.length - 1}
-					/>
-				</div>
+			<div className="page_width">
+				<ChapterCard
+					key={`${reciter?.id}-${chapterNo}`}
+					index={index}
+					reciter={reciter}
+					chapterNo={chapterNo}
+					isLast={index === chapterList.length - 1}
+				/>
 			</div>
 		</>
 	);
