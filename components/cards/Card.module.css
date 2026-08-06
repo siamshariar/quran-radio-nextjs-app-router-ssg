@@ -1,7 +1,16 @@
 .card {
 	margin-top: 0;
 	padding: 0;
+	padding-bottom: 4px;
 	position: relative;
+	/* A real border-bottom instead of an absolutely-positioned pseudo-element
+	   hairline - the pseudo-element approach sat on top of react-virtuoso's
+	   per-item transform: translateY(Npx) positioning, and once that
+	   accumulated offset landed on a fractional sub-pixel value, Chrome
+	   (unlike Firefox) would sometimes fail to rasterize the 1px overlay at
+	   all. A border is part of the box's own layout box, not a separately
+	   positioned overlay, so it doesn't inherit that sub-pixel drift. */
+	border-bottom: 1px solid rgba(61, 61, 63, 0.35);
 }
 .card:first-child {
 	margin-top: 0;
@@ -9,36 +18,14 @@
 .card:last-child {
 	margin-bottom: 0;
 }
-.card::after {
-	content: "";
-	position: absolute;
-	bottom: 4px;
-	left: 56px;
-	right: 0;
-	height: 1px;
-	background: linear-gradient(
-		90deg,
-		rgba(61, 61, 63, 0.7) 1.01%,
-		rgba(142, 152, 161, 0.7) 100.67%
-	);
-}
-.reciters.card::after {
-	left: 75px;
-}
-.fav_card.card::after {
-	left: 72px;
-}
-.liveFavCard.card::after {
-	left: 52px;
-}
 /* Applied explicitly by the last item's index in each list, rather than
    :last-child - virtualized lists (react-virtuoso) only mount a small
    rolling window of DOM nodes, so :last-child would match whichever item
    currently sits at the bottom of that window instead of the true last
    item. */
-.card.last::after,
-.card.last .wrapper::after {
-	display: none;
+.card.last {
+	border-bottom: none;
+	padding-bottom: 0;
 }
 .card.active {
 }
@@ -50,19 +37,6 @@
 	justify-content: space-between;
 	align-items: center;
 	padding-bottom: 7px;
-}
-.reciters .wrapper:after {
-  left: 75px;
-}
-
-.wrapper:after{
-  content: "";
-  position: absolute;
-  bottom: 4px;
-  left: 56px;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, rgba(61, 61, 63, .7) 1.01%, hsla(208, 9%, 59%, .7) 100.67%);
 }
 .left {
 	width: 40px;
