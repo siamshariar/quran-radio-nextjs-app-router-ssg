@@ -9,8 +9,16 @@
 	   accumulated offset landed on a fractional sub-pixel value, Chrome
 	   (unlike Firefox) would sometimes fail to rasterize the 1px overlay at
 	   all. A border is part of the box's own layout box, not a separately
-	   positioned overlay, so it doesn't inherit that sub-pixel drift. */
-	border-bottom: 1px solid rgba(61, 61, 63, 0.35);
+	   positioned overlay, so it doesn't inherit that sub-pixel drift.
+
+	   border-image (not border-color) so the exact original two-tone
+	   gradient is preserved - border-color only accepts a flat color. */
+	border-bottom: 1px solid transparent;
+	border-image: linear-gradient(
+		90deg,
+		rgba(61, 61, 63, 0.7) 1.01%,
+		hsla(208, 9%, 59%, 0.7) 100.67%
+	) 1;
 }
 .card:first-child {
 	margin-top: 0;
@@ -25,6 +33,7 @@
    item. */
 .card.last {
 	border-bottom: none;
+	border-image: none;
 	padding-bottom: 0;
 }
 .card.active {
