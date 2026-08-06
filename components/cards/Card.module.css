@@ -1,7 +1,7 @@
 .card {
-	margin-top: 0;
+	margin-top: 2px;
 	padding: 0;
-	padding-bottom: 4px;
+	padding-bottom: 2px;
 	position: relative;
 	/* A background gradient painted on the card's own box, instead of an
 	   absolutely-positioned pseudo-element hairline - the pseudo-element
