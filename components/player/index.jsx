@@ -15,6 +15,8 @@ import Dialog from "./Dialog";
 import QuranTubeModal from "./QuranTubeModal";
 import DeeniTvPromoModal from "../actions/DeeniTvPromoModal";
 
+// Flip to true to re-enable the Deeni TV promo popup.
+const DEENI_TV_PROMO_ENABLED = false;
 const DEENI_TV_PROMO_STORAGE_KEY = "deenitv-web-promo-shown";
 const QURAN_TUBE_MODAL_STORAGE_KEY = "quranTubeModal";
 const FIRST_DIALOG_STORAGE_KEY = "firstDialog";
@@ -179,7 +181,7 @@ const Player = () => {
 			setDialogOpen(true);
 		}
 
-		if (firstDialog && !promoShown) {
+		if (DEENI_TV_PROMO_ENABLED && firstDialog && !promoShown) {
 			schedulePromoPopup();
 		}
 
@@ -203,7 +205,9 @@ const Player = () => {
 		setDialogOpen(false);
 		setPlaying(true);
 		localStorage.setItem(FIRST_DIALOG_STORAGE_KEY, JSON.stringify(true));
-		schedulePromoPopup();
+		if (DEENI_TV_PROMO_ENABLED) {
+			schedulePromoPopup();
+		}
 		scheduleQuranTubeModal();
 	};
 
