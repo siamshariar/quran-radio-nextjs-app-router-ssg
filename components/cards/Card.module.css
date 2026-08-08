@@ -1,7 +1,32 @@
 .card {
-	margin-top: 0;
+	margin-top: 4px;
 	padding: 0;
+	padding-bottom: 4px;
 	position: relative;
+	/* A background gradient painted on the card's own box, instead of an
+	   absolutely-positioned pseudo-element hairline - the pseudo-element
+	   approach sat on top of react-virtuoso's per-item
+	   transform: translateY(Npx) positioning, and once that accumulated
+	   offset landed on a fractional sub-pixel value, Chrome (unlike
+	   Firefox) would sometimes fail to rasterize the 1px overlay at all.
+	   A background layer is part of the box's own paint, not a separately
+	   positioned overlay, so it doesn't inherit that sub-pixel drift.
+
+	   Inset from the left by .left's width + .wrapper's gap (40 + 20) so
+	   it starts right after the avatar/number circle, matching .reciters/
+	   .fav_card's wider avatar below. */
+	background-image: linear-gradient(
+		90deg,
+		rgba(61, 61, 63, 0.7) 1.01%,
+		hsla(208, 9%, 59%, 0.7) 100.67%
+	);
+	background-repeat: no-repeat;
+	background-position: right bottom;
+	background-size: calc(100% - 60px) 1px;
+}
+.reciters.card,
+.fav_card.card {
+	background-size: calc(100% - 76px) 1px;
 }
 .card:first-child {
 	margin-top: 0;
@@ -9,30 +34,14 @@
 .card:last-child {
 	margin-bottom: 0;
 }
-.card::after {
-	content: "";
-	position: absolute;
-	bottom: 4px;
-	left: 56px;
-	right: 0;
-	height: 0.7px;
-	background: linear-gradient(
-		90deg,
-		rgba(61, 61, 63, 0.7) 1.01%,
-		rgba(142, 152, 161, 0.7) 100.67%
-	);
-}
-.reciters.card::after {
-	left: 75px;
-}
-.fav_card.card::after {
-	left: 72px;
-}
-.liveFavCard.card::after {
-	left: 52px;
-}
-.card:last-child::after {
-	display: none;
+/* Applied explicitly by the last item's index in each list, rather than
+   :last-child - virtualized lists (react-virtuoso) only mount a small
+   rolling window of DOM nodes, so :last-child would match whichever item
+   currently sits at the bottom of that window instead of the true last
+   item. */
+.card.last {
+	background-image: none;
+	padding-bottom: 0;
 }
 .card.active {
 }
@@ -43,20 +52,8 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding-bottom: 7px;
-}
-.reciters .wrapper:after {
-  left: 75px;
-}
-
-.wrapper:after{
-  content: "";
-  position: absolute;
-  bottom: 4px;
-  left: 56px;
-  right: 0;
-  height: .7px;
-  background: linear-gradient(90deg, rgba(61, 61, 63, .7) 1.01%, hsla(208, 9%, 59%, .7) 100.67%);
+	gap: 20px;
+	/* padding-bottom: 7px; */
 }
 .left {
 	width: 40px;

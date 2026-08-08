@@ -14,14 +14,13 @@ const AllChapterList = ({ chapters }) => {
 		visibility: isReady ? "visible" : "hidden",
 		height: "calc(100vh - 120px)",
 	};
-
 	return (
 		<>
 			<div className={styles.content} style={contentStyle}>
 			<div className="page_width" style={{ paddingBottom: "100px" }}>
 			{isReady && (
 				<Virtuoso
-							
+
 				totalCount={chapters.length}
 							useWindowScroll
 				itemContent={(index) => (
@@ -29,6 +28,7 @@ const AllChapterList = ({ chapters }) => {
 					key={chapters[index].id}
 					index={index}
 					chapter={chapters[index]}
+					isLast={index === chapters.length - 1}
 					/>
 				)}
 				overscan={200}
