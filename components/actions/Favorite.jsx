@@ -80,11 +80,11 @@ const Favorite = ({ reciterId, chapterNo, classes, icon }) => {
 				<div
 					className={`${classes.btn} ${classes.fav_added}`}
 					onClick={() => handleRemoveFavorite()}>
-					<IonIcon icon={icon.added} slot="start" class={classes.icon} />
+					<IonIcon icon={icon.added} slot="start" className={classes.icon} />
 				</div>
 			) : (
 				<div className={classes.btn} onClick={() => handleAddFavorite()}>
-					<IonIcon icon={icon.removed} slot="start" class={classes.icon} />
+					<IonIcon icon={icon.removed} slot="start" className={classes.icon} />
 				</div>
 			)}
 		</div>
@@ -94,11 +94,11 @@ const Favorite = ({ reciterId, chapterNo, classes, icon }) => {
 				<div
 					className={`${classes.btn} ${classes.fav_added}`}
 					onClick={() => handleRemoveLiveFavorite()}>
-					<IonIcon icon={icon.added} slot="start" class={classes.icon} />
+					<IonIcon icon={icon.added} slot="start" className={classes.icon} />
 				</div>
 			) : (
 				<div className={classes.btn} onClick={() => handleAddLiveFavorite()}>
-					<IonIcon icon={icon.removed} slot="start" class={classes.icon} />
+					<IonIcon icon={icon.removed} slot="start" className={classes.icon} />
 				</div>
 			)}
 		</div>

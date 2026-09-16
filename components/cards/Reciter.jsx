@@ -12,11 +12,12 @@ import {
 import { playCircle, pauseCircle } from "@/icons";
 import styles from "./Card.module.css";
 import { IonIcon } from "@ionic/react";
+import { trashOutline } from "ionicons/icons";
 import { useSettingStorage } from "@/hooks/useSettingStorage";
 import { LocalStore } from "@/store/local";
 import Image from "next/image";
 
-const Reciter = ({ reciter }) => {
+const Reciter = ({ reciter,  removeReciterFavorite, noRemoveIcon }) => {
 	const playing = PlayerStore.useState((s) => s.playing);
 	const reciterId = PlayerStore.useState((s) => s.reciterId);
 	const mode = LocalStore.useState((s) => s.settings.mode);
@@ -60,10 +61,21 @@ const Reciter = ({ reciter }) => {
 		setPlaying(false);
 	};
 
+
+  const handleRemove = async () => {
+    if (removeReciterFavorite) {
+      await removeReciterFavorite(reciter.id)
+      const favorites = JSON.parse(localStorage.getItem("reciterFavorites")) || []
+      const updatedFavorites = favorites.filter((id) => id !== reciter.id)
+      localStorage.setItem("reciterFavorites", JSON.stringify(updatedFavorites))
+    }
+  }
+
 	return (
 		<div
 			className={classNames(
 				styles.card,
+				styles.fav_card,
 				reciterId === reciter.id ? styles.active : "",
 				styles.reciters
 			)}
@@ -92,7 +104,8 @@ const Reciter = ({ reciter }) => {
 					</div>
 				</Link>
 
-				<div className={styles.right}>
+				<div className={classNames(styles.right, styles.btns)}>
+        {!noRemoveIcon && <IonIcon icon={trashOutline} slot="start" className={styles.icon} onClick={handleRemove} />}
 					{reciterId === reciter.id &&
 						(playing && mode === "normal" ? (
 							<IonIcon

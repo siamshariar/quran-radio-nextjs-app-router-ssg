@@ -7,7 +7,6 @@ export const LocalStore = new Store({
 	liveFavorites: [],
 	recent: [],
 	liveRecent: [],
-	// to handle scroll
 	isTab: true,
 });
 

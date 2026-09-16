@@ -1,12 +1,9 @@
 import React from "react";
-import classNames from "classnames";
-import { PlayerStore } from "../../store";
-import Pulse from "../utils/PulseSecondary";
-import styles from "./Tune.module.css";
+import { PlayerStore } from "../../store"; 
+import styles from "./Tune.module.css"; 
 
 const Tune = () => {
-  const reciterImage = PlayerStore.useState((s) => s.reciterImage);
-  const playing = PlayerStore.useState((s) => s.playing);
+  const playing = PlayerStore.useState((s) => s.playing); 
   const loading = PlayerStore.useState((s) => s.loading); 
 
   return (

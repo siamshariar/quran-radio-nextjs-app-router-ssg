@@ -206,27 +206,21 @@ hr.m_menu_hr {
 	border-top: 1px solid #e2e8f0;
 }
 
-.appstitle {
+.title {
 	color: #606060;
 	display: block;
-	padding: 10px 24px;
-	font-size: 14px;
-	margin-left: 6px;
+	font-size: 18px;
 	font-weight: 500;
+	text-transform: uppercase;
 	letter-spacing: 0.5px;
-}
+  }
 
-.moremenu {
-	padding: 0 32px;
-}
-
-.icon {
+  .icon {
 	color: #303030;
 	font-size: 44px;
 	display: inline-block;
-}
-
-.item,
+  }
+  .item,
 .item::after {
   height: 40px;
   display: flex;
@@ -237,16 +231,6 @@ hr.m_menu_hr {
   --ion-item-background: rgba(0, 0, 0, 0.1);
 }
 
-
-.title {
-	color: #606060;
-	display: block;
-	font-size: 18px;
-	font-weight: 500;
-	text-transform: uppercase;
-	letter-spacing: 0.5px;
-  }
-
 .label {
   font-size: 1.1rem;
   line-height: 20px;
@@ -254,7 +238,23 @@ hr.m_menu_hr {
   margin-left: 12px;
   color: #303030;
 }
+.item.active .label {
+  font-weight: 500;
+}
+.appstitle {
+	color: #606060;
+	display: block;
+	padding: 10px 24px;
+	font-size: 14px;
+	margin-left: 6px;
+	font-weight: 500;
+	letter-spacing: 0.5px;
+  }
+  
+  .moremenu {
+	padding: 0 32px;
 
+  }
 @media (orientation: landscape) {
 	/* .wrapper {
 		height: 56px;

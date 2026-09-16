@@ -18,6 +18,7 @@ import "@ionic/core/css/text-alignment.css";
 import "@ionic/core/css/text-transformation.css";
 import "@ionic/core/css/flex-utils.css";
 import "@ionic/core/css/display.css";
+import { initializeAudioStore } from "@/store/audio";
 
 // custom css
 import "@/styles/global.scss";
@@ -41,6 +42,9 @@ function MyApp({ Component, pageProps }) {
 
 	const isTab = LocalStore.useState((s) => s.isTab);
 
+	useEffect(() => {
+		initializeAudioStore();
+	  }, []);
 	// detect Tab
 	useEffect(() => {
 		if (typeof window !== "undefined") {

@@ -27,6 +27,7 @@ import {
 import { IonIcon } from "@ionic/react";
 import classNames from "classnames";
 // import { PlayerStore } from "@/store";
+import { removeSessionItem } from "@/components/utils/session-storage";
 
 const pages = [
     {
@@ -64,6 +65,13 @@ const MenuList = ({ pages, openModal }) => {
 
 export default function SideNav(props) {
 	// const reciterId = PlayerStore.useState((s) => s.reciterId);
+
+	const resetScrollForReciters = (url) => {
+		if (url === "/reciters") {
+			removeSessionItem("reciterScrollPosition");
+		}
+		props.navControl(false);
+	};
 
 	return (
 		<Drawer
@@ -117,7 +125,7 @@ export default function SideNav(props) {
 									Live Radios
 								</Link>
 							</li>
-							<li onClick={(e) => props.navControl(false)}>
+							<li onClick={(e) => resetScrollForReciters("/reciters")}>
 								<Link href="/reciters" className={styles.m_menu_item}>
 									<IonIcon
 										icon={peopleOutline}

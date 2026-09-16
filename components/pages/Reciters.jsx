@@ -1,17 +1,32 @@
-import { useState } from "react";
-import { chevronBack, search } from "@/icons";
+import { useState, useEffect } from "react";
+import { search } from "@/icons";
 import ReciterCard from "@/components/cards/Reciter";
 import styles from "./Pages.module.css";
 import { IonIcon } from "@ionic/react";
+import { Virtuoso } from "react-virtuoso";
+import { useScrollPosition } from "@/hooks/useScrollPosition";
 // import { Virtuoso } from "react-virtuoso";
 
 const Reciters = ({ reciters }) => {
 	// const reciters = PlayerStore.useState((s) => s.reciters);
 	const [filter, setFilter] = useState("");
+	const [isReady, setIsReady] = useState(false);
 
 	const filteredReciters = reciters.filter((item) =>
 		item.name.toLowerCase().includes(filter.toLowerCase())
 	);
+
+	const { scrollRef, initialScrollTop } = useScrollPosition();
+
+
+  useEffect(() => {
+    setIsReady(true)
+  }, [])
+
+  const contentStyle = {
+    visibility: isReady ? "visible" : "hidden",
+    height: "calc(100vh - 120px)",
+  }
 
 	return (
 		<>
@@ -42,11 +57,21 @@ const Reciters = ({ reciters }) => {
 					/>
 				)}
 			</div> */}
-			<div className={styles.content}>
-				{filteredReciters &&
-					filteredReciters.map((reciter, index) => (
-						<ReciterCard key={index} reciter={reciter} />
-					))}
+			<div className={styles.content} style={contentStyle}>
+        {isReady && filteredReciters && (
+          <Virtuoso
+            ref={scrollRef}
+            overscan={200}
+            useWindowScroll
+            style={{ height: "100%" }}
+            totalCount={filteredReciters.length}
+            itemContent={(index) => ( <ReciterCard key={filteredReciters[index].id} reciter={filteredReciters[index]} noRemoveIcon /> )}
+            components={{
+              Footer: () => <div style={{ height: "20px" }}></div>,
+            }}
+            initialScrollTop={initialScrollTop}
+          />
+        )}
 			</div>
 		</>
 	);
