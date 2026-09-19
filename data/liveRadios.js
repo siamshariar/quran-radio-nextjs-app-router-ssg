@@ -35,12 +35,12 @@ export const liveRadios = [
 		"liveUrl": "https://l3.itworkscdn.net/smcquranlive/quranradiolive/icecast.audio",
 		"name": "Sharjah Quran Radio"
 	},
-	{
-		"place": "Ramallah, Palestine",
-		"id": 1,
-		"liveUrl": "https://sawtelghad.org/8888/stream",
-		"name": "The Holy Quran"
-	},
+	// {
+	// 	"place": "Ramallah, Palestine",
+	// 	"id": 1,
+	// 	"liveUrl": "https://sawtelghad.org/8888/stream",
+	// 	"name": "The Holy Quran"
+	// },
 	{
 		"place": "Muscat, Oman",
 		"id": 3,
@@ -59,12 +59,12 @@ export const liveRadios = [
 	// 	place: "Australia",
 	// 	liveUrl: "http://104.167.2.55:8000/;",
 	// },
-	{
-		"id": 11,
-		"name": "Quran Radio",
-		"place": "Palestine",
-		"liveUrl": "/api/proxy?url=http://www.quran-radio.org:8080/;stream.mp3",
-	},
+	// {
+	// 	"id": 11,
+	// 	"name": "Quran Radio",
+	// 	"place": "Palestine",
+	// 	"liveUrl": "/api/proxy?url=http://www.quran-radio.org:8080/;stream.mp3",
+	// },
 	// {
 	// 	id: 12,
 	// 	name: "Qur'an Radio Quran in Arabic by Sheikh Yasser Al-Dosari",
@@ -77,10 +77,10 @@ export const liveRadios = [
 	// 	place: "Morocco",
 	// 	liveUrl: "http://radio.aljamaa-tv.com:8000/quran",
 	// },
-	{
-		"id": 14,
-		"name": "Radio Quran",
-		"place": "",
-		"liveUrl": "/api/proxy?url=http://5.135.194.225:8000/live",
-	},
+	// {
+	// 	"id": 14,
+	// 	"name": "Radio Quran",
+	// 	"place": "",
+	// 	"liveUrl": "/api/proxy?url=http://5.135.194.225:8000/live",
+	// },
 ];

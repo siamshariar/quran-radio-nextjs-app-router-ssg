@@ -5,6 +5,11 @@ import GetAppIcon from '@mui/icons-material/GetApp';
 import styles from "./index.module.css";
 
 const QuranTubeModal = ({ handleModal }) => {
+	const handleInstall = () => {
+		handleModal();
+		window.open("https://www.deeniinfotech.com/p/quran-tube#apps", "_blank");
+	};
+
 	return (
 		<div className={styles.promo_dialog}>
 			<div className={styles.promo_modal_content}>
@@ -29,7 +34,7 @@ const QuranTubeModal = ({ handleModal }) => {
 						Already installed
             <CheckCircleIcon />
 					</button>
-					<button onClick={() => window.open('https://play.google.com/store/apps/details?id=com.deeniinfotech.qurantube&pcampaignid=web_share', '_blank')}>
+					<button onClick={handleInstall}>
 						Install now
             <GetAppIcon />
 					</button>

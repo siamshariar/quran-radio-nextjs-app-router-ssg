@@ -11,6 +11,7 @@ import {
 	setChapterList,
 	setLiveSrc,
 	setDefaultLiveRadio,
+	setLiveRadio,
 } from "@/store";
 import { LocalStore } from "@/store/local";
 import { useRecentStorage } from "@/hooks/useRecentStorage";
@@ -73,6 +74,17 @@ const AudioTag = () => {
 	// 	});
 	// };
 
+	// switch to another live radio when the current stream fails to play
+	const switchToAnotherLiveRadio = () => {
+		if (liveRadios.length <= 1) return;
+		let nextIndex = Math.floor(Math.random() * liveRadios.length);
+		if (nextIndex === liveIndex) {
+			nextIndex = (nextIndex + 1) % liveRadios.length;
+		}
+		setLiveRadio(nextIndex);
+		setLiveSrc(nextIndex);
+	};
+
 	// to prevent "the play request was interrupted by a call to pause / a new load request" error
 	let c = 0;
 	const playAudio = () => {
@@ -96,8 +108,13 @@ const AudioTag = () => {
 						c += 1;
 						if (c > 5) {
 							c = 0;
-							setPlaying(false);
 							setLoading(false);
+							if (mode !== "normal") {
+								// live radio failed repeatedly, auto-switch to another one
+								switchToAnotherLiveRadio();
+								return;
+							}
+							setPlaying(false);
 							//  show some toast
 							setIsToast(true);
 							// showErrToast();
@@ -389,6 +406,11 @@ const AudioTag = () => {
 				controls={false}
 				src={mode == "normal" ? src : liveSrc}
 				onEnded={handleEnd}
+				onError={() => {
+					if (mode !== "normal" && playing) {
+						switchToAnotherLiveRadio();
+					}
+				}}
 				onTimeUpdate={(e) => {
           setCurrentTime(e.target.currentTime)
 
