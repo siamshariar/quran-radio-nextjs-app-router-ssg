@@ -6,7 +6,23 @@
 }
 html,
 body {
-	height: 100%;
+	/* min-height, not height — this was capping body's own box to exactly one
+	   viewport tall. Any page taller than that (e.g. the reciters list, which
+	   uses Virtuoso's useWindowScroll) then had its gradient background stop
+	   at that boundary, so scrolling past the first screen revealed the
+	   browser's default white canvas underneath — looked like a white flash/
+	   blink mid-scroll. */
+	min-height: 100%;
+	overscroll-behavior: none;
+}
+html {
+	/* On mobile, a fast flick scroll can rubber-band/bounce past body's own
+	   box for an instant (even with overscroll-behavior: none, some browsers
+	   still show a brief bounce frame). That momentarily reveals whatever is
+	   behind body — html had no background of its own, i.e. transparent,
+	   falling through to the browser's white canvas. Match body's gradient
+	   here too so that instant isn't a flash of white. */
+	background: linear-gradient(90deg, #8b959e, #cdd8e0);
 }
 body {
 	position: relative;
@@ -15,6 +31,20 @@ body {
 	// width: 100vw;
 	background: linear-gradient(90deg, #8b959e, #cdd8e0);
 	overscroll-behavior: none;
+}
+
+// Ionic's overlay hosts (ion-picker, used by the sleep timer) size themselves
+// with a hardcoded `height: 100%`, which needs body — their containing
+// block, since body has position:relative — to have a definite height to
+// resolve against. body only has min-height (see above), so that percentage
+// silently resolves to auto and the picker's sheet collapses/mispositions
+// itself above the viewport instead of sliding up from the bottom. Force it
+// to a real viewport-relative height instead, which doesn't depend on body's
+// height property at all. !important is required — :host's own rule has
+// higher specificity (a pseudo-class) than this plain type selector, so it
+// wins the cascade even though this stylesheet loads after Ionic's.
+ion-picker {
+	height: 100vh !important;
 }
 
 // #__next {

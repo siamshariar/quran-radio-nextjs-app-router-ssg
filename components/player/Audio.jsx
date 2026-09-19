@@ -1,18 +1,16 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import {
 	PlayerStore,
 	setChapter,
 	setSrc,
-	setSrcAllChapters as setSrcFirst,
 	setPlaying,
 	setReciter,
 	setLoading,
 	setChapterList,
-	setLiveRadio,
 	setLiveSrc,
 	setDefaultLiveRadio,
-	setReciterByReciter,
-	setChapterListByList,
 } from "@/store";
 import { LocalStore } from "@/store/local";
 import { useRecentStorage } from "@/hooks/useRecentStorage";
@@ -29,11 +27,9 @@ import {
 import styles from "./index.module.css";
 import classNames from "classnames";
 import { useLiveRecentStorage } from "@/hooks/useLiveRecentStorage";
-import { useRouter } from "next/router";
+import { useRouter, usePathname, useParams } from "next/navigation";
 import { defaultLiveRadios } from "@/data/defaultLiveRadios";
-import { getLiveIndexById, getReciterById } from "@/lib/fetch";
 import { liveRadios } from "@/data/liveRadios";
-import { useSettingStorage } from "@/hooks/useSettingStorage";
 // import { useIonToast } from "@ionic/react";
 import { useTrackStorage } from "@/hooks/useTrackStorage";
 import storage from "@/store/storage" // import storage;
@@ -57,7 +53,6 @@ const AudioTag = () => {
 	const currentTime = AudioStore.useState((s) => s.currentTime);
 	const isProgress = AudioStore.useState((s) => s.isProgress);
 	const [isPageLoaded, setIsPageLoaded] = useState(false);
-	const { setMode } = useSettingStorage();
   const {
     saveTrackPausedTime: saveTrackTime,
     getTrackPausedTime,
@@ -65,11 +60,6 @@ const AudioTag = () => {
     getTrackDuration,
     clearTrackPausedTime,
   } = useTrackStorage()
-
-	const setPlaybackMode = async (mode) => {
-		await setMode(mode);
-		return;
-	};
 
 	const [isToast, setIsToast] = useState(false);
 	// const [presentToast, dismiss] = useIonToast();
@@ -187,43 +177,76 @@ const AudioTag = () => {
 		}
 	};
 
-	const setMediaResources = async () => {
-		const reciterId = router.query.reciter;
-		const chapId = router.query.chapter;
-		const reciter = await getReciterById(reciterId);
-		const chapterList = reciter.moshaf[0].surah_list.split(",");
-		const chapterIndex = chapterList.indexOf(chapId);
-
-		setSrcFirst(chapId, reciter.moshaf);
-		setReciterByReciter(reciter);
-		setChapterListByList(chapterList);
-		setChapter(chapterList, chapterIndex);
-		setPlaybackMode("normal");
-		setActiveTrack(reciterId, chapId);
-
-    await loadTrackInfo(reciterId, chapId);
-	};
-
-	const setLiveMediaResources = async () => {
-		const liveId = router.query.liveRadio;
-		const liveIndex = await getLiveIndexById(liveId);
-		setLiveSrc(liveIndex);
-		setLiveRadio(liveIndex);
-		setPlaybackMode("live");
-	};
-
 	// first loading play random
 	const router = useRouter();
-	useEffect(() => {
-		if (router.isReady) {
-			setIsPageLoaded(true);
-			if (router.query.reciter && router.query.chapter) {
-				setMediaResources();
-			} else if (router.query.liveRadio) {
-				setLiveMediaResources();
-			}
+	const pathname = usePathname();
+	const params = useParams();
+
+	// Only Home ("/") and reciter detail pages are meant to be shareable "now
+	// playing" links — syncing the playback query onto every other route (e.g.
+	// /chapters, /favorites) pollutes their metadata, since generateMetadata
+	// on every page reads reciter/chapter from searchParams unconditionally.
+	const isShareablePlaybackRoute = pathname === "/" || /^\/reciters\/[^/]+$/.test(pathname);
+
+	const buildPlaybackUrl = () => {
+		if (!isShareablePlaybackRoute) return pathname;
+
+		const query = new URLSearchParams();
+		if (params?.id) query.set("id", params.id);
+		if (mode === "normal") {
+			query.set("reciter", reciterId);
+			query.set("chapter", chapterList[chapterIndex]);
+		} else {
+			query.set("liveRadio", liveRadios[liveIndex].id);
 		}
-	}, [router.isReady]);
+		const qs = query.toString();
+		return qs ? `${pathname}?${qs}` : pathname;
+	};
+
+	// Must be router.replace(), not a plain window.history.replaceState() call —
+	// that was tried first to dodge the scroll reset below, but it desyncs
+	// Next's own client-side router state from the browser's real history
+	// stack: the address bar updates, yet Next's router still thinks it's on
+	// the previous route, so a later browser back-navigation shows completely
+	// stale content (verified: URL bar said /reciters, but the DOM still
+	// showed the reciter-detail page indefinitely). router.replace() keeps
+	// them in sync, but even with {scroll:false} it still resets
+	// react-virtuoso's useWindowScroll position to 0 on every track switch —
+	// that option only suppresses Next's own scroll-to-top, not this side
+	// effect. The reset doesn't land on a predictable frame (it trails the
+	// replace's own async re-render, e.g. generateMetadata re-running against
+	// the new searchParams), so a fixed number of rAF retries isn't reliable —
+	// instead, actively watch for and correct any scroll change for a short
+	// window after the replace call.
+	const replaceUrlPreservingScroll = (url) => {
+		// On non-shareable routes buildPlaybackUrl() returns the pathname
+		// unchanged, so there's nothing to actually update in the URL — skip
+		// the router.replace() call entirely rather than calling it as a
+		// same-URL no-op. It turns out that call alone (even to an identical
+		// URL, even with {scroll:false}) still resets react-virtuoso's
+		// useWindowScroll position to 0 on every track change, which is
+		// exactly the bug this function exists to prevent — confirmed on
+		// /chapters, a non-shareable route, where clicking play while
+		// scrolled down reset the list to the top every time.
+		if (!isShareablePlaybackRoute) return;
+
+		const savedScrollY = window.scrollY;
+		router.replace(url, { scroll: false });
+
+		const enforceScroll = () => {
+			if (window.scrollY !== savedScrollY) {
+				window.scrollTo(0, savedScrollY);
+			}
+		};
+		window.addEventListener("scroll", enforceScroll, { passive: true });
+		setTimeout(() => {
+			window.removeEventListener("scroll", enforceScroll);
+		}, 1000);
+	};
+
+	useEffect(() => {
+		setIsPageLoaded(true);
+	}, []);
 
 	useEffect(() => {
 		const randomReciterIndex = Math.floor(Math.random() * reciters.length);
@@ -293,34 +316,11 @@ const AudioTag = () => {
 		} else {
 			pauseAudio();
 		}
-		// Update the URL without triggering a full page navigation
+		// Update the URL without triggering a full page navigation (see note above)
 		if (isPageLoaded) {
-			router.replace(
-				{
-					pathname: router.pathname,
-					query:
-						router.pathname == "/reciters/[id]"
-							? mode == "normal"
-								? {
-										id: router.query.id,
-										reciter: reciterId,
-										chapter: chapterList[chapterIndex],
-								  }
-								: {
-										id: router.query.id,
-										liveRadio: liveRadios[liveIndex].id,
-								  }
-							: mode == "normal"
-							? {
-									reciter: reciterId,
-									chapter: chapterList[chapterIndex],
-							  }
-							: { liveRadio: liveRadios[liveIndex].id },
-				},
-				undefined,
-				{ shallow: true }
-			);
+			replaceUrlPreservingScroll(buildPlaybackUrl());
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [playing, src, liveSrc, mode, playbackRate]);
 
 	useEffect(() => {
@@ -367,36 +367,13 @@ const AudioTag = () => {
 		}
 	}, [loading, playing]);
 
-	// Update the URL without triggering a full page navigation
+	// Update the URL without triggering a full page navigation (see note above)
 	useEffect(() => {
 		if (isPageLoaded) {
-			router.replace(
-				{
-					pathname: router.pathname,
-					query:
-						router.pathname == "/reciters/[id]"
-							? mode == "normal"
-								? {
-										id: router.query.id,
-										reciter: reciterId,
-										chapter: chapterList[chapterIndex],
-								  }
-								: {
-										id: router.query.id,
-										liveRadio: liveRadios[liveIndex].id,
-								  }
-							: mode == "normal"
-							? {
-									reciter: reciterId,
-									chapter: chapterList[chapterIndex],
-							  }
-							: { liveRadio: liveRadios[liveIndex].id },
-				},
-				undefined,
-				{ shallow: true }
-			);
+			replaceUrlPreservingScroll(buildPlaybackUrl());
 		}
-	}, [router.pathname]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [pathname]);
 
 	return (
 		<>

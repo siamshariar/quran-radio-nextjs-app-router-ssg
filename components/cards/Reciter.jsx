@@ -17,7 +17,7 @@ import { useSettingStorage } from "@/hooks/useSettingStorage";
 import { LocalStore } from "@/store/local";
 import Image from "next/image";
 
-const Reciter = ({ reciter,  removeReciterFavorite, noRemoveIcon }) => {
+const Reciter = ({ reciter,  removeReciterFavorite, noRemoveIcon, isLast }) => {
 	const playing = PlayerStore.useState((s) => s.playing);
 	const reciterId = PlayerStore.useState((s) => s.reciterId);
 	const mode = LocalStore.useState((s) => s.settings.mode);
@@ -77,7 +77,8 @@ const Reciter = ({ reciter,  removeReciterFavorite, noRemoveIcon }) => {
 				styles.card,
 				styles.fav_card,
 				reciterId === reciter.id ? styles.active : "",
-				styles.reciters
+				styles.reciters,
+				isLast && styles.last
 			)}
 			id={reciter.id}>
 			<div className={styles.wrapper}>

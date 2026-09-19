@@ -1,17 +1,18 @@
 const withPlugins = require('next-compose-plugins');
 const withPWA = require("next-pwa");
-const withTM = require("next-transpile-modules")([
-	"@ionic/react",
-	"@ionic/core",
-	"@stencil/core",
-	"ionicons",
-]);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-	// output: "export",
+	// Set only for the Capacitor mobile build (`npm run export`) — the API proxy
+	// route and ISR revalidation don't exist in a static export, so this must stay
+	// off for the normal web deployment.
+	...(process.env.NEXT_STATIC_EXPORT === "true" ? { output: "export" } : {}),
 	reactStrictMode: true,
 	basePath: "",
+	// Native replacement for next-transpile-modules (removed): that package
+	// predates the App Router and was clobbering Next's built-in CSS loader
+	// rule for the app/ compiler pass, breaking the plain-CSS @ionic/core imports.
+	transpilePackages: ["@ionic/react", "@ionic/core", "@stencil/core", "ionicons"],
 	images: {
 		domains: ["images.unsplash.com"],
 		unoptimized: true,
@@ -26,6 +27,16 @@ const nextConfig = {
 	},
 	staticPageGenerationTimeout: 180,
 	swcMinify: true,
+	// Dev mode only: @ionic/react's full component registry makes each route's
+	// first compile ~15-25s (~24.5k modules). Next's default on-demand-entries
+	// buffer only keeps a couple of compiled routes in memory, so with this
+	// app's ~10 top-level routes, navigating between more than a couple of
+	// pages evicted the earlier ones and forced a full recompile on every
+	// single click — even for pages already visited. Hold all of them.
+	onDemandEntries: {
+		maxInactiveAge: 60 * 60 * 1000,
+		pagesBufferLength: 20,
+	},
 	pwa: {
 		dest: "public",
 		disable: process.env.NODE_ENV === 'development',
@@ -35,6 +46,6 @@ const nextConfig = {
 };
 
 module.exports = withPlugins(
-	[withTM, withPWA],
+	[withPWA],
 	nextConfig,
 );

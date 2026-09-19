@@ -14,7 +14,7 @@ import { IonIcon } from "@ionic/react";
 import { useSettingStorage } from "@/hooks/useSettingStorage";
 import { LocalStore } from "@/store/local";
 
-const Chapter = ({ index, reciter, chapterNo }) => {
+const Chapter = ({ index, reciter, chapterNo, isLast }) => {
 	const playing = PlayerStore.useState((s) => s.playing);
 	const chapterIndex = PlayerStore.useState((s) => s.chapterIndex);
 	const chapters = PlayerStore.useState((s) => s.chapters);
@@ -58,6 +58,7 @@ const Chapter = ({ index, reciter, chapterNo }) => {
 		<div
 			className={classNames(
 				styles.card,
+				isLast && styles.last,
 				reciter.id === currentReciter.id &&
 					currentChapters[chapterIndex] === chapterNo &&
 					playing

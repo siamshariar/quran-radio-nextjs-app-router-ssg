@@ -126,10 +126,11 @@ const Favorites = () => {
 									item={favorite}
 									handleRemoveFavorite={handleRemoveFavorite}
                   isRecent={false}
+                  isLast={index === filteredFavorites.length - 1}
 								/>
 							))
 						) : (
-							<h2 className={styles.no_record}>No record found!</h2>
+							<div>No record found!</div>
 						)}
 					</div>
 				</CustomTabPanel>
@@ -142,10 +143,11 @@ const Favorites = () => {
 									key={index}
 									item={favorite}
 									handleRemoveLiveFavorite={handleRemoveLiveFavorite}
+									isLast={index === filteredLiveFavorites.length - 1}
 								/>
               ))
 						) : (
-							<h2 className={styles.no_record}>No record found!</h2>
+							<div>No record found!</div>
             )}
 					</div>
 				</CustomTabPanel>
@@ -154,10 +156,10 @@ const Favorites = () => {
           <div className={styles.content}>
             {filteredReciters.length > 0 ? (
               filteredReciters.map((reciter, index) => (
-                <ReciterCard key={index} reciter={reciter} removeReciterFavorite={handleRemoveReciterFavorite} />
+                <ReciterCard key={index} reciter={reciter} removeReciterFavorite={handleRemoveReciterFavorite} isLast={index === filteredReciters.length - 1} />
 							))
 						) : (
-							<h2 className={styles.no_record}>No record found!</h2>
+							<div>No record found!</div>
 						)}
 					</div>
 				</CustomTabPanel>

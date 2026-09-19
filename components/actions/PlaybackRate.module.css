@@ -33,6 +33,7 @@
 	text-align: left;
 	color: #444;
 	font-size: 14px;
+	line-height: inherit;
 }
 .playback button {
 	cursor: pointer;

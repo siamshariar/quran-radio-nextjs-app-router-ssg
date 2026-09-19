@@ -2,7 +2,7 @@
 	height: 100%;
 }
 .wrapper {
-	/* background: linear-gradient(90deg, #8b959e, #cdd8e0); */
+	background: linear-gradient(90deg, #8b959e, #cdd8e0);
 	padding-left: 30px;
 	padding-right: 30px;
 	padding-top: 56px;
@@ -27,8 +27,20 @@
 	justify-content: flex-start;
 }
 .back {
-	--padding-start: 0;
-	--padding-end: 0;
+	/* Plain <button>, not <IonButton> — this went back and forth between
+	   showing a boxed background and a bare icon depending on exactly when
+	   ion-button's shadow-DOM/ripple hydration happened to settle relative to
+	   paint, including a version of this exact flash on page reload. A plain
+	   button has no custom-element hydration step at all, so its appearance
+	   is identical on the very first paint and every reload thereafter. */
+	border: none;
+	background: transparent;
+	padding: 0;
+	margin: 0;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 }
 .back a {
 }
@@ -94,6 +106,12 @@
 }
 
 .no_record {
+	font-family: "SFProDisplay";
+	font-size: 17px;
+	font-weight: 500;
+	color: #3d3d3f;
+	text-align: left;
+	margin-top: 24px;
 }
 
 /* chapters page */

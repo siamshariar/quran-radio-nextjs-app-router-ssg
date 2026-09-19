@@ -8,7 +8,7 @@ export default function LiveRadioList({ liveRadios }) {
 	return (
 		<div className={styles.content}>
 			{liveRadios.map((liveRadio, i) => (
-				<LiveRadioCard key={i} liveRadio={liveRadio} index={i} />
+				<LiveRadioCard key={i} liveRadio={liveRadio} index={i} isLast={i === liveRadios.length - 1} />
 			))}
 		</div>
 	);

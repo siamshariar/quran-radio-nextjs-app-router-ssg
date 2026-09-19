@@ -9,7 +9,7 @@ export default function SupportContent() {
 			<div className="mt-4">
 				<span>Email: </span>
 				<a
-					className="underline"
+					className="underline text-black"
 					href="mailto:info@deeniinfotech.com"
 					target="_blank">
 					info@deeniinfotech.com

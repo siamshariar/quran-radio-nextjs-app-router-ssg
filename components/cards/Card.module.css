@@ -1,7 +1,32 @@
 .card {
-	margin-top: 0;
+	margin-top: 4px;
 	padding: 0;
+	padding-bottom: 4px;
 	position: relative;
+	/* A background gradient painted on the card's own box, instead of an
+	   absolutely-positioned pseudo-element hairline - the pseudo-element
+	   approach sat on top of react-virtuoso's per-item
+	   transform: translateY(Npx) positioning, and once that accumulated
+	   offset landed on a fractional sub-pixel value, Chrome (unlike
+	   Firefox) would sometimes fail to rasterize the 1px overlay at all.
+	   A background layer is part of the box's own paint, not a separately
+	   positioned overlay, so it doesn't inherit that sub-pixel drift.
+
+	   Inset from the left by .left's width + .wrapper's gap (40 + 20) so
+	   it starts right after the avatar/number circle, matching .reciters/
+	   .fav_card's wider avatar below. */
+	background-image: linear-gradient(
+		90deg,
+		rgba(61, 61, 63, 0.7) 1.01%,
+		hsla(208, 9%, 59%, 0.7) 100.67%
+	);
+	background-repeat: no-repeat;
+	background-position: right bottom;
+	background-size: calc(100% - 60px) 1px;
+}
+.reciters.card,
+.fav_card.card {
+	background-size: calc(100% - 76px) 1px;
 }
 .card:first-child {
 	margin-top: 0;
@@ -9,30 +34,14 @@
 .card:last-child {
 	margin-bottom: 0;
 }
-.card::after {
-	content: "";
-	position: absolute;
-	bottom: 4px;
-	left: 56px;
-	right: 0;
-	height: 0.7px;
-	background: linear-gradient(
-		90deg,
-		rgba(61, 61, 63, 0.7) 1.01%,
-		rgba(142, 152, 161, 0.7) 100.67%
-	);
-}
-.reciters.card::after {
-	left: 75px;
-}
-.fav_card.card::after {
-	left: 72px;
-}
-.liveFavCard.card::after {
-	left: 52px;
-}
-.card:last-child::after {
-	display: none;
+/* Applied explicitly by the last item's index in each list, rather than
+   :last-child - virtualized lists (react-virtuoso) only mount a small
+   rolling window of DOM nodes, so :last-child would match whichever item
+   currently sits at the bottom of that window instead of the true last
+   item. */
+.card.last {
+	background-image: none;
+	padding-bottom: 0;
 }
 .card.active {
 }
@@ -43,20 +52,8 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding-bottom: 7px;
-}
-.reciters .wrapper:after {
-  left: 75px;
-}
-
-.wrapper:after{
-  content: "";
-  position: absolute;
-  bottom: 4px;
-  left: 56px;
-  right: 0;
-  height: .7px;
-  background: linear-gradient(90deg, rgba(61, 61, 63, .7) 1.01%, hsla(208, 9%, 59%, .7) 100.67%);
+	gap: 20px;
+	/* padding-bottom: 7px; */
 }
 .left {
 	width: 40px;
@@ -164,23 +161,36 @@
 }
 
 .date {
-	font-size: 0.7rem;
+	font-size: 0.8125rem;
 	color: #3d3d3f;
 	margin-top: 5px;
 	font-family: "SFProDisplay";
 }
 
 .timestamp {
-	font-size: 0.7rem;
+	font-size: 0.8125rem;
+	color: #3d3d3f;
+	margin-top: 5px;
+	font-family: "SFProDisplay";
+}
+
+/* This class was referenced in FavRecentList.jsx but never actually defined —
+   the "Duration: ..." text had no color rule of its own, so it fell through
+   to inheriting a low-contrast link color from an ancestor <a>, making it
+   nearly unreadable against the page background. */
+.pausedAt {
+	font-size: 0.8125rem;
 	color: #3d3d3f;
 	margin-top: 5px;
 	font-family: "SFProDisplay";
 }
 
 /* favorite card */
-.fav_card .middle {
-	width: calc(100% - 72px - 82px);
-}
+/* (removed duplicate, over-restrictive .fav_card .middle rule that used to
+   live here — it overrode the more accurate calc(100% - 128px) rule above
+   with calc(100% - 154px), leaving ~26px less room than the actual .left
+   (56px) + .right.btns (64px) needed, which is why date/time and duration
+   text wrapped into 3-4 broken lines on narrow mobile screens.) */
 
 .fav_card .right.btns,
 .liveFavCard .right.btns {
@@ -199,5 +209,37 @@
 	}
 	.icon {
 		font-size: 24px;
+	}
+}
+
+/* Under ~400px (e.g. iPhone SE at 320px), "Jul 28, 2026, 3:10 PM" and
+   "Duration: 00:00 / 03:01" still didn't fit .middle's width even after
+   fixing the duplicate-rule bug above — there just isn't enough room left
+   once the fixed-width avatar and action icons are subtracted. Trim those
+   down and the text slightly so the date fits one line without losing any
+   information. */
+@media screen and (max-width: 400px) {
+	.reciters .left,
+	.fav_card .left {
+		width: 44px;
+	}
+	.reciters .image,
+	.fav_card .image {
+		width: 44px;
+		height: 44px;
+	}
+	.fav_card .right.btns,
+	.liveFavCard .right.btns {
+		width: 52px;
+	}
+	.reciters .middle,
+	.fav_card .middle,
+	.liveFavCard .middle {
+		width: calc(100% - 104px);
+	}
+	.date,
+	.timestamp,
+	.pausedAt {
+		font-size: 0.75rem;
 	}
 }
