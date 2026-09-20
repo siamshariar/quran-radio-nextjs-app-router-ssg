@@ -148,6 +148,12 @@ const AudioTag = () => {
 		if (loading) return;
 		audioRef.current.pause();
 
+    // A reload/shuffle-triggered track change hasn't finished loading its
+    // metadata yet (that happens in onCanPlay, which also resets position to
+    // 0) - skip saving a position here so the previous track's still-loaded
+    // elapsed time isn't written in as the new track's paused position.
+    if (PlayerStore.getRawState().forceRestart) return;
+
     if (mode === "normal" && chapterList && chapterList.length > 0) {
       const chapterNo = chapterList[chapterIndex]
       await saveTrackTime(reciterId, chapterNo, audioRef.current.currentTime)
@@ -322,24 +328,6 @@ const AudioTag = () => {
 		setLiveSrc(liveIndex);
 	}, [liveIndex]);
 
-	// Consumes forceRestart exactly once, on the render where src/liveSrc has
-	// actually caught up to the newly picked track — not on an earlier render
-	// where 'playing' or 'forceRestart' changed first but the <audio> element
-	// still has the previous track's source loaded. Resetting it any earlier
-	// meant the flag was already cleared by the time the new source's own
-	// effect run happened, so that run fell through to the normal
-	// resume-saved-position logic instead.
-	useEffect(() => {
-		if (!forceRestart) return;
-
-		audioRef.current.currentTime = 0
-		AudioStore.update((s) => {
-			s.currentTime = 0
-		})
-		setForceRestart(false)
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [src, liveSrc]);
-
 	useEffect(() => {
 		// console.log("playing: " + playing, src, liveSrc);
 		if (playing) {
@@ -469,6 +457,19 @@ const AudioTag = () => {
 				onCanPlay={(e) => {
 					if (mode !== "normal") {
 						liveFailStreakRef.current = 0;
+					}
+
+					// Reload/shuffle: the new source has now actually finished loading
+					// metadata, so this is the safe point to seek it to 0 - doing it
+					// synchronously as soon as src changes (before the browser has
+					// this source loaded) risked being ignored or leaving onCanPlay's
+					// own setDur() from firing correctly for the new track.
+					if (PlayerStore.getRawState().forceRestart) {
+						e.target.currentTime = 0;
+						AudioStore.update((s) => {
+							s.currentTime = 0;
+						});
+						setForceRestart(false);
 					}
 
 					if (mode === "normal") {
