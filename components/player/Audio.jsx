@@ -74,9 +74,24 @@ const AudioTag = () => {
 	// 	});
 	// };
 
-	// switch to another live radio when the current stream fails to play
+	// counts consecutive live radios that failed to play in a row; reset on
+	// any successful play so a single bad stream doesn't linger against later,
+	// working ones
+	const liveFailStreakRef = useRef(0);
+	const MAX_LIVE_FAIL_STREAK = 4;
+
+	// switch to another live radio when the current stream fails to play; after
+	// too many consecutive failed stations in a row, give up instead of
+	// endlessly hopping between dead sources
 	const switchToAnotherLiveRadio = () => {
-		if (liveRadios.length <= 1) return;
+		liveFailStreakRef.current += 1;
+		if (liveFailStreakRef.current >= MAX_LIVE_FAIL_STREAK || liveRadios.length <= 1) {
+			liveFailStreakRef.current = 0;
+			setPlaying(false);
+			setIsToast(true);
+			return;
+		}
+
 		let nextIndex = Math.floor(Math.random() * liveRadios.length);
 		if (nextIndex === liveIndex) {
 			nextIndex = (nextIndex + 1) % liveRadios.length;
@@ -100,6 +115,7 @@ const AudioTag = () => {
 			playPromise
 				.then(() => {
 					setLoading(false);
+					liveFailStreakRef.current = 0;
 					// setPlaying(true);
 				})
 				.catch((error) => {
@@ -431,6 +447,10 @@ const AudioTag = () => {
           }
         }}
 				onCanPlay={(e) => {
+					if (mode !== "normal") {
+						liveFailStreakRef.current = 0;
+					}
+
 					if (mode === "normal") {
 						setDur(e.target.duration);
 
