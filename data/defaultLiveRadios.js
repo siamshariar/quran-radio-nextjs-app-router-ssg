@@ -36,12 +36,6 @@ export const defaultLiveRadios = [
 		"name": "Sharjah Quran Radio"
 	},
 	{
-		"place": "Ramallah, Palestine",
-		"id": 1,
-		"liveUrl": "https://sawtelghad.org/8888/stream",
-		"name": "The Holy Quran"
-	},
-	{
 		"place": "Muscat, Oman",
 		"id": 3,
 		"liveUrl": "https://partrdo.mangomolo.com/quranrdo.mp3",
