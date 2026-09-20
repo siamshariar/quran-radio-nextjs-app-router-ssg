@@ -328,6 +328,23 @@ const AudioTag = () => {
 		setLiveSrc(liveIndex);
 	}, [liveIndex]);
 
+	// Reload/shuffle: reset the *displayed* position/duration the instant the
+	// new track is picked, regardless of playing state. Needed separately
+	// from the DOM seek in onCanPlay below, because a paused <audio> element
+	// may not load metadata (and so never fire onCanPlay) until the user
+	// actually presses play — without this, the progress bar and duration
+	// text stayed frozen on the previous track's values the whole time it
+	// was paused.
+	useEffect(() => {
+		if (!forceRestart) return;
+
+		AudioStore.update((s) => {
+			s.currentTime = 0;
+			s.dur = 0;
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [src, liveSrc]);
+
 	useEffect(() => {
 		// console.log("playing: " + playing, src, liveSrc);
 		if (playing) {
