@@ -26,6 +26,7 @@ import Share from "../actions/share";
 import { LocalStore } from "@/store/local";
 // import { server } from "@/lib/config";
 import Timer from "../actions/TimerPrimary";
+import RandomPlay from "../actions/RandomPlay";
 import { usePathname, useSearchParams } from "next/navigation";
 
 const Buttons = () => {
@@ -60,6 +61,13 @@ const Buttons = () => {
 				}}
 			/>
 			<Share Icon={ShareIcon} url={asPath} title="Quran Radio" />
+			<RandomPlay
+				classes={{
+					root: styles.item,
+					btn: styles.btn,
+					icon: styles.icon,
+				}}
+			/>
 			<Timer
 				classes={{
 					root: styles.item,
