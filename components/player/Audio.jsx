@@ -12,6 +12,7 @@ import {
 	setLiveSrc,
 	setDefaultLiveRadio,
 	setLiveRadio,
+	setForceRestart,
 } from "@/store";
 import { LocalStore } from "@/store/local";
 import { useRecentStorage } from "@/hooks/useRecentStorage";
@@ -50,6 +51,7 @@ const AudioTag = () => {
 	const chapterList = PlayerStore.useState((s) => s.chapterList);
 	const loop = PlayerStore.useState((s) => s.loop);
 	const shuffle = PlayerStore.useState((s) => s.shuffle);
+	const forceRestart = PlayerStore.useState((s) => s.forceRestart);
 	const mode = LocalStore.useState((s) => s.settings.mode);
 	const currentTime = AudioStore.useState((s) => s.currentTime);
 	const isProgress = AudioStore.useState((s) => s.isProgress);
@@ -326,7 +328,10 @@ const AudioTag = () => {
 			playAudio();
 			audioRef.current.playbackRate = playbackRate;
 
-      if (mode === "normal" && chapterList && chapterList.length > 0) {
+      if (forceRestart) {
+        audioRef.current.currentTime = 0
+        setForceRestart(false)
+      } else if (mode === "normal" && chapterList && chapterList.length > 0) {
         const chapterNo = chapterList[chapterIndex]
         const loadSavedPosition = async () => {
           const pausedTime = await getTrackPausedTime(reciterId, chapterNo)

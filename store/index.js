@@ -23,12 +23,6 @@ export const PlayerStore = new Store({
 	open: true,
 	mini: false,
 	sliderDown: false,
-	// Whether any onboarding/promo modal (first-visit dialog, Quran Tube
-	// promo, Deeni TV promo) is on screen — lets UI elsewhere (e.g. the
-	// random-play guide tooltip) wait until the user isn't already looking
-	// at a modal. Starts true so nothing else assumes "no modal" before
-	// Player's mount effect has actually checked.
-	promoModalsOpen: true,
 
 	// current reciter
 	reciter: getReciterById(10), // reciter object
@@ -56,6 +50,12 @@ export const PlayerStore = new Store({
 	loop: false,
 	shuffle: false,
 	playbackRate: 1,
+
+	// When true, the next track load should start from 0 instead of resuming
+	// a previously saved position (e.g. the reload/shuffle button picking a
+	// brand new track) — read once by Audio.jsx and reset immediately after,
+	// so it never touches any persisted resume-position storage.
+	forceRestart: false,
 
 	// timer
 	timer: -1,
@@ -114,9 +114,9 @@ export const setSliderDown = (v) => {
 	});
 };
 
-export const setPromoModalsOpen = (v) => {
+export const setForceRestart = (v) => {
 	PlayerStore.update((s) => {
-		s.promoModalsOpen = v;
+		s.forceRestart = v;
 	});
 };
 

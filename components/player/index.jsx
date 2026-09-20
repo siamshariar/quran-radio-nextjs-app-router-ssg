@@ -8,7 +8,6 @@ import {
 	setPlayerMini,
 	setPlaying,
 	setSliderDown,
-	setPromoModalsOpen,
 } from "../../store";
 import AudioMini from "./AudioMini";
 import AudioTag from "./Audio";
@@ -62,12 +61,6 @@ const Player = () => {
 	const [path, setPath] = useState("/");
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const [quranTubeModalOpen, setQuranTubeModalOpen] = useState(false);
-	// True from the moment the Quran Tube modal is scheduled until it has
-	// actually shown and been closed — keeps promoModalsOpen true through the
-	// 5s gap between the welcome dialog closing and the Quran Tube modal
-	// opening, so anything waiting on "no promo modal in play" (e.g. the
-	// reload guide tooltip) doesn't fire early in that gap.
-	const [quranTubeModalPending, setQuranTubeModalPending] = useState(false);
 	const [promoOpen, setPromoOpen] = useState(false);
 	const promoTimerRef = useRef(null);
 	const quranTubeTimerRef = useRef(null);
@@ -75,10 +68,6 @@ const Player = () => {
 	useEffect(() => {
 		setPath(pathname);
 	}, [pathname]);
-
-	useEffect(() => {
-		setPromoModalsOpen(dialogOpen || quranTubeModalPending || promoOpen);
-	}, [dialogOpen, quranTubeModalPending, promoOpen]);
 
 	useEffect(() => {
 		setSliderDown(false);
@@ -175,7 +164,6 @@ const Player = () => {
 			window.clearTimeout(quranTubeTimerRef.current);
 		}
 
-		setQuranTubeModalPending(true);
 		quranTubeTimerRef.current = window.setTimeout(() => {
 			setQuranTubeModalOpen(true);
 		}, 5000);
@@ -234,7 +222,6 @@ const Player = () => {
 
 	const handleQuranTubeModal = () => {
 		setQuranTubeModalOpen(false);
-		setQuranTubeModalPending(false);
 		localStorage.setItem(QURAN_TUBE_MODAL_STORAGE_KEY, "shown");
 	};
 
