@@ -323,15 +323,25 @@ const AudioTag = () => {
 	}, [liveIndex]);
 
 	useEffect(() => {
+		// Reload/shuffle always starts the newly picked track from 0, whether
+		// playback was previously playing or paused — applied outside the
+		// playing/paused branches below so it isn't skipped when paused.
+		// Resets only in-memory state (DOM currentTime + AudioStore.currentTime),
+		// never touching any saved resume-position storage.
+		if (forceRestart) {
+			audioRef.current.currentTime = 0
+			AudioStore.update((s) => {
+				s.currentTime = 0
+			})
+			setForceRestart(false)
+		}
+
 		// console.log("playing: " + playing, src, liveSrc);
 		if (playing) {
 			playAudio();
 			audioRef.current.playbackRate = playbackRate;
 
-      if (forceRestart) {
-        audioRef.current.currentTime = 0
-        setForceRestart(false)
-      } else if (mode === "normal" && chapterList && chapterList.length > 0) {
+      if (!forceRestart && mode === "normal" && chapterList && chapterList.length > 0) {
         const chapterNo = chapterList[chapterIndex]
         const loadSavedPosition = async () => {
           const pausedTime = await getTrackPausedTime(reciterId, chapterNo)
