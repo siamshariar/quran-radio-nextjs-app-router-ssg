@@ -322,20 +322,25 @@ const AudioTag = () => {
 		setLiveSrc(liveIndex);
 	}, [liveIndex]);
 
+	// Consumes forceRestart exactly once, on the render where src/liveSrc has
+	// actually caught up to the newly picked track — not on an earlier render
+	// where 'playing' or 'forceRestart' changed first but the <audio> element
+	// still has the previous track's source loaded. Resetting it any earlier
+	// meant the flag was already cleared by the time the new source's own
+	// effect run happened, so that run fell through to the normal
+	// resume-saved-position logic instead.
 	useEffect(() => {
-		// Reload/shuffle always starts the newly picked track from 0, whether
-		// playback was previously playing or paused — applied outside the
-		// playing/paused branches below so it isn't skipped when paused.
-		// Resets only in-memory state (DOM currentTime + AudioStore.currentTime),
-		// never touching any saved resume-position storage.
-		if (forceRestart) {
-			audioRef.current.currentTime = 0
-			AudioStore.update((s) => {
-				s.currentTime = 0
-			})
-			setForceRestart(false)
-		}
+		if (!forceRestart) return;
 
+		audioRef.current.currentTime = 0
+		AudioStore.update((s) => {
+			s.currentTime = 0
+		})
+		setForceRestart(false)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [src, liveSrc]);
+
+	useEffect(() => {
 		// console.log("playing: " + playing, src, liveSrc);
 		if (playing) {
 			playAudio();
