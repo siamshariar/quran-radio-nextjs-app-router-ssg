@@ -11,12 +11,12 @@ export const defaultLiveRadios = [
 		"liveUrl": "https://n12.radiojar.com/8s5u5tpdtwzuv?rj-ttl=5&rj-tok=AAABjPXq8a4Ak8YSU1uoBEdDww",
 		"name": "Quran FM 98.2 إذاعة القرآن الكريم"
 	},
-	{
-		"place": "France",
-		"id": 8,
-		"liveUrl": "https://stream-150.zeno.fm/s78bfahr36duv",
-		"name": "Quran Reciter in French live"
-	},
+	// {
+	// 	"place": "France",
+	// 	"id": 8,
+	// 	"liveUrl": "https://stream-150.zeno.fm/s78bfahr36duv",
+	// 	"name": "Quran Reciter in French live"
+	// },
 	{
 		"place": "Saudi Arabia",
 		"id": 6,
