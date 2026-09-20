@@ -23,12 +23,6 @@ export const PlayerStore = new Store({
 	open: true,
 	mini: false,
 	sliderDown: false,
-	// Whether any onboarding/promo modal (first-visit dialog, Quran Tube
-	// promo, Deeni TV promo) is on screen — lets UI elsewhere (e.g. the
-	// random-play guide tooltip) wait until the user isn't already looking
-	// at a modal. Starts true so nothing else assumes "no modal" before
-	// Player's mount effect has actually checked.
-	promoModalsOpen: true,
 
 	// current reciter
 	reciter: getReciterById(10), // reciter object
@@ -111,12 +105,6 @@ export const setPlayerMini = (isMini) => {
 export const setSliderDown = (v) => {
 	PlayerStore.update((s) => {
 		s.sliderDown = v;
-	});
-};
-
-export const setPromoModalsOpen = (v) => {
-	PlayerStore.update((s) => {
-		s.promoModalsOpen = v;
 	});
 };
 
