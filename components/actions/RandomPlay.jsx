@@ -73,7 +73,7 @@ const RandomPlay = ({ classes = {} }) => {
 		<div className={`${classes.root} ${styles.root}`}>
 			{showGuide && (
 				<div className={styles.tooltip}>
-					Click to reload and randomly play a {mode === "normal" ? "surah" : "live radio"}
+					Click to reload and play a random {mode === "normal" ? "surah" : "live radio station"}
 					<div className={styles.tooltip_arrow}></div>
 				</div>
 			)}
