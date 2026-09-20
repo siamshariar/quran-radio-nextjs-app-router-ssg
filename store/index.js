@@ -51,6 +51,12 @@ export const PlayerStore = new Store({
 	shuffle: false,
 	playbackRate: 1,
 
+	// When true, the next track load should start from 0 instead of resuming
+	// a previously saved position (e.g. the reload/shuffle button picking a
+	// brand new track) — read once by Audio.jsx and reset immediately after,
+	// so it never touches any persisted resume-position storage.
+	forceRestart: false,
+
 	// timer
 	timer: -1,
 	intervalId: null,
@@ -105,6 +111,12 @@ export const setPlayerMini = (isMini) => {
 export const setSliderDown = (v) => {
 	PlayerStore.update((s) => {
 		s.sliderDown = v;
+	});
+};
+
+export const setForceRestart = (v) => {
+	PlayerStore.update((s) => {
+		s.forceRestart = v;
 	});
 };
 

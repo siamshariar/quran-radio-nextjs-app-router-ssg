@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { refreshOutline } from "ionicons/icons";
 import { IonIcon } from "@ionic/react";
-import { PlayerStore, setReciter, setChapterList, setChapter, setLiveRadio, setPlaying } from "@/store";
+import { PlayerStore, setReciter, setChapterList, setChapter, setLiveRadio, setPlaying, setForceRestart } from "@/store";
 import { LocalStore } from "@/store/local";
 import { liveRadios } from "@/data/liveRadios";
 import styles from "./RandomPlay.module.css";
@@ -53,6 +53,11 @@ const RandomPlay = ({ classes = {} }) => {
 		if (showGuide) {
 			dismissGuide();
 		}
+
+		// Start the newly picked track from 0 instead of resuming wherever the
+		// previous track's playback position happened to be — Audio.jsx reads
+		// this once and resets it, without touching any saved resume position.
+		setForceRestart(true);
 
 		if (mode === "normal") {
 			const randomReciterIndex = Math.floor(Math.random() * reciters.length);
