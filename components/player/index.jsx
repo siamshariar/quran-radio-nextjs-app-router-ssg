@@ -88,13 +88,19 @@ const Player = () => {
 			setWindowHeight(window.innerHeight);
 			setPanelHeight(window.innerHeight);
 			setMaxTranslate(window.innerHeight);
-			setTranslate(isPlayerMini ? window.innerHeight : 0);
+			setTranslate(
+				path === "/"
+					? 2 * window.innerHeight
+					: isPlayerMini
+					? window.innerHeight
+					: 0
+			);
 		};
 		window.addEventListener("resize", handleResize);
 		return () => {
 			window.removeEventListener("resize", handleResize);
 		};
-	}, [isPlayerMini]);
+	}, [isPlayerMini, path]);
 
 	const handleTouchStart = (event) => {
 		// console.log(event.touches[0]);
