@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { refreshOutline, closeOutline } from "ionicons/icons";
+import { refreshOutline } from "ionicons/icons";
 import { IonIcon } from "@ionic/react";
 import { PlayerStore, setReciter, setChapterList, setChapter, setLiveRadio, setPlaying } from "@/store";
 import { LocalStore } from "@/store/local";
@@ -83,14 +83,6 @@ const RandomPlay = ({ classes = {} }) => {
 		<div className={`${classes.root} ${styles.root}`} ref={rootRef}>
 			{showGuide && (
 				<div className={styles.tooltip}>
-					<div
-						className={styles.tooltip_close}
-						onClick={(event) => {
-							event.stopPropagation();
-							dismissGuide();
-						}}>
-						<IonIcon icon={closeOutline} />
-					</div>
 					Click to Shuffle
 					<div className={styles.tooltip_arrow}></div>
 				</div>
