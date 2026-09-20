@@ -26,7 +26,12 @@ const RandomPlay = ({ classes = {} }) => {
 
 	// Wait until every onboarding/promo modal has closed before showing the
 	// guide, so it doesn't appear stacked behind (or get dismissed by) one of
-	// those modals — then auto-hide it after a few seconds.
+	// those modals — then auto-hide it after a few seconds. The Quran Tube
+	// modal's "Install now" button opens a new tab in the same click that
+	// closes the modal, which backgrounds this tab in most browsers and
+	// throttles setTimeout — so the countdown is measured against
+	// document.visibilityState instead of trusting a single setTimeout to
+	// fire on schedule while the tab is hidden.
 	useEffect(() => {
 		if (promoModalsOpen) return;
 
@@ -34,8 +39,36 @@ const RandomPlay = ({ classes = {} }) => {
 		if (guideShown) return;
 
 		setShowGuide(true);
-		const hideTimer = window.setTimeout(dismissGuide, GUIDE_VISIBLE_MS);
-		return () => window.clearTimeout(hideTimer);
+
+		let remainingMs = GUIDE_VISIBLE_MS;
+		let visibleSince = document.visibilityState === "visible" ? Date.now() : null;
+		let hideTimer = null;
+
+		const scheduleHide = () => {
+			hideTimer = window.setTimeout(dismissGuide, remainingMs);
+		};
+
+		const handleVisibilityChange = () => {
+			if (document.visibilityState === "visible") {
+				visibleSince = Date.now();
+				scheduleHide();
+			} else {
+				if (hideTimer) window.clearTimeout(hideTimer);
+				if (visibleSince !== null) {
+					remainingMs = Math.max(0, remainingMs - (Date.now() - visibleSince));
+				}
+			}
+		};
+
+		if (visibleSince !== null) {
+			scheduleHide();
+		}
+		document.addEventListener("visibilitychange", handleVisibilityChange);
+
+		return () => {
+			document.removeEventListener("visibilitychange", handleVisibilityChange);
+			if (hideTimer) window.clearTimeout(hideTimer);
+		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [promoModalsOpen]);
 
