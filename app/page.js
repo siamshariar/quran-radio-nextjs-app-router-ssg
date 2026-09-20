@@ -1,5 +1,4 @@
 import { buildMetadata, getPlaybackMeta, isStaticExport } from "@/lib/metadata";
-import HomeView from "@/components/pages/HomeView";
 
 export async function generateMetadata({ searchParams }) {
 	const params = isStaticExport ? {} : await searchParams;
@@ -16,6 +15,10 @@ export async function generateMetadata({ searchParams }) {
 	});
 }
 
+// The home page's actual UI (HomeContent, with its playback controls) is
+// already rendered by the globally-mounted <Player /> panel in
+// app/providers.jsx for the "/" route — rendering it again here would show
+// two overlapping playback control bars.
 export default function Page() {
-	return <HomeView />;
+	return null;
 }
