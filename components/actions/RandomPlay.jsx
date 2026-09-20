@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { refreshOutline } from "ionicons/icons";
+import { useEffect, useRef, useState } from "react";
+import { refreshOutline, closeOutline } from "ionicons/icons";
 import { IonIcon } from "@ionic/react";
 import { PlayerStore, setReciter, setChapterList, setChapter, setLiveRadio, setPlaying } from "@/store";
 import { LocalStore } from "@/store/local";
@@ -10,67 +10,44 @@ import styles from "./RandomPlay.module.css";
 
 const RANDOM_PLAY_GUIDE_STORAGE_KEY = "randomPlayGuideShown";
 
-const GUIDE_VISIBLE_MS = 4500;
+// Show the guide 40-50s after the user opens the site, once per browser.
+const GUIDE_DELAY_MS = (Math.floor(Math.random() * 11) + 40) * 1000;
 
 const RandomPlay = ({ classes = {} }) => {
 	const reciters = PlayerStore.useState((s) => s.reciters);
 	const liveIndex = PlayerStore.useState((s) => s.liveIndex);
-	const promoModalsOpen = PlayerStore.useState((s) => s.promoModalsOpen);
 	const mode = LocalStore.useState((s) => s.settings.mode);
 	const [showGuide, setShowGuide] = useState(false);
+	const rootRef = useRef(null);
 
 	const dismissGuide = () => {
 		setShowGuide(false);
 		localStorage.setItem(RANDOM_PLAY_GUIDE_STORAGE_KEY, "shown");
 	};
 
-	// Wait until every onboarding/promo modal has closed before showing the
-	// guide, so it doesn't appear stacked behind (or get dismissed by) one of
-	// those modals — then auto-hide it after a few seconds. The Quran Tube
-	// modal's "Install now" button opens a new tab in the same click that
-	// closes the modal, which backgrounds this tab in most browsers and
-	// throttles setTimeout — so the countdown is measured against
-	// document.visibilityState instead of trusting a single setTimeout to
-	// fire on schedule while the tab is hidden.
 	useEffect(() => {
-		if (promoModalsOpen) return;
-
 		const guideShown = localStorage.getItem(RANDOM_PLAY_GUIDE_STORAGE_KEY) === "shown";
 		if (guideShown) return;
 
-		setShowGuide(true);
+		const showTimer = window.setTimeout(() => setShowGuide(true), GUIDE_DELAY_MS);
+		return () => window.clearTimeout(showTimer);
+	}, []);
 
-		let remainingMs = GUIDE_VISIBLE_MS;
-		let visibleSince = document.visibilityState === "visible" ? Date.now() : null;
-		let hideTimer = null;
+	useEffect(() => {
+		if (!showGuide) return;
 
-		const scheduleHide = () => {
-			hideTimer = window.setTimeout(dismissGuide, remainingMs);
-		};
-
-		const handleVisibilityChange = () => {
-			if (document.visibilityState === "visible") {
-				visibleSince = Date.now();
-				scheduleHide();
-			} else {
-				if (hideTimer) window.clearTimeout(hideTimer);
-				if (visibleSince !== null) {
-					remainingMs = Math.max(0, remainingMs - (Date.now() - visibleSince));
-				}
+		const handleOutsideClick = (event) => {
+			if (rootRef.current && !rootRef.current.contains(event.target)) {
+				dismissGuide();
 			}
 		};
 
-		if (visibleSince !== null) {
-			scheduleHide();
-		}
-		document.addEventListener("visibilitychange", handleVisibilityChange);
-
+		document.addEventListener("click", handleOutsideClick);
 		return () => {
-			document.removeEventListener("visibilitychange", handleVisibilityChange);
-			if (hideTimer) window.clearTimeout(hideTimer);
+			document.removeEventListener("click", handleOutsideClick);
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [promoModalsOpen]);
+	}, [showGuide]);
 
 	const playRandom = () => {
 		if (showGuide) {
@@ -103,10 +80,18 @@ const RandomPlay = ({ classes = {} }) => {
 	};
 
 	return (
-		<div className={`${classes.root} ${styles.root}`}>
+		<div className={`${classes.root} ${styles.root}`} ref={rootRef}>
 			{showGuide && (
 				<div className={styles.tooltip}>
-					Click to reload and play a random {mode === "normal" ? "surah" : "live radio station"}
+					<div
+						className={styles.tooltip_close}
+						onClick={(event) => {
+							event.stopPropagation();
+							dismissGuide();
+						}}>
+						<IonIcon icon={closeOutline} />
+					</div>
+					Click to Shuffle
 					<div className={styles.tooltip_arrow}></div>
 				</div>
 			)}
