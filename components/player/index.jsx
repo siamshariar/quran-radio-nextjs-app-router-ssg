@@ -8,6 +8,7 @@ import {
 	setPlayerMini,
 	setPlaying,
 	setSliderDown,
+	setPromoModalsOpen,
 } from "../../store";
 import AudioMini from "./AudioMini";
 import AudioTag from "./Audio";
@@ -68,6 +69,10 @@ const Player = () => {
 	useEffect(() => {
 		setPath(pathname);
 	}, [pathname]);
+
+	useEffect(() => {
+		setPromoModalsOpen(dialogOpen || quranTubeModalOpen || promoOpen);
+	}, [dialogOpen, quranTubeModalOpen, promoOpen]);
 
 	useEffect(() => {
 		setSliderDown(false);
