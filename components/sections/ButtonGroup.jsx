@@ -61,13 +61,6 @@ const Buttons = () => {
 				}}
 			/>
 			<Share Icon={ShareIcon} url={asPath} title="Quran Radio" />
-			<RandomPlay
-				classes={{
-					root: styles.item,
-					btn: styles.btn,
-					icon: styles.icon,
-				}}
-			/>
 			<Timer
 				classes={{
 					root: styles.item,
@@ -77,6 +70,13 @@ const Buttons = () => {
 				icon={{
 					added: time,
 					removed: timeOutline,
+				}}
+			/>
+			<RandomPlay
+				classes={{
+					root: styles.item,
+					btn: styles.btn,
+					icon: styles.icon,
 				}}
 			/>
 			<PlaybackRate

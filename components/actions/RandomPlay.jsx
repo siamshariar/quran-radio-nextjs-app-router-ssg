@@ -10,39 +10,34 @@ import styles from "./RandomPlay.module.css";
 
 const RANDOM_PLAY_GUIDE_STORAGE_KEY = "randomPlayGuideShown";
 
+const GUIDE_VISIBLE_MS = 4500;
+
 const RandomPlay = ({ classes = {} }) => {
 	const reciters = PlayerStore.useState((s) => s.reciters);
 	const liveIndex = PlayerStore.useState((s) => s.liveIndex);
+	const promoModalsOpen = PlayerStore.useState((s) => s.promoModalsOpen);
 	const mode = LocalStore.useState((s) => s.settings.mode);
 	const [showGuide, setShowGuide] = useState(false);
-
-	useEffect(() => {
-		const guideShown = localStorage.getItem(RANDOM_PLAY_GUIDE_STORAGE_KEY) === "shown";
-		if (!guideShown) {
-			setShowGuide(true);
-		}
-	}, []);
 
 	const dismissGuide = () => {
 		setShowGuide(false);
 		localStorage.setItem(RANDOM_PLAY_GUIDE_STORAGE_KEY, "shown");
 	};
 
+	// Wait until every onboarding/promo modal has closed before showing the
+	// guide, so it doesn't appear stacked behind (or get dismissed by) one of
+	// those modals — then auto-hide it after a few seconds.
 	useEffect(() => {
-		if (!showGuide) return;
+		if (promoModalsOpen) return;
 
-		const handleOutsideClick = (event) => {
-			if (!event.target.closest(`.${styles.root}`)) {
-				dismissGuide();
-			}
-		};
+		const guideShown = localStorage.getItem(RANDOM_PLAY_GUIDE_STORAGE_KEY) === "shown";
+		if (guideShown) return;
 
-		document.addEventListener("click", handleOutsideClick);
-		return () => {
-			document.removeEventListener("click", handleOutsideClick);
-		};
+		setShowGuide(true);
+		const hideTimer = window.setTimeout(dismissGuide, GUIDE_VISIBLE_MS);
+		return () => window.clearTimeout(hideTimer);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [showGuide]);
+	}, [promoModalsOpen]);
 
 	const playRandom = () => {
 		if (showGuide) {
