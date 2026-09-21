@@ -347,6 +347,23 @@ const AudioTag = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [src, liveSrc]);
 
+	// setChapter/setChapterList/setReciter (which reload uses) update src one
+	// render behind chapterIndex/reciterId/playing, since src is only
+	// recomputed by the effect above — so the [playing, src, ...] effect
+	// below fires once on the *old* src (because playing just flipped) and
+	// again once src catches up to the new track. That first call starts
+	// playAudio() against the about-to-be-replaced src and sets loading
+	// true; changing <audio src> out from under it then aborts that play()
+	// promise, which without this reset left loading stuck true and made
+	// playAudio() silently no-op for the new src on the second pass —
+	// freezing the progress bar and duration at whatever the reset above
+	// had just set them to. Since a src change always invalidates whatever
+	// play attempt was in flight for the previous src, it's always correct
+	// to drop that stale loading state here.
+	useEffect(() => {
+		setLoading(false);
+	}, [src, liveSrc]);
+
 	useEffect(() => {
 		// console.log("playing: " + playing, src, liveSrc);
 		if (playing) {
