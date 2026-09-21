@@ -329,14 +329,14 @@ const AudioTag = () => {
 	}, [liveIndex]);
 
 	// Reload/shuffle: reset the *displayed* position/duration the instant the
-	// new track is picked, regardless of playing state, and force the browser
-	// to actually fetch the new source's metadata right away. Some browsers
-	// defer loading a paused <audio> element's source until .play() is
-	// called directly by a user gesture on it — reload while paused doesn't
-	// call .play() (so it doesn't auto-start playback), which otherwise left
-	// onCanPlay (and so setDur()) never firing until the user pressed play,
-	// with the duration text stuck at 0 the whole time it was paused.
-	// audioRef.current.load() explicitly triggers that fetch regardless.
+	// new track is picked, so the UI doesn't show the old track's numbers
+	// while the new source is loading. The actual seek-to-0 and dur update
+	// happen in onCanPlay once the new source's metadata has actually
+	// loaded — calling audioRef.current.load() here as well raced with the
+	// .play() call reload always triggers right after (both fire from the
+	// same src/playing change), aborting the fetch .play() had just started
+	// and leaving onCanPlay never firing, which is what kept the progress
+	// bar and duration stuck at 0 after a reload.
 	useEffect(() => {
 		if (!forceRestart) return;
 
@@ -344,7 +344,6 @@ const AudioTag = () => {
 			s.currentTime = 0;
 			s.dur = 0;
 		});
-		audioRef.current.load();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [src, liveSrc]);
 
