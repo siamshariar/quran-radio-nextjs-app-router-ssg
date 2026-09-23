@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { refreshOutline } from "ionicons/icons";
 import { IonIcon } from "@ionic/react";
-import { PlayerStore, setReciter, setChapterList, setChapter, setLiveRadio, setPlaying, setForceRestart } from "@/store";
+import { PlayerStore, setReciter, setChapterList, setChapter, setLiveRadio, setPlaying, setForceRestart, setSrc, setLiveSrc } from "@/store";
+import { AudioStore, saveTrackPausedTime } from "@/store/audio";
 import { LocalStore } from "@/store/local";
 import { liveRadios } from "@/data/liveRadios";
 import styles from "./RandomPlay.module.css";
@@ -54,6 +55,17 @@ const RandomPlay = ({ classes = {} }) => {
 			dismissGuide();
 		}
 
+		// Keep the current track's position saved before switching away, so
+		// its resume point in localStorage stays exactly where it was.
+		if (mode === "normal") {
+			const { reciterId, chapterList, chapterIndex } = PlayerStore.getRawState();
+			const chapterNo = chapterList?.[chapterIndex];
+			const { currentTime, dur } = AudioStore.getRawState();
+			if (chapterNo && dur > 0) {
+				saveTrackPausedTime(reciterId, chapterNo, currentTime);
+			}
+		}
+
 		// Start the newly picked track from 0 instead of resuming wherever the
 		// previous track's playback position happened to be — Audio.jsx reads
 		// this once and resets it, without touching any saved resume position.
@@ -73,12 +85,19 @@ const RandomPlay = ({ classes = {} }) => {
 			setReciter(randomReciterId);
 			setChapterList(randomReciterId);
 			setChapter(randomChapterList, randomChapterIndex);
+			// Set src in the same batch as playing=true (instead of letting
+			// Audio.jsx derive it one render later) so the play effect runs once,
+			// against the new track. Otherwise, when paused, play() first fires on
+			// the old src, gets aborted by the src swap, and the new track never
+			// starts.
+			setSrc(randomChapterList, randomReciterId, randomChapterIndex);
 		} else {
 			let randomLiveIndex = Math.floor(Math.random() * liveRadios.length);
 			if (liveRadios.length > 1 && randomLiveIndex === liveIndex) {
 				randomLiveIndex = (randomLiveIndex + 1) % liveRadios.length;
 			}
 			setLiveRadio(randomLiveIndex);
+			setLiveSrc(randomLiveIndex);
 		}
 
 		setPlaying(true);

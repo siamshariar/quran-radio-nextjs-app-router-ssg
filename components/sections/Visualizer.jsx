@@ -35,15 +35,19 @@ const Visualizer = () => {
   }, [])
 
   useEffect(() => {
-    if (mode === "normal" && dur) {
-      setProgressWidth((currentTime * 100) / dur)
+    if (mode === "normal") {
+      // No duration yet (e.g. a new track loading after reload) → empty bar,
+      // not a full one.
+      setProgressWidth(dur ? (currentTime * 100) / dur : 0)
     } else {
       setProgressWidth(100)
     }
   }, [mode, currentTime, dur, isInitialized])
 
   useEffect(() => {
-    if (mode === "normal" && dur && isInitialized) {
+    // Skip while a reload/shuffle switch is in flight, so the previous track's
+    // time isn't saved under the new track's key.
+    if (mode === "normal" && dur && isInitialized && !PlayerStore.getRawState().forceRestart) {
       localStorage.setItem("audioPausedTime", currentTime.toString())
       storage.setItem("audioPausedTime", currentTime)
 
@@ -148,7 +152,7 @@ const Visualizer = () => {
 					type="range"
 					min="0"
 					max="100"
-					value={dur && mode === "normal" ? (currentTime * 100) / dur : 100}
+					value={mode === "normal" ? (dur ? (currentTime * 100) / dur : 0) : 100}
 					onChange={(e) => handleProgress(e.target.value)}
 					name="progresBar"
 				/>
