@@ -107,7 +107,9 @@ const AudioTag = () => {
 	const playAudio = () => {
 		// console.log(c);
 		// console.log("loading: " + loading);
-		if (loading) return;
+		// Read the live value, not this render's closure: the [src] effect may
+		// have just cleared a stale loading flag earlier in this same commit.
+		if (PlayerStore.getRawState().loading) return;
 
 		setLoading(true);
 
@@ -472,6 +474,10 @@ const AudioTag = () => {
 					}
 				}}
 				onTimeUpdate={(e) => {
+          // Mid reload/shuffle switch: don't write the outgoing track's time
+          // into the new track's saved position (onCanPlay clears the flag).
+          if (PlayerStore.getRawState().forceRestart) return
+
           setCurrentTime(e.target.currentTime)
 
           if (mode === "normal" && playing && chapterList && chapterList.length > 0) {
