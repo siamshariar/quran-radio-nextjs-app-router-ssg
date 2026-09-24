@@ -15,7 +15,7 @@ import { IonIcon } from "@ionic/react";
 import { useSettingStorage } from "@/hooks/useSettingStorage";
 import Image from "next/image";
 import Link from "next/link";
-import { formatDate } from "../utils/formatDate"
+import { formatDate, formatDateShort } from "../utils/formatDate"
 import {
   AudioStore,
   setCurrentTime,
@@ -192,6 +192,16 @@ const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemov
     return `${h > 0 ? String(h).padStart(2, "0").concat(":") : ""}${String(m).padStart(2, "0")}:${String(rs).padStart(2, "0")}`
   }
 
+  // Compact variant for narrow screens: no zero-padded leading unit
+  // ("1:02:05" instead of "01:02:05", "3:01" instead of "03:01").
+  const formatDurShort = (s) => {
+    if (!s || isNaN(s)) return "0:00"
+    const h = ~~(s / 3600)
+    const m = ~~((s % 3600) / 60)
+    const rs = String(~~(s % 60)).padStart(2, "0")
+    return h > 0 ? `${h}:${String(m).padStart(2, "0")}:${rs}` : `${m}:${rs}`
+  }
+
   const displayCurrentTime = getDisplayCurrentTime();
   const displayDuration = trackInfo.duration || trackDuration || 0;
 
@@ -225,13 +235,23 @@ const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemov
 
 				<Link href={`/reciters/${item.reciterId}`} className={styles.middle}>
 					{/* <div className={styles.middle}> */}
-					<div className={styles.middle}>
+					<div className={styles.middleInner}>
             <div className={styles.name}>{item.reciterName}</div>
             <div className={styles.meaning}>- {item.chapterName}</div>
-            <div className={styles.date}>{formatDate(item.createdAt)}</div>
-            <div className={styles.pausedAt}>
-              {isRecent && `Duration: ${formatDur(displayCurrentTime)} / ${formatDur(displayDuration)}`}
+            <div className={styles.date}>
+              <span className={styles.fullText}>{formatDate(item.createdAt)}</span>
+              <span className={styles.shortText}>{formatDateShort(item.createdAt)}</span>
             </div>
+            {isRecent && (
+              <div className={styles.pausedAt}>
+                <span className={styles.fullText}>
+                  Duration: {formatDur(displayCurrentTime)} / {formatDur(displayDuration)}
+                </span>
+                <span className={styles.shortText}>
+                  Duration: {formatDurShort(displayCurrentTime)} / {formatDurShort(displayDuration)}
+                </span>
+              </div>
+            )}
           </div>
 				</Link>
 
