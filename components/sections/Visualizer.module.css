@@ -54,6 +54,7 @@
 	background-color: #ff0000;
 } */
 .progress input {
+	-webkit-appearance: none;
 	appearance: none;
 	outline: none;
 	border: none;
@@ -73,6 +74,17 @@
 	height: 16px;
 	width: 16px;
   cursor: pointer;
+}
+/* Live mode disables the slider, and iOS Safari's default stylesheet fades
+   disabled form controls (opacity: 0.4), which left the thumb circle
+   see-through on iPhone. Keep it looking the same as in normal mode. */
+.progress input:disabled {
+	opacity: 1;
+}
+.progress input:disabled::-webkit-slider-thumb {
+	background-color: #3aad94;
+	opacity: 1;
+	cursor: default;
 }
 /* .progress input[disabled]::-webkit-slider-thumb {
 	-webkit-appearance: none;
