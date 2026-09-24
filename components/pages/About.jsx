@@ -17,7 +17,9 @@ export default function AboutContent() {
 					Development organization to spread the message of Islam worldwide.
 				</p>
 				<br />
-				<p>
+				{/* A <div>, not a <p>: an <ol> inside a <p> is invalid HTML, so the
+				    browser closed the <p> early and React hit a hydration mismatch. */}
+				<div>
 					Deeni Info Tech working for the following three sets of goals:
 					{/*TODO: Improve design and content*/}
 					<ol style={{ marginLeft: `35px` }}>
@@ -31,7 +33,7 @@ export default function AboutContent() {
 							Develop Islamic applications
 						</li>
 					</ol>
-				</p>
+				</div>
 
 				<br />
 				<p>

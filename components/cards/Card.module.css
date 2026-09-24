@@ -70,10 +70,24 @@
 	width: calc(100% - 104px);
 	display: block;
 }
-.reciters .middle,
+.reciters .middle {
+	width: calc(100% - 128px);
+}
+/* Take exactly the space left between the avatar and the action icons
+   (a fixed calc() width ignored .wrapper's two 20px gaps). min-width: 0
+   lets the text inside ellipsize instead of pushing the icons off-screen. */
 .fav_card .middle,
 .liveFavCard .middle {
-	width: calc(100% - 128px);
+	flex: 1 1 0;
+	width: auto;
+	min-width: 0;
+}
+/* FavRecentList's text block sits inside the .middle <Link>. It used to
+   carry .middle itself too, so its width was cut by calc(100% - 128px)
+   twice, squeezing the text into ~190px on phones and wrapping the
+   date/duration onto 2-3 lines. */
+.middleInner {
+	width: 100%;
 }
 .right {
 	width: 32px;
@@ -232,14 +246,40 @@
 	.liveFavCard .right.btns {
 		width: 52px;
 	}
-	.reciters .middle,
-	.fav_card .middle,
-	.liveFavCard .middle {
+	.reciters .middle {
 		width: calc(100% - 104px);
 	}
 	.date,
 	.timestamp,
 	.pausedAt {
 		font-size: 0.75rem;
+	}
+}
+
+/* Date/time and duration always stay on one line; the chapter name and
+   live radio place ellipsize if they ever run out of room. */
+.fav_card .meaning,
+.liveFavCard .meaning,
+.date,
+.timestamp,
+.pausedAt {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* Same information in a compact format (e.g. "Sep 24, 6:09 AM",
+   "1:02:05 / 2:01:50") on narrow phones only; tablets, desktop and large
+   phones keep the full format. Both variants are rendered and toggled in
+   CSS so server and client markup match. */
+.shortText {
+	display: none;
+}
+@media screen and (max-width: 400px) {
+	.fullText {
+		display: none;
+	}
+	.shortText {
+		display: inline;
 	}
 }

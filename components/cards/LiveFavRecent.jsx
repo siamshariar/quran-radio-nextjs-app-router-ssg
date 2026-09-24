@@ -7,7 +7,7 @@ import { playCircle, pauseCircle } from "@/icons";
 import styles from "./Card.module.css";
 import { IonIcon } from "@ionic/react";
 import { useSettingStorage } from "@/hooks/useSettingStorage";
-import { formatDate } from "../utils/formatDate";
+import { formatDate, formatDateShort } from "../utils/formatDate";
 // import RadioIcon from "@mui/icons-material/Radio";
 
   const LiveFavRecent = ({ item, handleRemoveLiveFavorite, handleRemoveLiveRecent, noRemoveIcon, isLast }) => {
@@ -56,7 +56,10 @@ import { formatDate } from "../utils/formatDate";
 				<div className={styles.middle}>
 					<div className={styles.name}>{item.name}</div>
 					<div className={styles.meaning}>{item.place}</div>
-					<div className={styles.timestamp}>{formatDate(item.createdAt)}</div>
+					<div className={styles.timestamp}>
+						<span className={styles.fullText}>{formatDate(item.createdAt)}</span>
+						<span className={styles.shortText}>{formatDateShort(item.createdAt)}</span>
+					</div>
 				</div>
 
 				<div className={classNames(styles.right, styles.btns)}>
