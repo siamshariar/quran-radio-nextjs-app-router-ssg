@@ -13,6 +13,7 @@ import {
 	setDefaultLiveRadio,
 	setLiveRadio,
 	setForceRestart,
+	setResumeAt,
 } from "@/store";
 import { LocalStore } from "@/store/local";
 import { useRecentStorage } from "@/hooks/useRecentStorage";
@@ -58,7 +59,6 @@ const AudioTag = () => {
 	const [isPageLoaded, setIsPageLoaded] = useState(false);
   const {
     saveTrackPausedTime: saveTrackTime,
-    getTrackPausedTime,
     saveTrackDuration: saveTrackDur,
     getTrackDuration,
     clearTrackPausedTime,
@@ -160,8 +160,6 @@ const AudioTag = () => {
       const chapterNo = chapterList[chapterIndex]
       await saveTrackTime(reciterId, chapterNo, audioRef.current.currentTime)
       await saveTrackPausedTime(reciterId, chapterNo, audioRef.current.currentTime)
-
-      await storage.setItem("visualizerProgress", audioRef.current.currentTime)
 
       updateTrackInfo(reciterId, chapterNo, {
         currentTime: audioRef.current.currentTime,
@@ -369,29 +367,14 @@ const AudioTag = () => {
 	useEffect(() => {
 		// console.log("playing: " + playing, src, liveSrc);
 		if (playing) {
+			// No saved-position restore here: a newly loaded source starts at
+			// 0:00 on its own, and pause → play of the same track keeps the
+			// element's position. Seeking to a saved position used to happen on
+			// every play (falling back to a global, track-agnostic key), which
+			// made a brand-new surah jump to where the previous one was paused.
+			// Resuming is now explicit and Recent-only - see onLoadedMetadata.
 			playAudio();
 			audioRef.current.playbackRate = playbackRate;
-
-      if (!forceRestart && mode === "normal" && chapterList && chapterList.length > 0) {
-        const chapterNo = chapterList[chapterIndex]
-        const loadSavedPosition = async () => {
-          const pausedTime = await getTrackPausedTime(reciterId, chapterNo)
-          const visualizerProgress = await storage.getItem("visualizerProgress")
-          const recentItem = LocalStore.getRawState().recent.find(
-            (item) => item.reciterId === reciterId && item.chapterNo === chapterNo,
-          )
-          const recentPausedAt = recentItem?.pausedAt
-
-          if (pausedTime > 0 && Math.abs(audioRef.current.currentTime - pausedTime) > 1) {
-            audioRef.current.currentTime = pausedTime
-          } else if (visualizerProgress && Math.abs(audioRef.current.currentTime - visualizerProgress) > 1) {
-            audioRef.current.currentTime = visualizerProgress
-          } else if (recentPausedAt && Math.abs(audioRef.current.currentTime - recentPausedAt) > 1) {
-            audioRef.current.currentTime = recentPausedAt
-          }
-        }
-        loadSavedPosition()
-      }
 		} else {
 			pauseAudio();
 		}
@@ -411,10 +394,19 @@ const AudioTag = () => {
 	// add to recently played
 	const { addRecent } = useRecentStorage();
 	const { addLiveRecent } = useLiveRecentStorage();
+	const lastRecentTrackRef = useRef(null);
 	useEffect(() => {
 		if (playing) {
-			const currentPosition = audioRef.current?.currentTime || 0
-			const currentDuration = audioRef.current?.duration || 0
+			// On a track change this effect runs before the <audio> element has
+			// switched to the new src, so its currentTime/duration still belong
+			// to the previous track. Only trust them for pause → play of the
+			// same track; a new track starts at 0 (or its pending Recent resume).
+			const trackKey = `${reciterId}-${chapterIndex}`
+			const sameTrack = lastRecentTrackRef.current === trackKey
+			lastRecentTrackRef.current = trackKey
+			const { resumeAt } = PlayerStore.getRawState()
+			const currentPosition = sameTrack ? audioRef.current?.currentTime || 0 : resumeAt?.time || 0
+			const currentDuration = sameTrack ? audioRef.current?.duration || 0 : 0
 
 			addRecent(reciterId, chapterIndex, currentPosition, currentDuration)
 
@@ -469,6 +461,9 @@ const AudioTag = () => {
 				src={mode == "normal" ? src : liveSrc}
 				onEnded={handleEnd}
 				onError={() => {
+					// Don't let a resume meant for a track that failed to load
+					// linger and get applied to some later load.
+					if (PlayerStore.getRawState().resumeAt) setResumeAt(null);
 					if (mode !== "normal" && playing) {
 						switchToAnotherLiveRadio();
 					}
@@ -477,6 +472,9 @@ const AudioTag = () => {
           // Mid reload/shuffle switch: don't write the outgoing track's time
           // into the new track's saved position (onCanPlay clears the flag).
           if (PlayerStore.getRawState().forceRestart) return
+          // A Recent resume is waiting for metadata: the element still reports
+          // 0 here, which would overwrite the very position being resumed.
+          if (PlayerStore.getRawState().resumeAt) return
 
           setCurrentTime(e.target.currentTime)
 
@@ -486,8 +484,6 @@ const AudioTag = () => {
               saveTrackTime(reciterId, chapterNo, e.target.currentTime)
               saveTrackPausedTime(reciterId, chapterNo, e.target.currentTime)
 
-              storage.setItem("visualizerProgress", e.target.currentTime)
-
               updateTrackInfo(reciterId, chapterNo, {
                 currentTime: e.target.currentTime,
               })
@@ -496,6 +492,24 @@ const AudioTag = () => {
             }
           }
         }}
+				onLoadedMetadata={(e) => {
+					// Apply a pending Recent resume as soon as the source's metadata is
+					// in (seeking earlier is ignored, notably by iOS Safari). It's
+					// consumed by the first load either way, and only applied if this
+					// load is the exact track it was requested for.
+					const { resumeAt, reciterId: rId, chapterList: list, chapterIndex: idx } =
+						PlayerStore.getRawState();
+					if (!resumeAt) return;
+					setResumeAt(null);
+					const isSameTrack =
+						mode === "normal" &&
+						String(resumeAt.reciterId) === String(rId) &&
+						String(resumeAt.chapterNo) === String(list?.[idx]);
+					if (isSameTrack && resumeAt.time > 0 && resumeAt.time < e.target.duration) {
+						e.target.currentTime = resumeAt.time;
+						setCurrentTime(resumeAt.time);
+					}
+				}}
 				onCanPlay={(e) => {
 					if (mode !== "normal") {
 						liveFailStreakRef.current = 0;

@@ -1,4 +1,4 @@
-import { AudioStore, setCurrentTime, setIsProgress, initializeAudioStore } from "@/store/audio"
+import { AudioStore, setCurrentTime, setIsProgress } from "@/store/audio"
 import styles from "./Visualizer.module.css";
 import { LocalStore } from "@/store/local";
 import classNames from "classnames";
@@ -24,15 +24,6 @@ const Visualizer = () => {
 
   const [progressWidth, setProgressWidth] = useState(100)
   const { saveTrackPausedTime } = useTrackStorage()
-  const [isInitialized, setIsInitialized] = useState(false)
-
-  useEffect(() => {
-    const init = async () => {
-      await initializeAudioStore()
-      setIsInitialized(true)
-    }
-    init()
-  }, [])
 
   useEffect(() => {
     if (mode === "normal") {
@@ -42,25 +33,13 @@ const Visualizer = () => {
     } else {
       setProgressWidth(100)
     }
-  }, [mode, currentTime, dur, isInitialized])
+  }, [mode, currentTime, dur])
 
-  useEffect(() => {
-    // Skip while a reload/shuffle switch is in flight, so the previous track's
-    // time isn't saved under the new track's key.
-    if (mode === "normal" && dur && isInitialized && !PlayerStore.getRawState().forceRestart) {
-      localStorage.setItem("audioPausedTime", currentTime.toString())
-      storage.setItem("audioPausedTime", currentTime)
-
-      storage.setItem("visualizerProgress", currentTime)
-
-      if (chapterList && chapterList.length > 0) {
-        const chapterNo = chapterList[chapterIndex]
-        saveTrackPausedTime(reciterId, chapterNo, currentTime)
-
-        updateRecentPausedTime(reciterId, chapterNo, currentTime)
-      }
-    }
-  }, [currentTime, mode, dur, reciterId, chapterIndex, chapterList, isInitialized])
+  // (A save-on-every-change effect used to live here. It also re-ran when the
+  // track changed - before the new track loaded - so it saved the previous
+  // track's position under the new track's key, which then got resumed.
+  // Per-track progress is saved by Audio.jsx's onTimeUpdate/pause, which
+  // always know which track the position belongs to.)
 
   const updateRecentPausedTime = (reciterId, chapterNo, time) => {
     if (Math.floor(time) % 5 !== 0) return
@@ -97,11 +76,6 @@ const Visualizer = () => {
 		setIsProgress(false);
 		const compute = (progress * dur) / 100;
 		setCurrentTime(compute);
-
-    localStorage.setItem("audioPausedTime", compute.toString())
-    storage.setItem("audioPausedTime", compute)
-
-    storage.setItem("visualizerProgress", compute)
 
     if (chapterList && chapterList.length > 0) {
       const chapterNo = chapterList[chapterIndex]
