@@ -57,6 +57,13 @@ export const PlayerStore = new Store({
 	// so it never touches any persisted resume-position storage.
 	forceRestart: false,
 
+	// One-shot resume target, set only when the user re-opens a Recent item:
+	// { reciterId, chapterNo, time }. Audio.jsx seeks to `time` once that
+	// track's metadata has loaded, then clears it. Every other way of opening
+	// a surah (Home, reciter page, chapters, Favorites, reload button, page
+	// load) leaves it null, so the track starts from 0:00.
+	resumeAt: null,
+
 	// timer
 	timer: -1,
 	intervalId: null,
@@ -117,6 +124,12 @@ export const setSliderDown = (v) => {
 export const setForceRestart = (v) => {
 	PlayerStore.update((s) => {
 		s.forceRestart = v;
+	});
+};
+
+export const setResumeAt = (v) => {
+	PlayerStore.update((s) => {
+		s.resumeAt = v;
 	});
 };
 

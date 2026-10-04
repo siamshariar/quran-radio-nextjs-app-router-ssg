@@ -61,7 +61,7 @@ export const useRecentStorage = () => {
 
 		const reciter = reciters.find((obj) => obj.id === reciterId);
 
-    const currentPausedAt = pausedAt !== undefined ? pausedAt : (await storage.getItem("visualizerProgress")) || 0
+    const currentPausedAt = pausedAt !== undefined ? pausedAt : 0
 
     const currentDuration =
       duration !== undefined ? duration : (await storage.getItem(`trackDuration-${reciterId}-${chapterNo}`)) || 0

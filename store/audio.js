@@ -10,17 +10,15 @@ export const AudioStore = new Store({
 	trackInfoMap: {},
 });
 
-export const setCurrentTime = async (currentTime) => {
+// Display-only: updates the shown position. It used to also persist the
+// time into a global "audioPausedTime" key and under whatever activeTrack
+// was at that moment - during a track switch that wrote the previous
+// track's position under the new track. Per-track progress is now saved
+// only by Audio.jsx / the seek bar, which know exactly which track it is.
+export const setCurrentTime = (currentTime) => {
 	AudioStore.update((s) => {
 		s.currentTime = currentTime;
 	});
-	await storage.setItem("audioPausedTime", currentTime);
-
-	const activeTrack = AudioStore.getRawState().activeTrack;
-	if (activeTrack) {
-		const [reciterId, chapterNo] = activeTrack.split("-");
-		saveTrackPausedTime(reciterId, chapterNo, currentTime);
-	}
 };
 
 export const setDuration = (duration) => {
@@ -113,11 +111,6 @@ export const loadTrackInfo = async (reciterId, chapterNo) => {
 	}
 };
 
-export const loadPausedTime = async () => {
-	const pausedTime = await storage.getItem("audioPausedTime");
-	return pausedTime ? Number.parseFloat(pausedTime) : 0;
-};
-
 export const loadTrackPausedTime = async (reciterId, chapterNo) => {
 	const trackKey = `${reciterId}-${chapterNo}`;
 	const savedPausedTimes = JSON.parse((await storage.getItem("trackPausedTimes")) || "{}");
@@ -177,22 +170,20 @@ export const loadPlayingState = async () => {
 	return isPlaying === "true";
 };
 
+// Global, track-agnostic position keys from older versions. Restoring them
+// on load made a brand-new surah jump to wherever the *previous* surah had
+// been paused, so they're no longer read or written - just cleared.
+const LEGACY_POSITION_KEYS = ["visualizerProgress", "audioPausedTime"];
+
 export const initializeAudioStore = async () => {
 	try {
-		const currentTime = await loadPausedTime();
+		// Playback position is deliberately NOT restored here: after a reload
+		// or app restart the next surah always starts at 0:00. Only re-opening
+		// an item from Recent resumes it (see PlayerStore.resumeAt).
 		const isPlaying = await loadPlayingState();
 		AudioStore.update((s) => {
-			s.currentTime = currentTime;
 			s.isPlaying = isPlaying;
 		});
-
-		// Retrieve the saved audio pause duration from localStorage
-		const savedPausedTime = localStorage.getItem("audioPausedTime");
-		if (savedPausedTime) {
-			AudioStore.update((s) => {
-				s.currentTime = Number.parseFloat(savedPausedTime);
-			});
-		}
 
 		const activeTrack = AudioStore.getRawState().activeTrack;
 		if (activeTrack) {
@@ -200,9 +191,11 @@ export const initializeAudioStore = async () => {
 			await loadTrackInfo(reciterId, chapterNo);
 		}
 
-		const visualizerProgress = await storage.getItem("visualizerProgress");
-		if (visualizerProgress && !isNaN(visualizerProgress)) {
-			setCurrentTime(visualizerProgress);
+		for (const key of LEGACY_POSITION_KEYS) {
+			try {
+				localStorage.removeItem(key);
+			} catch (e) {}
+			await storage.removeItem(key);
 		}
 	} catch (error) {
 		console.error("Error initializing audio store:", error);

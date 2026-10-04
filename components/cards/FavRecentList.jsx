@@ -6,6 +6,7 @@ import {
 	setSrc,
 	setPlaying,
 	setChapterListByList,
+	setResumeAt,
 } from "@/store";
 import { LocalStore } from "@/store/local";
 import { trashOutline } from "ionicons/icons";
@@ -20,7 +21,6 @@ import {
   AudioStore,
   setCurrentTime,
   setIsPlaying,
-  initializeAudioStore,
   setDuration,
   setActiveTrack,
   loadTrackInfo,
@@ -50,8 +50,8 @@ const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemov
   const { saveTrackPausedTime, getTrackPausedTime, saveTrackDuration, getTrackDuration } = useTrackStorage()
 
   useEffect(() => {
-    initializeAudioStore()
-
+    // (initializeAudioStore() used to be called here, once per card - it
+    // restored a global playback position into the player on every mount.)
     const loadTrackData = async () => {
       if (trackInfo.duration > 0) {
         setTrackDuration(trackInfo.duration)
@@ -96,6 +96,18 @@ const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemov
 			setPlaybackMode("normal");
 		}
 
+		// Only Recent resumes where the user left off, using exactly the
+		// position this card displays. Favorites (and every other way of
+		// opening a surah) start from 0:00. Computed synchronously so
+		// setPlaying(true) still runs inside the tap - iOS blocks play()
+		// started after an await.
+		const resumeTime = isRecent ? getDisplayCurrentTime() : 0;
+		setResumeAt(
+			resumeTime > 0
+				? { reciterId: item.reciterId, chapterNo: item.chapterNo, time: resumeTime }
+				: null
+		);
+
 		setReciter(item.reciterId);
 		setChapterListByList(item.chapterList);
 		setChapter(item.chapterList, item.chapterIndex);
@@ -103,18 +115,7 @@ const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemov
 		setPlaying(true);
 
     setActiveTrack(item.reciterId, item.chapterNo)
-
-    const pausedTime = await getTrackPausedTime(item.reciterId, item.chapterNo)
-
-    if (pausedTime && pausedTime > 0) {
-      setCurrentTime(pausedTime)
-    } else if (item.pausedAt && item.pausedAt > 0) {
-      setCurrentTime(item.pausedAt)
-    } else if (trackInfo.currentTime > 0) {
-      setCurrentTime(trackInfo.currentTime)
-    } else {
-      setCurrentTime(0)
-    }
+    setCurrentTime(resumeTime)
 
     const duration = getTrackDuration(item.reciterId, item.chapterNo)
     if (duration && duration > 0) {
@@ -137,11 +138,6 @@ const FavRecentList = ({ item, handleRemoveFavorite, handleRemoveRecent, noRemov
 		setIsPlaying(false);
 
     await saveTrackPausedTime(item.reciterId, item.chapterNo, currentTime)
-
-    await storage.setItem("visualizerProgress", currentTime)
-
-    await storage.setItem("audioPausedTime", currentTime)
-    localStorage.setItem("audioPausedTime", currentTime.toString())
 
     updatePausedAtTime(item.reciterId, item.chapterNo, currentTime)
   }
